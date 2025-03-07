@@ -1,0 +1,66 @@
+<configuration>
+
+<!-- Appender -->
+
+    <!-- Appender for AuthController, SystemUserServiceImpl, and SystemUserDaoImpl -->
+    <appender name="AuthSystemAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>log/auth-system.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>log/auth-system.%d{yyyy-MM-dd}.log</fileNamePattern>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- Appender for DSAController, DSAServiceImpl, and DSADaoImpl -->
+    <appender name="DSAAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>log/dsa-system.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>log/dsa-system.%d{yyyy-MM-dd}.log</fileNamePattern>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+    
+   
+    <!-- Logger -->
+
+    <!-- Logger for AuthController, SystemUserServiceImpl, and SystemUserDaoImpl -->
+    <logger name="com.dsa360.api.controller.AuthController" level="DEBUG" additivity="false">
+        <appender-ref ref="AuthSystemAppender" />
+    </logger>
+
+    <logger name="com.dsa360.api.serviceimpl.SystemUserServiceImpl" level="DEBUG" additivity="false">
+        <appender-ref ref="AuthSystemAppender" />
+    </logger>
+
+    <logger name="com.dsa360.api.daoimpl.SystemUserDaoImpl" level="DEBUG" additivity="false">
+        <appender-ref ref="AuthSystemAppender" />
+    </logger>
+
+    <!-- Logger for DSAController, DSAServiceImpl, and DSADaoImpl -->
+    <logger name="com.dsa360.api.controller.PublicApiController" level="DEBUG" additivity="false">
+        <appender-ref ref="DSAAppender" />
+    </logger>
+
+    <logger name="com.dsa360.api.serviceimpl.DSAServiceImpl" level="DEBUG" additivity="false">
+        <appender-ref ref="DSAAppender" />
+    </logger>
+
+    <logger name="com.dsa360.api.daoimpl.DSADaoImpl" level="DEBUG" additivity="false">
+        <appender-ref ref="DSAAppender" />
+    </logger>
+
+    <!-- Root logger to handle other logs -->
+    <appender name="Console" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <root level="INFO">
+        <appender-ref ref="Console" />
+    </root>
+</configuration>

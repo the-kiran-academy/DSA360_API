@@ -1,0 +1,4 @@
+2025-01-09 11:11:08 ERROR com.dsa360.api.daoimpl.DSADaoImpl - Duplicate entry error occurred during DSA registration - check unique fields
+2025-01-09 11:14:29 ERROR com.dsa360.api.daoimpl.DSADaoImpl - Duplicate entry error occurred during DSA registration - check unique fields
+2025-01-09 11:17:37 INFO  com.dsa360.api.daoimpl.DSADaoImpl - DSA registration successful for: 20250109111736999 Vijay
+2025-01-09 11:39:42 INFO  com.dsa360.api.daoimpl.DSADaoImpl - DSA registration successful for: 20250109113942589 Ram
