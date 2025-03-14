@@ -139,7 +139,6 @@ public class DSADaoImpl implements DSADao {
 		} catch (Exception e) {
 			e.printStackTrace();
 			logger.error("Exception occurred during notify registration review status", e);
-			System.out.println("my debgggggggggg");
 			throw new SomethingWentWrongException("Exception occurred during notify registration review status");
 		}
 

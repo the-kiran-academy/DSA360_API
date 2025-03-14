@@ -95,7 +95,8 @@ public class DSAServiceImpl implements DSAService {
 				kycId = DynamicID.generateUniqueId("KYC", dsaApplication.getFirstName(), dsaApplication.getLastName());
 				kyc_DTO.setDsaKycId(kycId);
 			} else {
-				kyc_DTO.setDsaKycId(dsaKyc.getDsaKycId());
+				kycId=dsaKyc.getDsaKycId();
+				kyc_DTO.setDsaKycId(kycId);
 				kyc_DTO.setAttempt(dsaKyc.getAttempt() + 1);
 			}
 		} else {
