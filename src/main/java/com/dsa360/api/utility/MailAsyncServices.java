@@ -19,7 +19,6 @@ public class MailAsyncServices {
 	private NotificationService notificationService;
 
 	@Async("asyncExecutor")
-	//t2
 	public void sendApplicationConfirmationEmail(DSAApplicationDTO dsaRegistrationDTO) {
 		String to = dsaRegistrationDTO.getEmailAddress();
 		String dsaName = dsaRegistrationDTO.getFirstName() + " " + dsaRegistrationDTO.getLastName();

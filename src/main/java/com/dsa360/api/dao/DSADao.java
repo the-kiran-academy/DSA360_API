@@ -17,7 +17,7 @@ public interface DSADao {
 
 	public abstract DSAApplicationEntity notifyReview(String registrationId, String approvalStatus, String type);
 
-	public abstract DSAApplicationEntity systemUserKyc(DsaKycEntity dsa_KYC_Entity, List<Path> storedFilePaths);
+	public abstract boolean systemUserKyc(DsaKycEntity dsa_KYC_Entity, List<Path> storedFilePaths);
 
 	public abstract DsaKycEntity getDsaKycByDsaId(String dsaRegistrationId);
 	

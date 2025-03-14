@@ -21,6 +21,7 @@ public class DsaKycDto {
 	private String ifscCode;
 
 	private String approvalStatus = ApprovalStatus.PENDING.getValue();
+	private int attempt=1;
 
 	private MultipartFile passportFile;
 	private MultipartFile drivingLicenceFile;
