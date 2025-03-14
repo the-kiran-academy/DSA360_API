@@ -36,6 +36,6 @@ public class DsaKycEntity {
 	private String bankPassbook;
 
 	private String approvalStatus;
-	private int attempt=0;
+	private int attempt=1;
 
 }

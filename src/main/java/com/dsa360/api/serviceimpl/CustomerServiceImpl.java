@@ -39,7 +39,7 @@ public class CustomerServiceImpl implements CustomerService {
 
 	@Override
 	public String createCustomer(CustomerDTO customerDTO) {
-		String customerId = DynamicID.getDynamicId();
+		String customerId = DynamicID.getGeneratedId();
 		customerDTO.setId(customerId);
 
 		CustomerEntity customerEntity = (CustomerEntity) converter.dtoToEntity(customerDTO);
@@ -57,7 +57,7 @@ public class CustomerServiceImpl implements CustomerService {
 
 	@Override
 	public String customerLoanApplication(LoanApplicationDTO loanApplicationDTO) {
-		String loanId = DynamicID.getDynamicId();
+		String loanId = DynamicID.getGeneratedId();
 		loanApplicationDTO.setId(loanId);
 		LoanApplicationEntity loanApplicationEntity = mapper.map(loanApplicationDTO, LoanApplicationEntity.class);
 
@@ -68,7 +68,7 @@ public class CustomerServiceImpl implements CustomerService {
 
 	@Override
 	public void uploadDocument(String customerId, DocumentDTO documentDTO) {
-		String documentId = DynamicID.getDynamicId();
+		String documentId = DynamicID.getGeneratedId();
 		documentDTO.setId(documentId);
 		boolean isStoared = fileStorageUtility.storeCustomerFile(customerId, documentDTO.getFile());
 		if (isStoared) {

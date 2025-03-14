@@ -40,7 +40,7 @@ public class DSADaoImpl implements DSADao {
 
 	@Override
 	public DSAApplicationEntity getDSAById(String dsaID) {
-		String dataNotFound="Data not found with id = ";
+		String dataNotFound = "Data not found with id = ";
 		DSAApplicationEntity dsaRegistrationEntity = null;
 		try (Session session = factory.openSession()) {
 			dsaRegistrationEntity = session.get(DSAApplicationEntity.class, dsaID);
@@ -67,7 +67,9 @@ public class DSADaoImpl implements DSADao {
 	@Override
 	public DSAApplicationEntity dsaApplication(DSAApplicationEntity dsaRegistrationEntity) {
 		Transaction transaction = null;
+
 		try (Session session = factory.openSession()) {
+
 			transaction = session.beginTransaction();
 			session.save(dsaRegistrationEntity);
 			transaction.commit();
@@ -99,7 +101,7 @@ public class DSADaoImpl implements DSADao {
 	@Override
 	public DSAApplicationEntity notifyReview(String id, String approvalStatus, String type) {
 		Transaction transaction = null;
-		final String dataNotFound="Data Not Found";
+		final String dataNotFound = "Data Not Found";
 		try (Session session = factory.openSession()) {
 
 			if (ReviewType.APPLICATION.getValue().equals(type)) {
@@ -144,44 +146,19 @@ public class DSADaoImpl implements DSADao {
 	}
 
 	@Override
-	public DSAApplicationEntity systemUserKyc(DsaKycEntity dsa_KYC_Entity, List<Path> storedFilePaths) {
+	public boolean systemUserKyc(DsaKycEntity dsa_KYC_Entity, List<Path> storedFilePaths) {
 		Transaction transaction = null;
 		try (Session session = factory.openSession()) {
 			transaction = session.beginTransaction();
 
-			DsaKycEntity dsaKycByDsaId = getDsaKycByDsaId(dsa_KYC_Entity.getDsaApplicationId().getDsaApplicationId());
-			if (dsaKycByDsaId == null) {
-				dsa_KYC_Entity.setAttempt(1);
-				session.save(dsa_KYC_Entity);
-			} else {
-				// Ensure we have the latest version from the database
-				DsaKycEntity managedEntity = session.get(DsaKycEntity.class, dsaKycByDsaId.getDsaKycId());
-				if (managedEntity != null) {
-					dsaKycByDsaId.setBankName(dsa_KYC_Entity.getBankName());
-					dsaKycByDsaId.setAccountNumber(dsa_KYC_Entity.getAccountNumber());
-					managedEntity.setIfscCode(dsa_KYC_Entity.getIfscCode());
-					managedEntity.setPassport(dsa_KYC_Entity.getPassport());
-					managedEntity.setDrivingLicence(dsa_KYC_Entity.getDrivingLicence());
-					managedEntity.setAadharCard(dsa_KYC_Entity.getAadharCard());
-					managedEntity.setPanCard(dsa_KYC_Entity.getPanCard());
-					managedEntity.setPhotograph(dsa_KYC_Entity.getPhotograph());
-					managedEntity.setAddressProof(dsa_KYC_Entity.getAddressProof());
-					managedEntity.setBankPassbook(dsa_KYC_Entity.getBankPassbook());
-					managedEntity.setApprovalStatus(dsa_KYC_Entity.getApprovalStatus());
-					managedEntity.setAttempt(dsaKycByDsaId.getAttempt() + 1);
-					
-					session.update(managedEntity);
-				}
-			}
-
-			DSAApplicationEntity dsaById = getDSAById(dsa_KYC_Entity.getDsaApplicationId().getDsaApplicationId());
+			session.saveOrUpdate(dsa_KYC_Entity);
 			transaction.commit();
+			return true;
+		}
 
-			return dsaById;
+		catch (Exception e) {
 
-		} catch (Exception e) {
-			
-			// Rollback files if any error occurs in DAO layer	
+			// Rollback files if any error occurs in DAO layer
 			FileStorageUtility.revokeAllFiles(storedFilePaths);
 			e.printStackTrace();
 			logger.error("Exception occurred during save KYC details in DB ", e);
@@ -287,7 +264,7 @@ public class DSADaoImpl implements DSADao {
 //			criteria2.setProjection(Projections.property("dsaApplicationId.dsaApplicationId"));
 //			List<SystemUserEntity> list2 = criteria2.list();
 
-			//dsaIdList.removeAll(list2);
+			// dsaIdList.removeAll(list2);
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -297,7 +274,5 @@ public class DSADaoImpl implements DSADao {
 		}
 		return dsaIdList;
 	}
-	
-	
 
 }

@@ -32,7 +32,7 @@ public class LoanConditionServiceImpl implements LoanConditionService {
 	public LoanConditionDto createLoanCondition(LoanConditionDto loanConditionDto) {
 		LoanConditionDto loan = getLoanConditionByBank_Loantype(loanConditionDto.getBankName(), loanConditionDto.getLoanType());
 		if(loan==null) {
-			String id = DynamicID.getDynamicId();
+			String id = DynamicID.getGeneratedId();
 			loanConditionDto.setId(id);
 			LoanConditioEntity entity = dao.createLoanCondition(mapper.map(loanConditionDto, LoanConditioEntity.class));
 			return mapper.map(entity, LoanConditionDto.class);
