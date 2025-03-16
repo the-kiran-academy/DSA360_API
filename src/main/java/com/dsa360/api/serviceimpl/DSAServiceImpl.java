@@ -94,8 +94,13 @@ public class DSAServiceImpl implements DSAService {
 		DSAApplicationDTO dsaRegDTO = getDSAById(kyc_DTO.getDsaApplicationId());
 
 		if (dsaRegDTO != null) {
-			String kycId = DynamicID.getDynamicId();
-			kyc_DTO.setDsaKycId(kycId);
+			DsaKycEntity existingKyc = dao.getDsaKycByDsaId(kyc_DTO.getDsaApplicationId());
+			  if (existingKyc == null) {
+				  String kycId = DynamicID.getDynamicId();
+				  kyc_DTO.setDsaKycId(kycId);
+			  }else {
+					 kyc_DTO.setDsaKycId(existingKyc.getDsaKycId());
+				 }
 
 			List<Path> storedFilePaths = fileStorageUtility.storeKYCFiles(kyc_DTO.getDsaApplicationId(),
 					kyc_DTO.getPassportFile(), kyc_DTO.getDrivingLicenceFile(), kyc_DTO.getAadharCardFile(),
@@ -104,7 +109,7 @@ public class DSAServiceImpl implements DSAService {
 
 			DsaKycEntity entity = (DsaKycEntity) converter.dtoToEntity(kyc_DTO);
 
-			DSAApplicationEntity dsaById = dao.systemUserKyc(entity, storedFilePaths);
+			DSAApplicationEntity dsaById = dao.systemUserKyc(entity, storedFilePaths,kyc_DTO);
 
 			List<String> docs = new ArrayList<String>();
 			docs.add(entity.getAadharCard());
@@ -114,7 +119,7 @@ public class DSAServiceImpl implements DSAService {
 			docs.add(entity.getPanCard());
 			docs.add(entity.getPassport());
 
-			mailAsyncServices.sendKycSubmittedEmail(dsaById.getEmailAddress(), kycId, dsaById.getDsaApplicationId(),
+			mailAsyncServices.sendKycSubmittedEmail(dsaById.getEmailAddress(), kyc_DTO.getDsaKycId(), dsaById.getDsaApplicationId(),
 					dsaById.getFirstName() + " " + dsaById.getLastName(), dsaById.getContactNumber(),
 					dsaById.getStreetAddress(), docs);
 		} else {

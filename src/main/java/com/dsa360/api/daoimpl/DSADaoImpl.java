@@ -18,6 +18,7 @@ import org.springframework.stereotype.Repository;
 
 import com.dsa360.api.constants.ReviewType;
 import com.dsa360.api.dao.DSADao;
+import com.dsa360.api.dto.DsaKycDto;
 import com.dsa360.api.entity.DSAApplicationEntity;
 import com.dsa360.api.entity.DsaKycEntity;
 import com.dsa360.api.entity.SystemUserEntity;
@@ -144,23 +145,23 @@ public class DSADaoImpl implements DSADao {
 	}
 
 	@Override
-	public DSAApplicationEntity systemUserKyc(DsaKycEntity dsa_KYC_Entity, List<Path> storedFilePaths) {
+	public DSAApplicationEntity systemUserKyc(DsaKycEntity dsa_KYC_Entity, List<Path> storedFilePaths,DsaKycDto kyc_DTO) {
 		Transaction transaction = null;
 		try (Session session = factory.openSession()) {
 			transaction = session.beginTransaction();
 
-			DsaKycEntity dsaKycByDsaId = getDsaKycByDsaId(dsa_KYC_Entity.getDsaApplicationId().getDsaApplicationId());
-			if (dsaKycByDsaId == null) {
+			DsaKycEntity existingKyc = getDsaKycByDsaId(dsa_KYC_Entity.getDsaApplicationId().getDsaApplicationId());
+			if (existingKyc == null) {
 				dsa_KYC_Entity.setAttempt(1);
 				session.save(dsa_KYC_Entity);
 			} else {
 				// Ensure we have the latest version from the database
-				DsaKycEntity managedEntity = session.get(DsaKycEntity.class, dsaKycByDsaId.getDsaKycId());
+				DsaKycEntity managedEntity = session.get(DsaKycEntity.class, existingKyc.getDsaKycId());
 				if (managedEntity != null) {
-					dsaKycByDsaId.setBankName(dsa_KYC_Entity.getBankName());
-					dsaKycByDsaId.setAccountNumber(dsa_KYC_Entity.getAccountNumber());
-					managedEntity.setIfscCode(dsa_KYC_Entity.getIfscCode());
-					managedEntity.setPassport(dsa_KYC_Entity.getPassport());
+					managedEntity.setBankName(kyc_DTO.getBankName());
+	                managedEntity.setAccountNumber(kyc_DTO.getAccountNumber());
+	                managedEntity.setIfscCode(kyc_DTO.getIfscCode());
+	                managedEntity.setPassport(dsa_KYC_Entity.getPassport());
 					managedEntity.setDrivingLicence(dsa_KYC_Entity.getDrivingLicence());
 					managedEntity.setAadharCard(dsa_KYC_Entity.getAadharCard());
 					managedEntity.setPanCard(dsa_KYC_Entity.getPanCard());
@@ -168,7 +169,7 @@ public class DSADaoImpl implements DSADao {
 					managedEntity.setAddressProof(dsa_KYC_Entity.getAddressProof());
 					managedEntity.setBankPassbook(dsa_KYC_Entity.getBankPassbook());
 					managedEntity.setApprovalStatus(dsa_KYC_Entity.getApprovalStatus());
-					managedEntity.setAttempt(dsaKycByDsaId.getAttempt() + 1);
+					managedEntity.setAttempt(existingKyc.getAttempt() + 1);
 					
 					session.update(managedEntity);
 				}
