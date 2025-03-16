@@ -3,6 +3,7 @@ package com.dsa360.api.dao;
 import java.nio.file.Path;
 import java.util.List;
 
+import com.dsa360.api.dto.DsaKycDto;
 import com.dsa360.api.entity.DSAApplicationEntity;
 import com.dsa360.api.entity.DsaKycEntity;
 
@@ -17,7 +18,7 @@ public interface DSADao {
 
 	public abstract DSAApplicationEntity notifyReview(String registrationId, String approvalStatus, String type);
 
-	public abstract DSAApplicationEntity systemUserKyc(DsaKycEntity dsa_KYC_Entity, List<Path> storedFilePaths);
+	public abstract DSAApplicationEntity systemUserKyc(DsaKycEntity dsa_KYC_Entity, List<Path> storedFilePaths, DsaKycDto kyc_DTO);
 
 	public abstract DsaKycEntity getDsaKycByDsaId(String dsaRegistrationId);
 	
