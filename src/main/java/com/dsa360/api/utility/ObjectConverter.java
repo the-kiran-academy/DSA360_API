@@ -38,6 +38,7 @@ public class ObjectConverter {
 			kycEntity.setBankPassbook(dto.getBankPassbookFile().getOriginalFilename());
 
 			kycEntity.setApprovalStatus(dto.getApprovalStatus());
+			kycEntity.setAttempt(dto.getAttempt());
 
 			return kycEntity;
 

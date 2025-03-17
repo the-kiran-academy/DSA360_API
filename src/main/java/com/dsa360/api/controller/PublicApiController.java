@@ -42,7 +42,7 @@ public class PublicApiController {
 	}
 
 	@GetMapping("/get-dsa-application/{dsaId}")
-	public ResponseEntity<DSAApplicationDTO> getDsaApplicationData(@PathVariable String dsaId){
+	public ResponseEntity<DSAApplicationDTO> getDsaApplicationData(@PathVariable String dsaId) {
 
 		DSAApplicationDTO dsaById = dsaService.getDSAById(dsaId);
 
@@ -92,7 +92,7 @@ public class PublicApiController {
 					+ "<title>Email Verified</title>" + "<script>"
 					+ "alert('Email Verification Successfully Completed!!');"
 					+ "window.location.href = 'http://localhost:4200/';" + "</script>" + "</head>" + "<body>"
-					+ "<h1>Email Verified Successfully!</h1>" + "</body>" + "</html>";
+					+ "</body>" + "</html>";
 
 			HttpHeaders headers = new HttpHeaders();
 			headers.add(HttpHeaders.CONTENT_TYPE, "text/html; charset=UTF-8");
@@ -101,7 +101,5 @@ public class PublicApiController {
 			return new ResponseEntity<>("Email Verification Successfully Completed !!", HttpStatus.NOT_FOUND);
 		}
 	}
-	
-	
 
 }

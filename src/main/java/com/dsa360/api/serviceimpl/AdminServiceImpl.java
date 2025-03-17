@@ -97,7 +97,7 @@ public class AdminServiceImpl implements AdminService {
 
 	@Override
 	public void addRole(RoleDto roleDto) {
-		roleDto.setId(DynamicID.getDynamicId());
+		roleDto.setId(DynamicID.getGeneratedId());
 		RoleEntity entity = mapper.map(roleDto, RoleEntity.class);
 		dao.addRole(entity);
 	}
@@ -161,7 +161,7 @@ public class AdminServiceImpl implements AdminService {
 	@Override
 	public void addRegion(RegionsDto regionsDto) {
 
-		regionsDto.setId(DynamicID.getDynamicId());
+		regionsDto.setId(DynamicID.getGeneratedId());
 		RegionsEntity regionEntity = mapper.map(regionsDto, RegionsEntity.class);
 		dao.addRegion(regionEntity);
 
@@ -192,7 +192,7 @@ public class AdminServiceImpl implements AdminService {
 	public List<RegionsDto> getAllRegions() {
 		List<RegionsEntity> allRegions = dao.getAllRegions();
 		if (allRegions.isEmpty()) {
-			throw new ResourceNotFoundException("Roll Not Found");
+			throw new ResourceNotFoundException("Region Not Found");
 		} else {
 			return allRegions.stream().map(reggionEntity -> mapper.map(reggionEntity, RegionsDto.class))
 					.collect(Collectors.toList());
