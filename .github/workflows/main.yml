@@ -1,4 +1,4 @@
-name: Deploy Angular App to EC2
+name: Deploy DSA360 App to EC2
 
 on:
   workflow_dispatch:  # Allows manual triggering of the workflow
