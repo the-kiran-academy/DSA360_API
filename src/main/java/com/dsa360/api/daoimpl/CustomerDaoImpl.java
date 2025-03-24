@@ -103,7 +103,7 @@ public class CustomerDaoImpl implements CustomerDao {
 
 	@Override
 	public void cancelCustomerLoanApplication(String id) {
-
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
@@ -120,7 +120,7 @@ public class CustomerDaoImpl implements CustomerDao {
 
 	@Override
 	public void deleteDocument(String customerId, String documentId) {
-		
+		throw new UnsupportedOperationException();
 
 	}
 

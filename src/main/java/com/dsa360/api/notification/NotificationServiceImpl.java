@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
+import com.dsa360.api.constants.General;
 import com.dsa360.api.constants.ReviewType;
 import com.dsa360.api.dto.DSAApplicationDTO;
 import com.dsa360.api.entity.RegionsEntity;
@@ -56,10 +57,10 @@ public class NotificationServiceImpl implements NotificationService {
 			MimeMessageHelper helper = new MimeMessageHelper(message, true);
 
 			Context context = new Context();
-			context.setVariable("dsaName", dsaName);
-			context.setVariable("dsaId", dsaId);
-			context.setVariable("registeredName", registeredName);
-			context.setVariable("contactInfo", contactInfo);
+			context.setVariable(General.DSA_NAME.getValue(), dsaName);
+			context.setVariable(General.DSA_ID.getValue(), dsaId);
+			context.setVariable(General.REGISTERED_NAME.getValue(), registeredName);
+			context.setVariable(General.CONTACT_INFO.getValue(), contactInfo);
 
 			String text = templateEngine.process("dsa-registration", context);
 
@@ -86,8 +87,8 @@ public class NotificationServiceImpl implements NotificationService {
 			MimeMessageHelper helper = new MimeMessageHelper(message, true);
 
 			Context context = new Context();
-			context.setVariable("dsaName", dsaName);
-			context.setVariable("dsaId", dsaId);
+			context.setVariable(General.DSA_NAME.getValue(), dsaName);
+			context.setVariable(General.DSA_ID.getValue(), dsaId);
 			context.setVariable("kycId", kycId);
 			context.setVariable("registeredName", dsaName);
 			context.setVariable("email", to);
