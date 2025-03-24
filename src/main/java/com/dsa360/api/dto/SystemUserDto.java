@@ -50,8 +50,7 @@ public class SystemUserDto {
 	private String statusReason = "KYC Verified";
 
 	@NotBlank(message = "DSA Application ID is mandatory")
-	@Size(min = 17, max = 17, message = "DSA Application ID must be exactly 17 characters long")
-	@Pattern(regexp = "\\d{17}", message = "DSA Application ID must contain only numbers")
+	@Pattern(regexp = "[A-Z]{3}-\\d{4}-[A-Z]{2}\\d{6}", message = "Application ID must follow the format XXX-YYYY-XX######")
 	private String dsaApplicationId;
 
 }
