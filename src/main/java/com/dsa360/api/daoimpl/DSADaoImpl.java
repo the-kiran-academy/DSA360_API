@@ -2,11 +2,7 @@ package com.dsa360.api.daoimpl;
 
 import java.nio.file.Path;
 import java.util.List;
-import javax.persistence.OptimisticLockException;
 import javax.persistence.PersistenceException;
-
-import org.hibernate.Criteria;
-import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Projections;
@@ -20,7 +16,6 @@ import com.dsa360.api.constants.ReviewType;
 import com.dsa360.api.dao.DSADao;
 import com.dsa360.api.entity.DSAApplicationEntity;
 import com.dsa360.api.entity.DsaKycEntity;
-import com.dsa360.api.entity.SystemUserEntity;
 import com.dsa360.api.exceptions.ResourceAlreadyExistsException;
 import com.dsa360.api.exceptions.ResourceNotFoundException;
 import com.dsa360.api.exceptions.SomethingWentWrongException;
@@ -40,9 +35,9 @@ public class DSADaoImpl implements DSADao {
 
 	@Override
 	public DSAApplicationEntity getDSAById(String dsaID) {
-		String dataNotFound = "Data not found with id = ";
+		var dataNotFound = "Data not found with id = ";
 		DSAApplicationEntity dsaRegistrationEntity = null;
-		try (Session session = factory.openSession()) {
+		try (var session = factory.openSession()) {
 			dsaRegistrationEntity = session.get(DSAApplicationEntity.class, dsaID);
 
 			if (dsaRegistrationEntity != null) {
@@ -53,13 +48,14 @@ public class DSADaoImpl implements DSADao {
 
 		} catch (ResourceNotFoundException e) {
 			e.printStackTrace();
-			logger.error(dataNotFound + dsaID);
-			throw new ResourceNotFoundException(dataNotFound + dsaID);
+			logger.error("Data not found for DSA ID: {}", dsaID);
+             throw new ResourceNotFoundException(dataNotFound + dsaID);
 		}
 
 		catch (Exception e) {
 			e.printStackTrace();
-			logger.error("Exception occurred during get DSA with id = " + dsaID, e);
+			logger.error("Exception occurred during get DSA with id = {}", dsaID, e);
+
 			throw new SomethingWentWrongException("Exception occurred during get DSA with id = " + dsaID);
 		}
 	}
@@ -68,7 +64,7 @@ public class DSADaoImpl implements DSADao {
 	public DSAApplicationEntity dsaApplication(DSAApplicationEntity dsaRegistrationEntity) {
 		Transaction transaction = null;
 
-		try (Session session = factory.openSession()) {
+		try (var session = factory.openSession()) {
 
 			transaction = session.beginTransaction();
 			session.save(dsaRegistrationEntity);
@@ -101,8 +97,8 @@ public class DSADaoImpl implements DSADao {
 	@Override
 	public DSAApplicationEntity notifyReview(String id, String approvalStatus, String type) {
 		Transaction transaction = null;
-		final String dataNotFound = "Data Not Found";
-		try (Session session = factory.openSession()) {
+		final var dataNotFound = "Data Not Found";
+		try (var session = factory.openSession()) {
 
 			if (ReviewType.APPLICATION.getValue().equals(type)) {
 				DSAApplicationEntity dsaRegistrationEntity = session.get(DSAApplicationEntity.class, id);
@@ -147,7 +143,7 @@ public class DSADaoImpl implements DSADao {
 	@Override
 	public boolean systemUserKyc(DsaKycEntity dsa_KYC_Entity, List<Path> storedFilePaths) {
 		Transaction transaction = null;
-		try (Session session = factory.openSession()) {
+		try (var session = factory.openSession()) {
 			transaction = session.beginTransaction();
 
 			session.saveOrUpdate(dsa_KYC_Entity);
@@ -168,10 +164,10 @@ public class DSADaoImpl implements DSADao {
 
 	@Override
 	public DsaKycEntity getDsaKycByDsaId(String dsaApplicationId) {
-		try (Session session = factory.openSession()) {
+		try (var session = factory.openSession()) {
 
 			@SuppressWarnings("deprecation")
-			Criteria criteria = session.createCriteria(DsaKycEntity.class, dsaApplicationId);
+			var criteria = session.createCriteria(DsaKycEntity.class, dsaApplicationId);
 			criteria.add(Restrictions.eq("dsaApplicationId.dsaApplicationId", dsaApplicationId));
 			@SuppressWarnings("unchecked")
 			List<DsaKycEntity> list = criteria.list();
@@ -193,9 +189,9 @@ public class DSADaoImpl implements DSADao {
 	@Override
 	public List<DSAApplicationEntity> getAllDsaApplication() {
 		List<DSAApplicationEntity> list = null;
-		try (Session session = factory.openSession()) {
+		try (var session = factory.openSession()) {
 
-			Criteria criteria = session.createCriteria(DSAApplicationEntity.class);
+			var criteria = session.createCriteria(DSAApplicationEntity.class);
 			list = criteria.list();
 
 		} catch (Exception e) {
@@ -209,7 +205,7 @@ public class DSADaoImpl implements DSADao {
 	@Override
 	public DSAApplicationEntity emailVerificationRequest(String dsaId, String token) {
 		Transaction transaction = null;
-		try (Session session = factory.openSession()) {
+		try (var session = factory.openSession()) {
 			transaction = session.beginTransaction();
 
 			DSAApplicationEntity dsaEntity = session.get(DSAApplicationEntity.class, dsaId);
@@ -230,7 +226,7 @@ public class DSADaoImpl implements DSADao {
 	@Override
 	public void verifyEmail(String dsaId, String token) {
 		Transaction transaction = null;
-		try (Session session = factory.openSession()) {
+		try (var session = factory.openSession()) {
 			transaction = session.beginTransaction();
 
 			DSAApplicationEntity dsaEntity = session.get(DSAApplicationEntity.class, dsaId);
@@ -250,20 +246,14 @@ public class DSADaoImpl implements DSADao {
 	@Override
 	public List<String> getAllApprovedDsa() {
 		List<String> dsaIdList = null;
-		try (Session session = factory.openSession()) {
+		try (var session = factory.openSession()) {
 
-			Criteria criteria = session.createCriteria(DSAApplicationEntity.class);
+			var criteria = session.createCriteria(DSAApplicationEntity.class);
 			criteria.setProjection(Projections.property("dsaApplicationId"));
 			criteria.add(Restrictions.and(Restrictions.eq("approvalStatus", "Approved"),
 					Restrictions.eq("emailVerified", true)));
 
 			dsaIdList = criteria.list();
-
-//			Criteria criteria2 = session.createCriteria(SystemUserEntity.class);
-//			criteria2.setProjection(Projections.property("dsaApplicationId.dsaApplicationId"));
-//			List<SystemUserEntity> list2 = criteria2.list();
-
-			// dsaIdList.removeAll(list2);
 
 		} catch (Exception e) {
 			e.printStackTrace();

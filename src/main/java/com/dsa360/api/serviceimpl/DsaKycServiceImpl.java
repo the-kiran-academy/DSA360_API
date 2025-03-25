@@ -29,9 +29,7 @@ public class DsaKycServiceImpl implements DsaKycService {
 		logger.info("in get all kyc");
 			List<DsaKycEntity> allKycs = kycDao.getAllKycs();
 			if(!allKycs.isEmpty()) {
-//				 return allKycs.stream()
-//		                  .map(kyc -> mapper.map(kyc, DSA_KYC_DTO.class))
-//		                  .collect(Collectors.toList());
+         //Not implemented
 			}
 			
 		return allKycs;

@@ -63,8 +63,8 @@ public class FileStorageUtility {
 		} catch (IOException e) {
 			// Rollback if any error occurs
 			revokeAllFiles(storedFilePaths);
-			logger.error("Failed to store files. Transaction rolled back:  {}", e);
-			throw new SomethingWentWrongException("Failed to store files. Transaction rolled back.", e);
+			logger.error("Failed to store files. Transaction rolled back.", e);
+            throw new SomethingWentWrongException("Failed to store files. Transaction rolled back.", e);
 		}
 		return storedFilePaths;
 	}

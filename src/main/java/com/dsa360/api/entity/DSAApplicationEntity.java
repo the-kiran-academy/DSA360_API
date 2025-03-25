@@ -19,7 +19,7 @@ import lombok.NoArgsConstructor;
 public class DSAApplicationEntity {
 	@Id // 17 digit timestamp
 	@Column(nullable = false, unique = true)
-	private String dsaApplicationId;;
+	private String dsaApplicationId;
 
 	@Column(nullable = false)
 	private String firstName;

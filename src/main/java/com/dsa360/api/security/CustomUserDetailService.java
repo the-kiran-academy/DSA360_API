@@ -24,7 +24,8 @@ public class CustomUserDetailService implements UserDetailsService {
 
 	@Override
 	public UserDetails loadUserByUsername(String username) {
-		System.out.println("in load user method");
+		
+		
 		UserDetails user = null;
 		try {
 			user = service.loadUserByUserId(username);

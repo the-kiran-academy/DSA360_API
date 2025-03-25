@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +34,7 @@ public class SystemUserDaoImpl implements SystemUserDao {
 
 		CustomUserDetail user = null;
 		SystemUserEntity usr = null;
-		try (Session session = factory.openSession()) {
+		try (var session = factory.openSession()) {
 			session.setDefaultReadOnly(false);
 			usr = session.get(SystemUserEntity.class, userId);
 			if (usr != null) {
@@ -56,13 +55,13 @@ public class SystemUserDaoImpl implements SystemUserDao {
 	@Override
 	public SystemUserEntity getSystemUserByUsername(String username) {
 
-		try (Session session = factory.openSession()) {
+		try (var session = factory.openSession()) {
 			return session.get(SystemUserEntity.class, username);
 
 		} catch (Exception e) {
 			e.printStackTrace();
-			log.error("Exception occurred during get system user with username = " + username, e);
-			throw new SomethingWentWrongException("Something went wrong during retrive user = " + username);
+			log.error("Exception occurred during get system user with username = {}", username, e);
+            throw new SomethingWentWrongException("Something went wrong during retrive user = " + username);
 		}
 
 	}
@@ -70,12 +69,12 @@ public class SystemUserDaoImpl implements SystemUserDao {
 	@SuppressWarnings({ "deprecation", "unchecked" })
 	@Override
 	public List<SystemUserEntity> getAllSystemUser() {
-		try (Session session = factory.openSession()) {
+		try (var session = factory.openSession()) {
 			return session.createCriteria(SystemUserEntity.class).list();
 		} catch (Exception e) {
 			e.printStackTrace();
-			log.error("Exception occurred during get all system user = " + e);
-			throw new SomethingWentWrongException("Something went wrong during retrive all user");
+			log.error("Exception occurred during get all system users", e);
+            throw new SomethingWentWrongException("Something went wrong during retrive all user");
 		}
 
 	}
@@ -83,7 +82,7 @@ public class SystemUserDaoImpl implements SystemUserDao {
 	@Override
 	public void updateSystemUser(SystemUserEntity userEntity) {
 		Transaction transaction = null; 
-		try(Session session = factory.openSession()) {
+		try(var session = factory.openSession()) {
 			transaction=session.beginTransaction();
 			session.update(userEntity);
 			transaction.commit();
@@ -91,7 +90,7 @@ public class SystemUserDaoImpl implements SystemUserDao {
 			if (transaction != null) {
 				transaction.rollback();
 			}
-			log.error("Exception occurred during update system user profile = " + e);
+			log.error("Exception occurred during update system user profile", e);
 			throw new SomethingWentWrongException("Something went wrong during update system user profile");
 		}	
 		

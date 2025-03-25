@@ -2,11 +2,17 @@ package com.dsa360.api.utility;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.security.SecureRandom;
 
 public class DynamicID {
 	
 	private static final SecureRandom random = new SecureRandom();
+	
+	private static final Logger logger = LoggerFactory.getLogger(DynamicID.class);
 	 
 	public static String generateUniqueId(String type, String firstName, String lastName) {
 
@@ -22,13 +28,14 @@ public class DynamicID {
 		String dsaCode = generateUniqueId("DSA", "John", "Doe");
 		String kycCode = generateUniqueId("KYC", "Jane", "Smith");
 
-		System.out.println(dsaCode); // Example: DSA-2025-JD123456 (if the year is 2025)
-		System.out.println(kycCode); // Example: KYC-2025-JS654321
-	}
+		logger.debug("DSA Code: {}", dsaCode); // Example: DSA-2025-JD123456 (if the year is 2025)
+		logger.debug("KYC Code: {}", kycCode); // Example: KYC-2025-JS654321
+
+		 }
 
 	public static String getGeneratedId() {
-		String id = new SimpleDateFormat("yyyyMMddHHmmssSSS").format(new java.util.Date());
-		return id;
+		 return new SimpleDateFormat("yyyyMMddHHmmssSSS").format(new java.util.Date());
+		
 
 	}
 

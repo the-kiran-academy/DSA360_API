@@ -10,7 +10,7 @@ public class ExceptionRespone {
 	private String timestamp;
 	
 	public ExceptionRespone() {
-		// TODO Auto-generated constructor stub
+		// Not Implemented
 	}
 
 	public ExceptionRespone(String message, String requestPath, String timestamp) {

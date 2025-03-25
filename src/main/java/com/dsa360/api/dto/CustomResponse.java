@@ -6,7 +6,7 @@ public class CustomResponse {
 	private int ststusCode;
 	
 	public CustomResponse() {
-		// TODO Auto-generated constructor stub
+		// Not Implemented
 	}
 
 	public CustomResponse(String message, int ststusCode) {

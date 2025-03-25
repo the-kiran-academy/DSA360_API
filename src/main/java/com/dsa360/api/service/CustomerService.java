@@ -1,9 +1,6 @@
 package com.dsa360.api.service;
 
 import java.util.List;
-
-import org.springframework.web.multipart.MultipartFile;
-
 import com.dsa360.api.dto.CustomerDTO;
 import com.dsa360.api.dto.DocumentDTO;
 import com.dsa360.api.dto.LoanApplicationDTO;

@@ -9,7 +9,7 @@ public class JwtResponse {
 	private String token;
 	
 	public JwtResponse() {
-		// TODO Auto-generated constructor stub
+		// Not Implemented
 	}
 
 	public JwtResponse(String token) {

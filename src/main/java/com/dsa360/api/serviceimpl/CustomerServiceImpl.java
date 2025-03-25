@@ -3,6 +3,9 @@ package com.dsa360.api.serviceimpl;
 import java.util.List;
 
 import org.hibernate.Hibernate;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -36,13 +39,15 @@ public class CustomerServiceImpl implements CustomerService {
 
 	@Autowired
 	private FileStorageUtility fileStorageUtility;
+	
+	private static final Logger logger = LoggerFactory.getLogger(CustomerServiceImpl.class);
 
 	@Override
 	public String createCustomer(CustomerDTO customerDTO) {
 		String customerId = DynamicID.getGeneratedId();
 		customerDTO.setId(customerId);
 
-		CustomerEntity customerEntity = (CustomerEntity) converter.dtoToEntity(customerDTO);
+		var customerEntity = (CustomerEntity) converter.dtoToEntity(customerDTO);
 
 		customerDao.createCustomer(customerEntity);
 
@@ -59,7 +64,7 @@ public class CustomerServiceImpl implements CustomerService {
 	public String customerLoanApplication(LoanApplicationDTO loanApplicationDTO) {
 		String loanId = DynamicID.getGeneratedId();
 		loanApplicationDTO.setId(loanId);
-		LoanApplicationEntity loanApplicationEntity = mapper.map(loanApplicationDTO, LoanApplicationEntity.class);
+		var loanApplicationEntity = mapper.map(loanApplicationDTO, LoanApplicationEntity.class);
 
 		customerDao.customerLoanApplication(loanApplicationEntity);
 
@@ -72,7 +77,7 @@ public class CustomerServiceImpl implements CustomerService {
 		documentDTO.setId(documentId);
 		boolean isStoared = fileStorageUtility.storeCustomerFile(customerId, documentDTO.getFile());
 		if (isStoared) {
-			DocumentEntity documentEntity = (DocumentEntity) converter.dtoToEntity(documentDTO);
+			var documentEntity = (DocumentEntity) converter.dtoToEntity(documentDTO);
 			customerDao.uploadDocument(customerId, documentEntity);
 		}
 
@@ -87,9 +92,9 @@ public class CustomerServiceImpl implements CustomerService {
 	@Override
 	 @Transactional(readOnly = true)
 	public CustomerEntity getCustomerById(String id) {
-	    System.out.println("Transaction active: " + TransactionSynchronizationManager.isActualTransactionActive());
+	    logger.debug("Transaction active: " + TransactionSynchronizationManager.isActualTransactionActive());
 
-		CustomerEntity customerEntity = customerDao.getCustomerById(id);
+		var customerEntity = customerDao.getCustomerById(id);
 		  Hibernate.initialize(customerEntity.getLoanApplications());
 		return customerEntity;
 	}
@@ -102,7 +107,7 @@ public class CustomerServiceImpl implements CustomerService {
 
 	@Override
 	public void cancelCustomerLoanApplication(String id) {
-
+         //Not Implemented
 	}
 
 	@Override

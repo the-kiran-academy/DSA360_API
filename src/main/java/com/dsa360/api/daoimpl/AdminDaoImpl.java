@@ -3,7 +3,6 @@ package com.dsa360.api.daoimpl;
 import java.util.List;
 
 import org.hibernate.Query;
-import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Restrictions;
@@ -37,7 +36,7 @@ public class AdminDaoImpl implements AdminDao {
 	public void createSystemUserProfile(SystemUserEntity userEntity) {
 
 		Transaction transaction = null;
-		try (Session session = factory.openSession()) {
+		try (var session = factory.openSession()) {
 			CustomUserDetail user = userService.loadUserByUserId(userEntity.getUsername());
 			if (user == null) {
 				transaction = session.beginTransaction();
@@ -63,7 +62,7 @@ public class AdminDaoImpl implements AdminDao {
 	@Override
 	public void deleteSystemUser(String username) {
 		Transaction transaction = null;
-		try (Session session = factory.openSession()) {
+		try (var session = factory.openSession()) {
 			transaction = session.beginTransaction();
 			SystemUserEntity user = session.get(SystemUserEntity.
 					class, username);
@@ -94,7 +93,7 @@ public class AdminDaoImpl implements AdminDao {
 	public void addRole(RoleEntity roleEntity) {
 
 		Transaction transaction = null;
-		try (Session session = factory.openSession()) {
+		try (var session = factory.openSession()) {
 			transaction = session.beginTransaction();
 
 			RoleEntity role = getRoleByName(roleEntity.getName());
@@ -109,20 +108,20 @@ public class AdminDaoImpl implements AdminDao {
 			if (transaction != null) {
 				transaction.rollback();
 			}
-			logger.error("Exception occurred during add role {}", e);
-			throw new SomethingWentWrongException("Something went wrong add role");
+			logger.error("Exception occurred during add role", e);
+            throw new SomethingWentWrongException("Something went wrong add role");
 		}
 	}
 
 	@Override
 	public RoleEntity getRollById(String rollId) {
 		RoleEntity roleEntity = null;
-		try (Session session = factory.openSession()) {
+		try (var session = factory.openSession()) {
 			roleEntity = session.get(RoleEntity.class, rollId);
 
 		} catch (Exception e) {
-			logger.error("Exception occurred during retrive role by id  :{}", e);
-			throw new SomethingWentWrongException("Something went wrong during retrive role by id = " + rollId);
+			logger.error("Exception occurred during retrieve role by id", e);
+			throw new SomethingWentWrongException("Something went wrong during retrive role by id = " + rollId,e);
 		}
 		return roleEntity;
 	}
@@ -143,11 +142,11 @@ public class AdminDaoImpl implements AdminDao {
 	@Override
 	public List<RoleEntity> getAllRole() {
 		List<RoleEntity> list;
-		try (Session session = factory.openSession()) {
+		try (var session = factory.openSession()) {
 			list = session.createCriteria(RoleEntity.class).list();
 
 		} catch (Exception e) {
-			logger.error("Exception occurred during retrive all roles :{}", e);
+			logger.error("Exception occurred during retrive all roles", e);
 			throw new SomethingWentWrongException("Something went wrong during retrive all roles");
 		}
 
@@ -158,12 +157,12 @@ public class AdminDaoImpl implements AdminDao {
 	@Override
 	public RoleEntity getRoleByName(String roleName) {
 		RoleEntity role = null;
-		try (Session session = factory.openSession()) {
+		try (var session = factory.openSession()) {
 			role = (RoleEntity) session.createCriteria(RoleEntity.class).add(Restrictions.eq("name", roleName))
 					.uniqueResult();
 
 		} catch (Exception e) {
-			logger.error("Exception occurred during delete user profile :{}", e);
+			logger.error("Exception occurred during delete user profile", e);
 			throw new SomethingWentWrongException("Something went wrong during retrive role with name = " + roleName);
 		}
 		return role;
@@ -172,11 +171,11 @@ public class AdminDaoImpl implements AdminDao {
 	@Override
 	public List<RoleEntity> getAllRoleByIds(List<String> ids) {
 		List<RoleEntity> roles;
-		try (Session session = factory.openSession()) {
+		try (var session = factory.openSession()) {
 			roles = session.byMultipleIds(RoleEntity.class).multiLoad(ids);
 
 		} catch (Exception e) {
-			logger.error("Exception occurred during retrive roles by Ids :{}", e);
+			logger.error("Exception occurred during retrive roles by Ids", e);
 			throw new SomethingWentWrongException("Something went wrong during retrive roles by Ids = " + ids);
 		}
 		return roles;
@@ -185,7 +184,7 @@ public class AdminDaoImpl implements AdminDao {
 	@Override
 	public void addRegion(RegionsEntity regionsEntity) {
 		Transaction transaction = null;
-		try (Session session = factory.openSession()) {
+		try (var session = factory.openSession()) {
 
 			RegionsEntity entity = getRegionByName(regionsEntity.getRegionName());
 			if (entity == null) {
@@ -202,7 +201,7 @@ public class AdminDaoImpl implements AdminDao {
 			if (transaction != null) {
 				transaction.rollback();
 			}
-			logger.error("Exception occurred during add region :{}", e);
+			logger.error("Exception occurred during add region", e);
 			throw new SomethingWentWrongException("Something went wrong during add region");
 		}
 
@@ -211,12 +210,12 @@ public class AdminDaoImpl implements AdminDao {
 	@Override
 	public RegionsEntity getRegionById(String regionId) {
 		RegionsEntity regionsEntity = null;
-		try (Session session = factory.openSession()) {
+		try (var session = factory.openSession()) {
 			regionsEntity = session.get(RegionsEntity.class, regionId);
 
 		} catch (Exception e) {
 
-			logger.error("Exception occurred during retrive region by id :{}", e);
+			logger.error("Exception occurred during retrive region by id", e);
 			throw new SomethingWentWrongException("Something went wrong during retrive region by id " + regionId);
 		}
 		return regionsEntity;
@@ -225,11 +224,11 @@ public class AdminDaoImpl implements AdminDao {
 	@Override
 	public List<RegionsEntity> getAllRegionsByIds(List<String> ids) {
 		List<RegionsEntity> regions;
-		try (Session session = factory.openSession()) {
+		try (var session = factory.openSession()) {
 			regions = session.byMultipleIds(RegionsEntity.class).multiLoad(ids);
 
 		} catch (Exception e) {
-			logger.error("Exception occurred during retrive roles by Ids :{}", e);
+			logger.error("Exception occurred during retrive roles by Ids", e);
 			throw new SomethingWentWrongException("Something went wrong during retrive regions by Ids = " + ids);
 		}
 		return regions;
@@ -239,12 +238,12 @@ public class AdminDaoImpl implements AdminDao {
 	@Override
 	public RegionsEntity getRegionByName(String regionName) {
 		RegionsEntity regionsEntity = null;
-		try (Session session = factory.openSession()) {
+		try (var session = factory.openSession()) {
 			regionsEntity = (RegionsEntity) session.createCriteria(RegionsEntity.class)
 					.add(Restrictions.eq("regionCode", regionName)).uniqueResult();
 
 		} catch (Exception e) {
-			logger.error("Exception occurred during retrive region by name :{}", e);
+			logger.error("Exception occurred during retrive region by name", e);
 			throw new SomethingWentWrongException("Something went wrong during retrive region by name " + regionName);
 		}
 		return regionsEntity;
@@ -254,11 +253,11 @@ public class AdminDaoImpl implements AdminDao {
 	@Override
 	public List<RegionsEntity> getAllRegions() {
 		List<RegionsEntity> list;
-		try (Session session = factory.openSession()) {
+		try (var session = factory.openSession()) {
 			list = session.createCriteria(RegionsEntity.class).list();
 
 		} catch (Exception e) {
-			logger.error("Exception occurred during retrive all region  : {}", e);
+			logger.error("Exception occurred during retrive all region", e);
 			throw new SomethingWentWrongException("Something went wrong during retrive all region");
 		}
 		return list;
@@ -268,8 +267,9 @@ public class AdminDaoImpl implements AdminDao {
 	public void deleteRegion(String regionId) {
 
 		try {
-
+             //Not Implemented
 		} catch (Exception e) {
+			 //Not Implemented
 		}
 
 	}
@@ -277,7 +277,7 @@ public class AdminDaoImpl implements AdminDao {
 	@Override
 	public void updateRegion(RegionsEntity regionsEntity) {
 		Transaction transaction = null;
-		try (Session session = factory.openSession()) {
+		try (var session = factory.openSession()) {
 			transaction = session.beginTransaction();
 			session.update(regionsEntity);
 			transaction.commit();
@@ -286,7 +286,7 @@ public class AdminDaoImpl implements AdminDao {
 			if (transaction != null) {
 				transaction.rollback();
 			}
-			logger.error("Exception occurred during update region  : {}", e);
+			logger.error("Exception occurred during update region", e);
 			throw new SomethingWentWrongException("Something went wrong during update region");
 		}
 
@@ -295,13 +295,13 @@ public class AdminDaoImpl implements AdminDao {
 	@SuppressWarnings("deprecation")
 	@Override
 	public List<Object[]> getCountOfSystemUser() {
-		try (Session session = factory.openSession()) {
-			String hql = "SELECT r.name, COUNT(su.username) FROM SystemUserEntity su JOIN su.roles r GROUP BY r.name";
+		try (var session = factory.openSession()) {
+			var hql = "SELECT r.name, COUNT(su.username) FROM SystemUserEntity su JOIN su.roles r GROUP BY r.name";
 			Query<Object[]> query = session.createQuery(hql, Object[].class);
 			return query.list();
 		} catch (Exception e) {
 			e.printStackTrace();
-			logger.error("Exception occurred during fetch user count: {}", e);
+			logger.error("Exception occurred during fetch user count", e);
 			throw new SomethingWentWrongException("Something went wrong during fetch user count");
 		}
 	}

@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
@@ -32,11 +33,11 @@ public class GlobalExceptionHandler {
 
 	@ResponseStatus(code = HttpStatus.BAD_REQUEST)
 	@ExceptionHandler(MethodArgumentNotValidException.class)
-	public LinkedHashMap<String, Object> handleMethodArgumentNotValidException(MethodArgumentNotValidException ex,
+	public Map<String, Object> handleMethodArgumentNotValidException(MethodArgumentNotValidException ex,
 			HttpServletRequest request) {
 		LinkedHashMap<String, Object> map = new LinkedHashMap<String, Object>();
 
-		SimpleDateFormat sdf = new SimpleDateFormat(General.DATE_FORMAT.getValue());
+		var sdf = new SimpleDateFormat(General.DATE_FORMAT.getValue());
 		String formattedTime = sdf.format(new Date());
 
 		map.put("Time", formattedTime);
@@ -51,10 +52,10 @@ public class GlobalExceptionHandler {
 
 	@ResponseStatus(code = HttpStatus.INTERNAL_SERVER_ERROR)
 	@ExceptionHandler(ConstraintViolationException.class)
-	public HashMap<String, Object> constraintViolationException(ConstraintViolationException ex) {
+	public Map<String, Object> constraintViolationException(ConstraintViolationException ex) {
 		HashMap<String, Object> map = new HashMap<>();
 
-		SimpleDateFormat sdf = new SimpleDateFormat(General.DATE_FORMAT.getValue());
+		var sdf = new SimpleDateFormat(General.DATE_FORMAT.getValue());
 		String formattedTime = sdf.format(new Date());
 		map.put("Time", formattedTime);
 		Set<ConstraintViolation<?>> constraintViolations = ex.getConstraintViolations();
@@ -74,9 +75,9 @@ public class GlobalExceptionHandler {
 	public ResponseEntity<ExceptionRespone> badCredentialsException(BadCredentialsException ex,
 			HttpServletRequest request) {
 
-		SimpleDateFormat sdf = new SimpleDateFormat(General.DATE_FORMAT.getValue());
+		var sdf = new SimpleDateFormat(General.DATE_FORMAT.getValue());
 		String formattedTime = sdf.format(new Date());
-		ExceptionRespone exceptionRespone = new ExceptionRespone("Invalid User Password", request.getRequestURI(),
+		var exceptionRespone = new ExceptionRespone("Invalid User Password", request.getRequestURI(),
 				formattedTime);
 		return new ResponseEntity<>(exceptionRespone, HttpStatus.UNAUTHORIZED);
 
@@ -87,9 +88,9 @@ public class GlobalExceptionHandler {
 	public ResponseEntity<ExceptionRespone> invalidCredientials(InvalidCredentialsException ex,
 			HttpServletRequest request) {
 
-		SimpleDateFormat sdf = new SimpleDateFormat(General.DATE_FORMAT.getValue());
+		var sdf = new SimpleDateFormat(General.DATE_FORMAT.getValue());
 		String formattedTime = sdf.format(new Date());
-		ExceptionRespone exceptionRespone = new ExceptionRespone(ex.getMessage(), request.getRequestURI(),
+		var exceptionRespone = new ExceptionRespone(ex.getMessage(), request.getRequestURI(),
 				formattedTime);
 		return new ResponseEntity<>(exceptionRespone, HttpStatus.UNAUTHORIZED);
 	}
@@ -99,9 +100,9 @@ public class GlobalExceptionHandler {
 	public ResponseEntity<ExceptionRespone> resourceAlreadyExists(ResourceAlreadyExistsException ex,
 			HttpServletRequest request) {
 
-		SimpleDateFormat sdf = new SimpleDateFormat(General.DATE_FORMAT.getValue());
+		var sdf = new SimpleDateFormat(General.DATE_FORMAT.getValue());
 		String formattedTime = sdf.format(new Date());
-		ExceptionRespone exceptionRespone = new ExceptionRespone(ex.getMessage(), request.getRequestURI(),
+		var exceptionRespone = new ExceptionRespone(ex.getMessage(), request.getRequestURI(),
 				formattedTime);
 		return new ResponseEntity<>(exceptionRespone, HttpStatus.CONFLICT);
 	}
@@ -111,9 +112,9 @@ public class GlobalExceptionHandler {
 	public ResponseEntity<ExceptionRespone> resourceNotFoundException(ResourceNotFoundException ex,
 			HttpServletRequest request) {
 
-		SimpleDateFormat sdf = new SimpleDateFormat(General.DATE_FORMAT.getValue());
+		var sdf = new SimpleDateFormat(General.DATE_FORMAT.getValue());
 		String formattedTime = sdf.format(new Date());
-		ExceptionRespone exceptionRespone = new ExceptionRespone(ex.getMessage(), request.getRequestURI(),
+		var exceptionRespone = new ExceptionRespone(ex.getMessage(), request.getRequestURI(),
 				formattedTime);
 		return new ResponseEntity<>(exceptionRespone, HttpStatus.NOT_FOUND);
 	}
@@ -123,9 +124,9 @@ public class GlobalExceptionHandler {
 	public ResponseEntity<ExceptionRespone> somethingWentWrongException(SomethingWentWrongException ex,
 			HttpServletRequest request) {
 
-		SimpleDateFormat sdf = new SimpleDateFormat(General.DATE_FORMAT.getValue());
+		var sdf = new SimpleDateFormat(General.DATE_FORMAT.getValue());
 		String formattedTime = sdf.format(new Date());
-		ExceptionRespone exceptionRespone = new ExceptionRespone(ex.getMessage(), request.getRequestURI(),
+		var exceptionRespone = new ExceptionRespone(ex.getMessage(), request.getRequestURI(),
 				formattedTime);
 		return new ResponseEntity<>(exceptionRespone, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
@@ -135,9 +136,9 @@ public class GlobalExceptionHandler {
 	public ResponseEntity<ExceptionRespone> userDeactivatedException(UserDeactivatedException ex,
 			HttpServletRequest request) {
 
-		SimpleDateFormat sdf = new SimpleDateFormat(General.DATE_FORMAT.getValue());
+		var sdf = new SimpleDateFormat(General.DATE_FORMAT.getValue());
 		String formattedTime = sdf.format(new Date());
-		ExceptionRespone exceptionRespone = new ExceptionRespone(ex.getMessage(), request.getRequestURI(),
+		var exceptionRespone = new ExceptionRespone(ex.getMessage(), request.getRequestURI(),
 				formattedTime);
 		return new ResponseEntity<>(exceptionRespone, HttpStatus.FORBIDDEN);
 	}
@@ -147,9 +148,9 @@ public class GlobalExceptionHandler {
 	public ResponseEntity<ExceptionRespone> userSuspendedException(UserSuspendedException ex,
 			HttpServletRequest request) {
 
-		SimpleDateFormat sdf = new SimpleDateFormat(General.DATE_FORMAT.getValue());
+		var sdf = new SimpleDateFormat(General.DATE_FORMAT.getValue());
 		String formattedTime = sdf.format(new Date());
-		ExceptionRespone exceptionRespone = new ExceptionRespone(ex.getMessage(), request.getRequestURI(),
+		var exceptionRespone = new ExceptionRespone(ex.getMessage(), request.getRequestURI(),
 				formattedTime);
 		return new ResponseEntity<>(exceptionRespone, HttpStatus.LOCKED);
 	}
@@ -158,9 +159,9 @@ public class GlobalExceptionHandler {
 	@ResponseStatus(code = HttpStatus.UNAUTHORIZED)
 	public ResponseEntity<ExceptionRespone> tokenExpirationException(TokenExpirationException ex,
 			HttpServletRequest request) {
-		SimpleDateFormat sdf = new SimpleDateFormat(General.DATE_FORMAT.getValue());
+		var sdf = new SimpleDateFormat(General.DATE_FORMAT.getValue());
 		String formattedTime = sdf.format(new Date());
-		ExceptionRespone exceptionRespone = new ExceptionRespone(ex.getMessage(), request.getRequestURI(),
+		var exceptionRespone = new ExceptionRespone(ex.getMessage(), request.getRequestURI(),
 				formattedTime);
 		return new ResponseEntity<>(exceptionRespone, HttpStatus.UNAUTHORIZED);
 	}
@@ -170,9 +171,9 @@ public class GlobalExceptionHandler {
 	public ResponseEntity<ExceptionRespone> internalServerError(InternalServerError ex,
 			HttpServletRequest request) {
 
-		SimpleDateFormat sdf = new SimpleDateFormat(General.DATE_FORMAT.getValue());
+		var sdf = new SimpleDateFormat(General.DATE_FORMAT.getValue());
 		String formattedTime = sdf.format(new Date());
-		ExceptionRespone exceptionRespone = new ExceptionRespone(ex.getMessage(), request.getRequestURI(),
+		var exceptionRespone = new ExceptionRespone(ex.getMessage(), request.getRequestURI(),
 				formattedTime);
 		return new ResponseEntity<>(exceptionRespone, HttpStatus.UNAUTHORIZED);
 	}
@@ -183,9 +184,9 @@ public class GlobalExceptionHandler {
 	public ResponseEntity<ExceptionRespone> accessDeniedException(AccessDeniedException ex,
 			HttpServletRequest request) {
 
-		SimpleDateFormat sdf = new SimpleDateFormat(General.DATE_FORMAT.getValue());
+		var sdf = new SimpleDateFormat(General.DATE_FORMAT.getValue());
 		String formattedTime = sdf.format(new Date());
-		ExceptionRespone exceptionRespone = new ExceptionRespone(ex.getMessage(), request.getRequestURI(),
+		var exceptionRespone = new ExceptionRespone(ex.getMessage(), request.getRequestURI(),
 				formattedTime);
 		return new ResponseEntity<>(exceptionRespone, HttpStatus.FORBIDDEN);
 	}
@@ -194,9 +195,9 @@ public class GlobalExceptionHandler {
 	@ResponseStatus(code = HttpStatus.NOT_IMPLEMENTED)
 	public ResponseEntity<ExceptionRespone> unImplemented(UnsupportedOperationException ex,HttpServletRequest request){
 		
-		SimpleDateFormat sdf = new SimpleDateFormat(General.DATE_FORMAT.getValue());
+		var sdf = new SimpleDateFormat(General.DATE_FORMAT.getValue());
 		String formattedTime = sdf.format(new Date());
-		ExceptionRespone exceptionRespone = new ExceptionRespone("Method not implemented", request.getRequestURI(),
+		var exceptionRespone = new ExceptionRespone("Method not implemented", request.getRequestURI(),
 				formattedTime);
 		return new ResponseEntity<>(exceptionRespone, HttpStatus.NOT_IMPLEMENTED);
 		

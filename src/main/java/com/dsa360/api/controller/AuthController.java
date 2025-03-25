@@ -13,7 +13,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -59,7 +58,7 @@ public class AuthController {
 
 		log.info("Trying to login = {}", username);
 
-		final Authentication authentication = authenticationManager
+		final var authentication = authenticationManager
 				.authenticate(new UsernamePasswordAuthenticationToken(username, password));
 
 		SecurityContextHolder.getContext().setAuthentication(authentication); // check
@@ -76,7 +75,7 @@ public class AuthController {
 
 		response.setHeader("token", token);
 
-		LogedInUserDetailModelDto model = new LogedInUserDetailModelDto(userDetail.getUsername(), roles,
+		var model = new LogedInUserDetailModelDto(userDetail.getUsername(), roles,
 				userDetail.getStatus(), token);
 
 		return new ResponseEntity<>(model, HttpStatus.OK);
