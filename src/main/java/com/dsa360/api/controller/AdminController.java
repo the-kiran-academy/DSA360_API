@@ -80,7 +80,7 @@ public class AdminController {
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@GetMapping("/get-roll-by-id/{rollId}")
 	public ResponseEntity<RoleDto> getRollById(@PathVariable String rollId) {
-		RoleDto roleDto = adminService.getRollById(rollId);
+		var roleDto = adminService.getRollById(rollId);
 		return ResponseEntity.ok(roleDto);
 
 	}
@@ -102,7 +102,7 @@ public class AdminController {
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@GetMapping("/get-role-by-name")
 	public ResponseEntity<RoleDto> getRoleByName(@RequestParam String roleName) {
-		RoleDto roleDto = adminService.getRoleByName(roleName);
+		var roleDto = adminService.getRoleByName(roleName);
 		return ResponseEntity.ok(roleDto);
 	}
 
@@ -128,14 +128,14 @@ public class AdminController {
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@GetMapping("/get-region-by-id")
 	public ResponseEntity<RegionsDto> getARegionById(@RequestParam String id) {
-		RegionsDto regionsDto = adminService.getRegionById(id);
+		var regionsDto = adminService.getRegionById(id);
 		return ResponseEntity.ok(regionsDto);
 	}
 
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@GetMapping("/get-region-by-name")
 	public ResponseEntity<RegionsDto> getARegionByName(@RequestParam String regionName) {
-		RegionsDto regionsDto = adminService.getRegionByName(regionName);
+		var regionsDto = adminService.getRegionByName(regionName);
 		return ResponseEntity.ok(regionsDto);
 	}
 

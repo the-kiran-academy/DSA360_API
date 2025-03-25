@@ -53,7 +53,7 @@ public class AgentController {
 	@PostMapping("/documents/upload/{customerId}")
 	public ResponseEntity<String> uploadDocument(@PathVariable String customerId,
 			@RequestParam DocumentType documentType,@RequestParam MultipartFile file) {
-		DocumentDTO documentDTO=new DocumentDTO();
+		var documentDTO=new DocumentDTO();
 		documentDTO.setCustomerId(customerId);
 		documentDTO.setDocumentName(file.getOriginalFilename());
 		documentDTO.setDocumentType(documentType);

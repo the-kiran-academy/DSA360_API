@@ -10,7 +10,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
@@ -39,7 +38,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 		
 		String header = req.getHeader(JwtConstant.HEADER_STRING.getValue());
 		
-		System.err.println(header);
+		logger.error(header);
 
 		String username = null;
 		String authToken = null;
@@ -52,7 +51,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
 			authToken = header.replace(JwtConstant.TOKEN_PREFIX.getValue(), "");
 			
-			System.out.println(authToken);
+			logger.info(authToken);
 			try {
 				username = jwtTokenUtil.getUsernameFromToken(authToken);
 
@@ -69,18 +68,17 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 			}
 
 		} else {
-			System.err.println("couldn't find bearer string, will ignore the header ! Logged In With Credientials");
+			logger.error("couldn't find bearer string, will ignore the header ! Logged In With Credientials");
 		}
 		if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 
-			UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+			var userDetails = userDetailsService.loadUserByUsername(username);
 
 			Boolean isValidated = jwtTokenUtil.validateToken(authToken, userDetails); // due to sonar code standard
 			if (Boolean.TRUE.equals(isValidated)) {
-				UsernamePasswordAuthenticationToken authentication = jwtTokenUtil.getAuthentication(authToken,
-						SecurityContextHolder.getContext().getAuthentication(), userDetails);
+				UsernamePasswordAuthenticationToken authentication = jwtTokenUtil.getAuthentication(authToken,userDetails);
 				authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(req));
-				System.err.println("authenticated user " + username + ", setting security context");
+				logger.error("authenticated user " + username + ", setting security context");
 				SecurityContextHolder.getContext().setAuthentication(authentication);
 			}
 		}

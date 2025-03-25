@@ -1,12 +1,8 @@
 package com.dsa360.api.daoimpl;
 
 import java.util.List;
-
-import org.hibernate.Criteria;
-import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
-import org.hibernate.criterion.SimpleExpression;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,22 +17,22 @@ import com.dsa360.api.exceptions.SomethingWentWrongException;
  */
 @Repository
 public class LoanConditionDaoImpl implements LoanConditionDao {
-	private static final Logger logger = LoggerFactory.getLogger(DSADaoImpl.class);
+	private static final Logger logger = LoggerFactory.getLogger(LoanConditionDaoImpl.class);
 
 	@Autowired
 	private SessionFactory factory;
 
 	@Override
 	public LoanConditioEntity createLoanCondition(LoanConditioEntity loanConditioEntity) {
-		try (Session session = factory.openSession()) {
+		try (var session = factory.openSession()) {
 			session.save(loanConditioEntity);
 			session.beginTransaction().commit();
 			return loanConditioEntity;
 
 		} catch (Exception e) {
 			e.printStackTrace();
-			logger.error("");
-			throw new SomethingWentWrongException("Something Went Wrong During Add Loan Contion");
+			logger.error("Something Went Wrong During Adding Loan Condition");
+			throw new SomethingWentWrongException("Something Went Wrong During Adding Loan Condition");
 		}
 
 	}
@@ -66,11 +62,11 @@ public class LoanConditionDaoImpl implements LoanConditionDao {
 
 	@Override
 	public LoanConditioEntity getLoanConditionByBank_Loantype(String bankName, String loanType) {
-		try (Session session = factory.openSession()) {
+		try (var session = factory.openSession()) {
 
-			Criteria criteria = session.createCriteria(LoanConditioEntity.class);
-			SimpleExpression bankNameExpression = Restrictions.eq("bankName", bankName);
-			SimpleExpression loanTypeExpression = Restrictions.eq("loanType", loanType);
+			var criteria = session.createCriteria(LoanConditioEntity.class);
+			var bankNameExpression = Restrictions.eq("bankName", bankName);
+			var loanTypeExpression = Restrictions.eq("loanType", loanType);
 
 			criteria.add(Restrictions.and(bankNameExpression, loanTypeExpression));
 

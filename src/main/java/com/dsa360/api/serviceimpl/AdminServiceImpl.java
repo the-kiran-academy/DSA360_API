@@ -50,6 +50,8 @@ public class AdminServiceImpl implements AdminService {
 
 	@Autowired
 	MailAsyncServices mailAsyncServices;
+	
+	public static final String notExist=" is Not Exists";
 
 	@Override
 	public SystemUserDto createSystemUserProfile(SystemUserDto userDto) {
@@ -104,13 +106,12 @@ public class AdminServiceImpl implements AdminService {
 
 	@Override
 	public boolean deleteRole(String rollId) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public void updateRole(RoleDto roleDto) {
-		// TODO Auto-generated method stub
+	  //Not Implemented
 	}
 
 	@Override
@@ -119,7 +120,7 @@ public class AdminServiceImpl implements AdminService {
 		if (rollEntity != null) {
 			return mapper.map(rollEntity, RoleDto.class);
 		} else {
-			throw new ResourceAlreadyExistsException(rollId + " is Not Exists");
+			throw new ResourceAlreadyExistsException(rollId + notExist);
 		}
 
 	}
@@ -154,7 +155,7 @@ public class AdminServiceImpl implements AdminService {
 		if (rollEntity != null) {
 			return mapper.map(rollEntity, RoleDto.class);
 		} else {
-			throw new ResourceAlreadyExistsException(roleName + " is Not Exists");
+			throw new ResourceAlreadyExistsException(roleName + notExist );
 		}
 	}
 
@@ -162,18 +163,18 @@ public class AdminServiceImpl implements AdminService {
 	public void addRegion(RegionsDto regionsDto) {
 
 		regionsDto.setId(DynamicID.getGeneratedId());
-		RegionsEntity regionEntity = mapper.map(regionsDto, RegionsEntity.class);
+		var regionEntity = mapper.map(regionsDto, RegionsEntity.class);
 		dao.addRegion(regionEntity);
 
 	}
 
 	@Override
 	public RegionsDto getRegionById(String regionId) {
-		RegionsEntity regionsEntity = dao.getRegionById(regionId);
+		var regionsEntity = dao.getRegionById(regionId);
 		if (regionsEntity != null) {
 			return mapper.map(regionsEntity, RegionsDto.class);
 		} else {
-			throw new ResourceAlreadyExistsException(regionId + " is Not Exists");
+			throw new ResourceAlreadyExistsException(regionId + notExist);
 		}
 	}
 
@@ -207,18 +208,18 @@ public class AdminServiceImpl implements AdminService {
 
 	@Override
 	public RegionsDto getRegionByName(String regionName) {
-		RegionsEntity regionsEntity = dao.getRegionByName(regionName);
+		var regionsEntity = dao.getRegionByName(regionName);
 		if (regionsEntity != null) {
 			return mapper.map(regionsEntity, RegionsDto.class);
 		} else {
-			throw new ResourceAlreadyExistsException(regionName + " is Not Exists");
+			throw new ResourceAlreadyExistsException(regionName + notExist);
 		}
 	}
 
 	@Override
 	public void updateRegion(RegionsDto regionsDto) {
 
-		RegionsEntity regionsEntity = mapper.map(regionsDto, RegionsEntity.class);
+		var regionsEntity = mapper.map(regionsDto, RegionsEntity.class);
 
 		dao.updateRegion(regionsEntity);
 	}

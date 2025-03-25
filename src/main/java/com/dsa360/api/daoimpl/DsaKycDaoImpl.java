@@ -1,9 +1,6 @@
 package com.dsa360.api.daoimpl;
 
 import java.util.List;
-
-import org.hibernate.Criteria;
-import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,12 +21,12 @@ public class DsaKycDaoImpl implements DsaKycDao {
 	@Override
 	public List<DsaKycEntity> getAllKycs() {
 		List<DsaKycEntity> list = null;
-		try (Session session = factory.openSession()) {
-			Criteria criteria = session.createCriteria(DsaKycEntity.class);
+		try (var session = factory.openSession()) {
+			var criteria = session.createCriteria(DsaKycEntity.class);
 			list = criteria.list();
 
 		} catch (Exception e) {
-			logger.error("Exception occurred during retrive All Kycs :{}", e);
+			logger.error("Exception occurred during retrive All Kycs", e);
 			throw new SomethingWentWrongException("Something went wrong during retrive all kycs");
 
 		}

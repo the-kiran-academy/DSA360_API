@@ -6,8 +6,8 @@ public enum General {
 	DSA_NAME("dsaName"),
 	DSA_ID("dsaId"),
 	REGISTERED_NAME("registeredName"),
-	CONTACT_INFO("contactInfo");
-	
+	CONTACT_INFO("contactInfo"),
+	ADDRESS_INFO("address");
 
 	private final String value;
 

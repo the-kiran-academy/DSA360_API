@@ -29,7 +29,7 @@ public class ResetPasswordDetailDto {
 	private int otp;
 
 	public ResetPasswordDetailDto() {
-		// TODO Auto-generated constructor stub
+		//Not Implemented
 	}
 
 	public ResetPasswordDetailDto(String userId, String question, String answer, String newPassword,

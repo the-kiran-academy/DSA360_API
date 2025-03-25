@@ -2,7 +2,6 @@ package com.dsa360.api.daoimpl;
 
 import java.util.List;
 
-import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,7 +25,7 @@ public class CustomerDaoImpl implements CustomerDao {
 	@Override
 	public void createCustomer(CustomerEntity customerEntity) {
 
-		try (Session session = sessionFactory.openSession()) {
+		try (var session = sessionFactory.openSession()) {
 			session.save(customerEntity);
 			session.beginTransaction().commit();
 
@@ -47,7 +46,7 @@ public class CustomerDaoImpl implements CustomerDao {
 	@Override
 	public void customerLoanApplication(LoanApplicationEntity loanApplicationEntity) {
 
-		try (Session session = sessionFactory.openSession()) {
+		try (var session = sessionFactory.openSession()) {
 			session.save(loanApplicationEntity);
 			session.beginTransaction().commit();
 
@@ -61,7 +60,7 @@ public class CustomerDaoImpl implements CustomerDao {
 
 	@Override
 	public void uploadDocument(String customerId, DocumentEntity documentEntity) {
-		try (Session session = sessionFactory.openSession()) {
+		try (var session = sessionFactory.openSession()) {
 			session.save(documentEntity);
 			session.beginTransaction().commit();
 		} catch (Exception e) {
@@ -75,16 +74,17 @@ public class CustomerDaoImpl implements CustomerDao {
 	@Override
 	public List<CustomerEntity> getAllCustomers() {
 
-		return null;
+		   return null;
 	}
+	
 
 	@Override
 
 	public CustomerEntity getCustomerById(String id) {
-		try (Session session = sessionFactory.openSession();) {
-			CustomerEntity customerEntity = session.get(CustomerEntity.class, id);
+		try (var session = sessionFactory.openSession();) {
+			return session.get(CustomerEntity.class, id);
 
-			return customerEntity;
+		
 		} catch (
 
 		Exception e) {
