@@ -105,13 +105,57 @@ pipeline {
             }
         }
     }
+post {
+    success {
+        echo '✅ Pipeline succeeded! Docker image pushed and cleaned up successfully.'
 
-    post {
-        success {
-            echo '✅ Pipeline succeeded! Docker image pushed and cleaned up successfully.'
-        }
-        failure {
-            echo '❌ Pipeline failed! Check logs for details.'
+        script {
+            def logFile = "build-log-${env.BUILD_NUMBER}.txt"
+            bat "copy %WORKSPACE%\\jenkins.log ${logFile}"
+
+            emailext (
+                to: 'salikramchadar@gmail.com',
+                subject: "✅ SUCCESS:DSA360 Pipeline - Jenkins Build #${env.BUILD_NUMBER} - ${env.JOB_NAME}",
+                body: """
+                    <h3>Jenkins Build Success</h3>
+                    <p><strong>Project:</strong> ${env.JOB_NAME}</p>
+                    <p><strong>Build Number:</strong> ${env.BUILD_NUMBER}</p>
+                    <p><strong>Status:</strong> ✅ SUCCESS</p>
+                    <p><strong>Docker Image:</strong> ${env.DOCKER_IMAGE_NAME}</p>
+                    <p><strong>View Build:</strong> <a href="${env.BUILD_URL}">${env.BUILD_URL}</a></p>
+                """,
+                attachLog: true,
+                attachmentsPattern: "${logFile}",
+                mimeType: 'text/html'
+            )
         }
     }
+
+    failure {
+        echo '❌ Pipeline failed! Check logs for details.'
+
+        script {
+            def logFile = "build-log-${env.BUILD_NUMBER}.txt"
+            bat "copy %WORKSPACE%\\jenkins.log ${logFile}"
+
+            emailext (
+                to: 'salikramchadar@gmail.com',
+                subject: "❌ FAILURE: Jenkins Build #${env.BUILD_NUMBER} - ${env.JOB_NAME}",
+                body: """
+                    <h3>Jenkins Build Failure</h3>
+                    <p><strong>Project:</strong> ${env.JOB_NAME}</p>
+                    <p><strong>Build Number:</strong> ${env.BUILD_NUMBER}</p>
+                    <p><strong>Status:</strong> ❌ FAILED</p>
+                    <p><strong>View Build:</strong> <a href="${env.BUILD_URL}">${env.BUILD_URL}</a></p>
+                    <p>Please check the attached log for details.</p>
+                """,
+                attachLog: true,
+                attachmentsPattern: "${logFile}",
+                mimeType: 'text/html'
+            )
+        }
+    }
+}
+
+   
 }
