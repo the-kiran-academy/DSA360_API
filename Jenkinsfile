@@ -110,12 +110,15 @@ post {
         echo '✅ Pipeline succeeded! Docker image pushed and cleaned up successfully.'
 
         script {
-            def logFile = "build-log-${env.BUILD_NUMBER}.txt"
-            bat "copy %WORKSPACE%\\jenkins.log ${logFile}"
+            def logFileSource = "C:\\ProgramData\\Jenkins\\.jenkins\\jobs\\${env.JOB_NAME}\\builds\\${env.BUILD_NUMBER}\\log"
+            def logFileDestination = "${WORKSPACE}\\build-log-${env.BUILD_NUMBER}.txt"
+
+            echo "Copying Jenkins console log file..."
+            bat "copy \"${logFileSource}\" \"${logFileDestination}\""
 
             emailext (
                 to: 'salikramchadar@gmail.com',
-                subject: "✅ SUCCESS:DSA360 Pipeline - Jenkins Build #${env.BUILD_NUMBER} - ${env.JOB_NAME}",
+                subject: "✅ SUCCESS: DSA360 Pipeline - Build #${env.BUILD_NUMBER}",
                 body: """
                     <h3>Jenkins Build Success</h3>
                     <p><strong>Project:</strong> ${env.JOB_NAME}</p>
@@ -125,7 +128,7 @@ post {
                     <p><strong>View Build:</strong> <a href="${env.BUILD_URL}">${env.BUILD_URL}</a></p>
                 """,
                 attachLog: true,
-                attachmentsPattern: "${logFile}",
+                attachmentsPattern: "build-log-${env.BUILD_NUMBER}.txt",
                 mimeType: 'text/html'
             )
         }
@@ -135,12 +138,15 @@ post {
         echo '❌ Pipeline failed! Check logs for details.'
 
         script {
-            def logFile = "build-log-${env.BUILD_NUMBER}.txt"
-            bat "copy %WORKSPACE%\\jenkins.log ${logFile}"
+            def logFileSource = "C:\\ProgramData\\Jenkins\\.jenkins\\jobs\\${env.JOB_NAME}\\builds\\${env.BUILD_NUMBER}\\log"
+            def logFileDestination = "${WORKSPACE}\\build-log-${env.BUILD_NUMBER}.txt"
+
+            echo "Copying Jenkins console log file..."
+            bat "copy \"${logFileSource}\" \"${logFileDestination}\""
 
             emailext (
                 to: 'salikramchadar@gmail.com',
-                subject: "❌ FAILURE: Jenkins Build #${env.BUILD_NUMBER} - ${env.JOB_NAME}",
+                subject: "❌ FAILURE: DSA360 Pipeline - Build #${env.BUILD_NUMBER}",
                 body: """
                     <h3>Jenkins Build Failure</h3>
                     <p><strong>Project:</strong> ${env.JOB_NAME}</p>
@@ -150,12 +156,13 @@ post {
                     <p>Please check the attached log for details.</p>
                 """,
                 attachLog: true,
-                attachmentsPattern: "${logFile}",
+                attachmentsPattern: "build-log-${env.BUILD_NUMBER}.txt",
                 mimeType: 'text/html'
             )
         }
     }
 }
+
 
    
 }
