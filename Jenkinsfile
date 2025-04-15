@@ -17,7 +17,7 @@ pipeline {
         stage('Get Code') {
             steps {
                 echo "Cloning the repository..."
-                git 'https://github.com/the-kiran-academy/DSA360_API.git'
+                git branch: 'main', url: 'https://github.com/the-kiran-academy/DSA360_API.git'
             }
         }
 
@@ -41,21 +41,40 @@ pipeline {
             steps {
                 script {
                     echo "Searching for previous Docker image..."
-                    
-                    def existingImages = bat(script: 'docker images --format "{{.Repository}}:{{.Tag}}" | findstr "ram2715/dsa360-"', returnStdout: true).trim()
-                    
-                    if (existingImages) {
-                        def lastImage = existingImages.split('\n')[0]  // Take the first matched image
-                        PREVIOUS_IMAGE = lastImage.trim()
-                        echo "Found previous image: ${PREVIOUS_IMAGE}"
+
+                    // List all Docker images and filter programmatically
+                    def existingImages = bat(script: 'docker images --format "{{.Repository}}:{{.Tag}}"', returnStdout: true).trim()
+
+                    PREVIOUS_IMAGE = ''
+                    existingImages.split('\n').each { img ->
+                        if (img.contains("ram2715/dsa360-")) {
+                            PREVIOUS_IMAGE = img.trim()
+                            echo "Found previous image: ${PREVIOUS_IMAGE}"
+                        }
+                    }
+
+                    if (PREVIOUS_IMAGE) {
+                        echo "Previous image found: ${PREVIOUS_IMAGE}"
                     } else {
-                        echo "No previous image found."
+                        echo "No previous image found. Proceeding with a new build."
                     }
                 }
             }
         }
 
-        stage('Build Docker Image') {
+        stage('Remove Previous Docker Image') {
+            when {
+                expression { PREVIOUS_IMAGE != '' }
+            }
+            steps {
+                script {
+                    echo "Removing previous Docker image: ${PREVIOUS_IMAGE}"
+                    bat "docker rmi ${PREVIOUS_IMAGE} || echo 'Failed to delete previous image or not found.'"
+                }
+            }
+        }
+
+        stage('Build New Docker Image') {
             steps {
                 script {
                     echo "Building new Docker image..."
@@ -78,18 +97,6 @@ pipeline {
             }
         }
 
-        stage('Cleanup Previous Docker Image') {
-            when {
-                expression { PREVIOUS_IMAGE != '' }
-            }
-            steps {
-                script {
-                    echo "Removing previous Docker image: ${PREVIOUS_IMAGE}"
-                    bat "docker rmi ${PREVIOUS_IMAGE} || echo 'Failed to delete previous image or not found.'"
-                }
-            }
-        }
-
         stage('Cleanup Workspace') {
             steps {
                 echo "Cleaning up unnecessary files..."
@@ -98,13 +105,64 @@ pipeline {
             }
         }
     }
+post {
+    success {
+        echo '✅ Pipeline succeeded! Docker image pushed and cleaned up successfully.'
 
-    post {
-        success {
-            echo '✅ Pipeline succeeded! Docker image pushed and cleaned up successfully.'
-        }
-        failure {
-            echo '❌ Pipeline failed! Check logs for details.'
+        script {
+            def logFileSource = "C:\\ProgramData\\Jenkins\\.jenkins\\jobs\\${env.JOB_NAME}\\builds\\${env.BUILD_NUMBER}\\log"
+            def logFileDestination = "${WORKSPACE}\\build-log-${env.BUILD_NUMBER}.txt"
+
+            echo "Copying Jenkins console log file..."
+            bat "copy \"${logFileSource}\" \"${logFileDestination}\""
+
+            emailext (
+                to: 'salikramchadar@gmail.com',
+                subject: "✅ SUCCESS: DSA360 Pipeline - Build #${env.BUILD_NUMBER}",
+                body: """
+                    <h3>Jenkins Build Success</h3>
+                    <p><strong>Project:</strong> ${env.JOB_NAME}</p>
+                    <p><strong>Build Number:</strong> ${env.BUILD_NUMBER}</p>
+                    <p><strong>Status:</strong> ✅ SUCCESS</p>
+                    <p><strong>Docker Image:</strong> ${env.DOCKER_IMAGE_NAME}</p>
+                    <p><strong>View Build:</strong> <a href="${env.BUILD_URL}">${env.BUILD_URL}</a></p>
+                """,
+                attachLog: true,
+                attachmentsPattern: "build-log-${env.BUILD_NUMBER}.txt",
+                mimeType: 'text/html'
+            )
         }
     }
+
+    failure {
+        echo '❌ Pipeline failed! Check logs for details.'
+
+        script {
+            def logFileSource = "C:\\ProgramData\\Jenkins\\.jenkins\\jobs\\${env.JOB_NAME}\\builds\\${env.BUILD_NUMBER}\\log"
+            def logFileDestination = "${WORKSPACE}\\build-log-${env.BUILD_NUMBER}.txt"
+
+            echo "Copying Jenkins console log file..."
+            bat "copy \"${logFileSource}\" \"${logFileDestination}\""
+
+            emailext (
+                to: 'salikramchadar@gmail.com',
+                subject: "❌ FAILURE: DSA360 Pipeline - Build #${env.BUILD_NUMBER}",
+                body: """
+                    <h3>Jenkins Build Failure</h3>
+                    <p><strong>Project:</strong> ${env.JOB_NAME}</p>
+                    <p><strong>Build Number:</strong> ${env.BUILD_NUMBER}</p>
+                    <p><strong>Status:</strong> ❌ FAILED</p>
+                    <p><strong>View Build:</strong> <a href="${env.BUILD_URL}">${env.BUILD_URL}</a></p>
+                    <p>Please check the attached log for details.</p>
+                """,
+                attachLog: true,
+                attachmentsPattern: "build-log-${env.BUILD_NUMBER}.txt",
+                mimeType: 'text/html'
+            )
+        }
+    }
+}
+
+
+   
 }

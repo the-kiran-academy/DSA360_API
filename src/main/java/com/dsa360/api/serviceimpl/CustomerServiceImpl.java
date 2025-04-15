@@ -7,12 +7,12 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.transaction.support.TransactionSynchronizationManager;
-
 import com.dsa360.api.dao.CustomerDao;
+import com.dsa360.api.dto.ContactUsDTO;
 import com.dsa360.api.dto.CustomerDTO;
 import com.dsa360.api.dto.DocumentDTO;
 import com.dsa360.api.dto.LoanApplicationDTO;
+import com.dsa360.api.entity.ContactUsEntity;
 import com.dsa360.api.entity.CustomerEntity;
 import com.dsa360.api.entity.DocumentEntity;
 import com.dsa360.api.entity.LoanApplicationEntity;
@@ -85,12 +85,10 @@ public class CustomerServiceImpl implements CustomerService {
 	}
 
 	@Override
-	 @Transactional(readOnly = true)
+	@Transactional(readOnly = true)
 	public CustomerEntity getCustomerById(String id) {
-	    System.out.println("Transaction active: " + TransactionSynchronizationManager.isActualTransactionActive());
-
 		CustomerEntity customerEntity = customerDao.getCustomerById(id);
-		  Hibernate.initialize(customerEntity.getLoanApplications());
+		Hibernate.initialize(customerEntity.getLoanApplications());
 		return customerEntity;
 	}
 
@@ -120,6 +118,14 @@ public class CustomerServiceImpl implements CustomerService {
 	@Override
 	public void deleteDocument(String customerId, String documentId) {
 
+	}
+
+	@Override
+	public String contactUs(ContactUsDTO contactUsDTO) {
+		String id = DynamicID.getGeneratedId();
+		contactUsDTO.setId(id);
+		ContactUsEntity contactUsEntity = mapper.map(contactUsDTO, ContactUsEntity.class);
+		return customerDao.contactUs(contactUsEntity);
 	}
 
 }

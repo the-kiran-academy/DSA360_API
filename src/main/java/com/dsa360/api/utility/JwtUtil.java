@@ -56,10 +56,14 @@ public class JwtUtil implements Serializable {
 	public String generateToken(Authentication authentication) {
 		final String authorities = authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority)
 				.collect(Collectors.joining(","));
-		return Jwts.builder().setSubject(authentication.getName()).claim(JwtConstant.AUTHORITIES_KEY.getValue(), authorities)
-				.signWith(SignatureAlgorithm.HS256, JwtConstant.SIGNING_KEY.getValue())
+
+		return Jwts.builder().setSubject(authentication.getName())
+				.claim(JwtConstant.AUTHORITIES_KEY.getValue().toString(), authorities)
+				.signWith(SignatureAlgorithm.HS256, JwtConstant.SIGNING_KEY.getValue().toString())
 				.setIssuedAt(new Date(System.currentTimeMillis()))
-				.setExpiration(new Date(System.currentTimeMillis() + JwtConstant.ACCESS_TOKEN_VALIDITY_SECONDS.getIntValue()))
+				.setExpiration(new Date(System.currentTimeMillis()
+						+ Long.parseLong(JwtConstant.ACCESS_TOKEN_VALIDITY_SECONDS.getValue())))
+
 				.compact();
 	}
 
@@ -78,8 +82,8 @@ public class JwtUtil implements Serializable {
 		final Claims claims = claimsJws.getBody();
 
 		final Collection<? extends GrantedAuthority> authorities = Arrays
-				.stream(claims.get(JwtConstant.AUTHORITIES_KEY.getValue()).toString().split(",")).map(SimpleGrantedAuthority::new)
-				.collect(Collectors.toList());
+				.stream(claims.get(JwtConstant.AUTHORITIES_KEY.getValue()).toString().split(","))
+				.map(SimpleGrantedAuthority::new).collect(Collectors.toList());
 
 		return new UsernamePasswordAuthenticationToken(userDetails, "", authorities);
 	}

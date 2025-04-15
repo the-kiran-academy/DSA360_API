@@ -3,6 +3,7 @@ package com.dsa360.api.dao;
 import java.util.List;
 
 import com.dsa360.api.dto.DocumentDTO;
+import com.dsa360.api.entity.ContactUsEntity;
 import com.dsa360.api.entity.CustomerEntity;
 import com.dsa360.api.entity.DocumentEntity;
 import com.dsa360.api.entity.LoanApplicationEntity;
@@ -29,5 +30,7 @@ public interface CustomerDao {
 	public abstract DocumentDTO getDocumentById(String customerId, String documentId);
 
 	public abstract void deleteDocument(String customerId, String documentId);
+
+	public abstract String contactUs(ContactUsEntity contactUsEntity);
 
 }
