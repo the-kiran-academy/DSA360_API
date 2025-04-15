@@ -7,14 +7,16 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "dsa_kyc")
 @Data
+@EqualsAndHashCode(callSuper = false)
 @NoArgsConstructor
 @AllArgsConstructor
-public class DsaKycEntity {
+public class DsaKycEntity extends  BaseEntity{
 
 	@Id // KYC-2025-VC763456
 	private String dsaKycId;

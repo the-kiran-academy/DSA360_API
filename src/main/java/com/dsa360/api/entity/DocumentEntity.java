@@ -9,14 +9,16 @@ import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @Entity
 @Data
+@EqualsAndHashCode(callSuper = false)
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "customer_documents")
-public class DocumentEntity {
+public class DocumentEntity extends  BaseEntity{
 
 	@Id
 	@Column(name = "id", nullable = false, updatable = false)

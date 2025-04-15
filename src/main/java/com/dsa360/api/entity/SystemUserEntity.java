@@ -21,6 +21,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 /**
@@ -29,9 +30,10 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "system_user")
 @Data
+@EqualsAndHashCode(callSuper = false)
 @NoArgsConstructor
 @AllArgsConstructor
-public class SystemUserEntity {
+public class SystemUserEntity extends  BaseEntity{
 
 	@Id
 	@Column(name = "user_name", unique = true, nullable = false)

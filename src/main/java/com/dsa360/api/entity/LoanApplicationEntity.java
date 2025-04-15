@@ -12,14 +12,16 @@ import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @Data
+@EqualsAndHashCode(callSuper = false)
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
 @Table(name = "loan_applications")
-public class LoanApplicationEntity {
+public class LoanApplicationEntity extends  BaseEntity{
 
     @Id
     private String id; // Loan application ID as String
