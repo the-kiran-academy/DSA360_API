@@ -17,7 +17,11 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "dsa_application")
 public class DSAApplicationEntity {
+	@Id // 17 digit timestamp
+=======
+public class DSAApplicationEntity {
 	@Id   // DSA-2025-VC652345
+  
 	@Column(nullable = false, unique = true)
 	private String dsaApplicationId;;
 

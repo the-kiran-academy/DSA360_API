@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "customer_documents")
-public class DocumentEntity {
+public class DocumentEntity extends BaseEntity {
 
 	@Id
 	@Column(name = "id", nullable = false, updatable = false)

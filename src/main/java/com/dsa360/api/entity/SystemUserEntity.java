@@ -31,7 +31,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class SystemUserEntity {
+public class SystemUserEntity extends BaseEntity{
 
 	@Id
 	@Column(name = "user_name", unique = true, nullable = false)

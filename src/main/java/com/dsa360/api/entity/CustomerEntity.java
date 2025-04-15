@@ -23,7 +23,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "customers")
-public class CustomerEntity {
+public class CustomerEntity extends BaseEntity{
 
 	@Id
 	private String id;

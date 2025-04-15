@@ -19,7 +19,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Entity
 @Table(name = "loan_applications")
-public class LoanApplicationEntity {
+public class LoanApplicationEntity extends BaseEntity {
 
     @Id
     private String id; // Loan application ID as String
