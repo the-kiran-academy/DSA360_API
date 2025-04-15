@@ -7,8 +7,8 @@ server:
 
 file:
   upload:
-    kyc: C:/Workspace/final industrialproject/DSA 360_NG/src/assets/images/kyc-docs
-    customer: C:/Workspace/final industrialproject/DSA 360_NG/src/assets/images/customer	
+    kyc: C:/Workspace/final industrialproject/NG_DSA360/src/assets/images/kyc-docs
+    customer: C:/Workspace/final industrialproject/NG_DSA360/src/assets/images/customer	
 
 logging:
   file:

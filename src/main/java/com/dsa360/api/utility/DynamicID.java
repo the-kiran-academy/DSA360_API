@@ -18,14 +18,6 @@ public class DynamicID {
 		return type + "-" + currentYear + "-" + initials + uniqueNumber;
 	}
 
-	public static void main(String[] args) {
-		String dsaCode = generateUniqueId("DSA", "John", "Doe");
-		String kycCode = generateUniqueId("KYC", "Jane", "Smith");
-
-		System.out.println(dsaCode); // Example: DSA-2025-JD123456 (if the year is 2025)
-		System.out.println(kycCode); // Example: KYC-2025-JS654321
-	}
-
 	public static String getGeneratedId() {
 		String id = new SimpleDateFormat("yyyyMMddHHmmssSSS").format(new java.util.Date());
 		return id;

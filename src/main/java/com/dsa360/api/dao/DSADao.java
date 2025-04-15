@@ -25,4 +25,6 @@ public interface DSADao {
 
 	public abstract void verifyEmail(String dsaId, String token);
 
+	public abstract List<String> getAllApprovedDsaWithNoSystemUser();
+
 }
