@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class DsaKycEntity extends BaseEntity {
 
-	@Id
+	@Id // KYC-2025-VC763456
 	private String dsaKycId;
 
 	@OneToOne

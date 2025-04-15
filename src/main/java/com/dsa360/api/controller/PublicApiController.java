@@ -17,8 +17,10 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.dsa360.api.annotatios.ValidFile;
+import com.dsa360.api.dto.ContactUsDTO;
 import com.dsa360.api.dto.DSAApplicationDTO;
 import com.dsa360.api.dto.DsaKycDto;
+import com.dsa360.api.service.CustomerService;
 import com.dsa360.api.service.DSAService;
 
 /**
@@ -32,6 +34,8 @@ public class PublicApiController {
 
 	@Autowired
 	private DSAService dsaService;
+	@Autowired
+	private CustomerService customerService;
 
 	@PostMapping("/dsa-application")
 	public ResponseEntity<DSAApplicationDTO> dsaApplication(@RequestBody @Valid DSAApplicationDTO dsaRegistrationDTO) {
@@ -100,6 +104,14 @@ public class PublicApiController {
 		} catch (Exception e) {
 			return new ResponseEntity<>("Email Verification Successfully Completed !!", HttpStatus.NOT_FOUND);
 		}
+	}
+
+	@PostMapping("/contact-us")
+	public ResponseEntity<String> contactUs(@RequestBody @Valid ContactUsDTO contactUsDTO) {
+		String message = customerService.contactUs(contactUsDTO);
+
+		return message != null ? new ResponseEntity<>(message, HttpStatus.CREATED)
+				: new ResponseEntity<>("Contact Us Failed", HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 
 }

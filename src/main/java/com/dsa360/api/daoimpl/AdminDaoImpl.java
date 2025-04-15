@@ -65,8 +65,7 @@ public class AdminDaoImpl implements AdminDao {
 		Transaction transaction = null;
 		try (Session session = factory.openSession()) {
 			transaction = session.beginTransaction();
-			SystemUserEntity user = session.get(SystemUserEntity.
-					class, username);
+			SystemUserEntity user = session.get(SystemUserEntity.class, username);
 			if (user != null) {
 
 				session.delete(user);
@@ -101,6 +100,9 @@ public class AdminDaoImpl implements AdminDao {
 			if (role == null) {
 				session.save(roleEntity);
 				transaction.commit();
+
+				logger.info("Role {} added successfully", roleEntity.getName());
+
 			} else {
 				throw new ResourceAlreadyExistsException(roleEntity.getName() + " is Already Exists");
 			}
@@ -129,14 +131,51 @@ public class AdminDaoImpl implements AdminDao {
 
 	@Override
 	public boolean deleteRole(String rollId) {
+		Transaction transaction = null;
+		try (Session session = factory.openSession()) {
+			transaction = session.beginTransaction();
+			RoleEntity role = session.get(RoleEntity.class, rollId);
+			if (role != null) {
+				session.delete(role);
+				transaction.commit();
+				logger.info("Role {} deleted successfully", role.getName());
+				return true;
+			} else {
+				throw new ResourceNotFoundException("Role not found to delete with id = " + rollId);
+			}
 
-		return false;
+		} catch (ResourceNotFoundException e) {
+			e.printStackTrace();
+			logger.error("Role not found to delete with id {}", rollId);
+			throw new ResourceNotFoundException("Data not found to delete with id = " + rollId);
+		} catch (Exception e) {
+			if (transaction != null) {
+				transaction.rollback();
+			}
+			logger.error("Exception occurred during delete role {}", rollId);
+			throw new SomethingWentWrongException("Something went wrong during delete role with id = " + rollId);
+		}
+
 	}
 
 	@Override
 	public RoleEntity updateRole(RoleEntity roleEntity) {
+		Transaction transaction = null;
+		try (Session session = factory.openSession()) {
+			transaction = session.beginTransaction();
+			session.update(roleEntity);
+			transaction.commit();
 
-		return null;
+		} catch (Exception e) {
+			if (transaction != null) {
+				transaction.rollback();
+			}
+			logger.error("Exception occurred during update role  : {}", e);
+			throw new SomethingWentWrongException("Something went wrong during update role");
+		}
+		logger.info("Role {} updated successfully", roleEntity.getName());
+		// return updated role entity
+		return roleEntity;
 	}
 
 	@SuppressWarnings({ "deprecation", "unchecked" })
@@ -268,8 +307,26 @@ public class AdminDaoImpl implements AdminDao {
 	public void deleteRegion(String regionId) {
 
 		try {
+			Transaction transaction = null;
+			try (Session session = factory.openSession()) {
+				transaction = session.beginTransaction();
+				RegionsEntity region = session.get(RegionsEntity.class, regionId);
+				if (region != null) {
+					session.delete(region);
+					transaction.commit();
+				} else {
+					throw new ResourceNotFoundException("Region not found to delete with id = " + regionId);
+				}
 
+			} catch (ResourceNotFoundException e) {
+				e.printStackTrace();
+				logger.error("Region not found to delete with id {}", regionId);
+				throw new ResourceNotFoundException("Data not found to delete with id = " + regionId);
+			}
 		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error("Exception occurred during delete region {}", regionId);
+			throw new SomethingWentWrongException("Something went wrong during delete region with id = " + regionId);
 		}
 
 	}

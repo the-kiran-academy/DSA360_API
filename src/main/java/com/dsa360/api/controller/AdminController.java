@@ -171,7 +171,7 @@ public class AdminController {
 	@GetMapping("/get-all-dsa-ids")
 	public ResponseEntity<List<String>> getAllDsaIds() {
 
-		List<String> allApprovedDsa = dsaService.getAllApprovedDsa();
+		List<String> allApprovedDsa = dsaService.getAllApprovedDsaWithNoSystemUser();
 		return new ResponseEntity<>(allApprovedDsa, HttpStatus.OK);
 
 	}

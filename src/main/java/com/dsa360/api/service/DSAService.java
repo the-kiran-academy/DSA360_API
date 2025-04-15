@@ -19,6 +19,7 @@ public interface DSAService {
 	public abstract List<DSAApplicationDTO> getAllDsaApplication(); //admin, subadmin
 	
 	public abstract List<String> getAllApprovedDsa();
+	public abstract List<String> getAllApprovedDsaWithNoSystemUser();
 
 	public abstract String notifyReview(String registrationId, String approvalStatus, String type);// subadmin
 

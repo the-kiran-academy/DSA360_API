@@ -182,4 +182,9 @@ public class DSAServiceImpl implements DSAService {
 		return dao.getAllApprovedDsa();
 	}
 
+	@Override
+	public List<String> getAllApprovedDsaWithNoSystemUser() {
+		return dao.getAllApprovedDsaWithNoSystemUser();
+	}
+
 }

@@ -1,5 +1,6 @@
 package com.dsa360.api.entity;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -17,16 +18,24 @@ import lombok.NoArgsConstructor;
 @Table(name = "customer_documents")
 public class DocumentEntity extends BaseEntity {
 
-    @Id
-    private String id;
+	@Id
+	@Column(name = "id", nullable = false, updatable = false)
+	private String id;
 
-    private String documentName;
-    private String documentType; // e.g., "ID Proof", "Income Proof"
-    private String status; // e.g., "Uploaded", "Verified", "Rejected"
+	@Column(name = "document_name", nullable = false, length = 100)
+	private String documentName;
 
-    // Many Documents belong to one Customer
-    @ManyToOne
-    @JoinColumn(name = "customer_id", nullable = false)
-    private CustomerEntity customer;
+	@Column(name = "comment", nullable = false, columnDefinition = "TEXT")
+	private String comment;
+
+	@Column(name = "document_type", nullable = false, length = 50)
+	private String documentType; // e.g., "ID Proof", "Income Proof"
+
+	@Column(name = "status", nullable = false, length = 20)
+	private String status; // e.g., "Uploaded", "Verified", "Rejected"
+
+	@ManyToOne
+	@JoinColumn(name = "customer_id", nullable = false)
+	private CustomerEntity customer;
 
 }

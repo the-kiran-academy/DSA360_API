@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 
 import com.dsa360.api.dao.CustomerDao;
 import com.dsa360.api.dto.DocumentDTO;
+import com.dsa360.api.entity.ContactUsEntity;
 import com.dsa360.api.entity.CustomerEntity;
 import com.dsa360.api.entity.DocumentEntity;
 import com.dsa360.api.entity.LoanApplicationEntity;
@@ -122,6 +123,20 @@ public class CustomerDaoImpl implements CustomerDao {
 	public void deleteDocument(String customerId, String documentId) {
 		throw new UnsupportedOperationException();
 
+	}
+
+	@Override
+	public String contactUs(ContactUsEntity contactUsEntity) {
+		try (Session session = sessionFactory.openSession()) {
+			session.save(contactUsEntity);
+			session.beginTransaction().commit();
+			return "Data saved successfully";
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error("Exception occurred during contact us {}", contactUsEntity.getId());
+			throw new SomethingWentWrongException("Exception occurred during contact us " + contactUsEntity.getId());
+		}
+		
 	}
 
 }

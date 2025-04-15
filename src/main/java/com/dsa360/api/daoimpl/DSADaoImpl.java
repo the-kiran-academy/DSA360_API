@@ -274,4 +274,38 @@ public class DSADaoImpl implements DSADao {
 		return dsaIdList;
 	}
 
+	@Override
+	public List<String> getAllApprovedDsaWithNoSystemUser() {
+		List<String> dsaIdList = null;
+		try (Session session = factory.openSession()) {
+
+			Criteria criteria = session.createCriteria(DSAApplicationEntity.class);
+			criteria.setProjection(Projections.property("dsaApplicationId"));
+			criteria.add(Restrictions.and(Restrictions.eq("approvalStatus", "Approved"),
+					Restrictions.eq("emailVerified", true)));
+			dsaIdList = criteria.list();
+			// restriction for check is this system user
+			Criteria criteria2 = session.createCriteria(SystemUserEntity.class)
+				    .setProjection(Projections.property("dsaApplicationId.dsaApplicationId")) // Extracting ID from the entity
+				    .add(Restrictions.isNotNull("dsaApplicationId"));
+
+				List<String> dsaIDs = criteria2.list();
+			
+			
+			System.out.println("********  IDSSSSSSS *******************");
+			for (String string : dsaIDs) {
+				System.out.println(string);
+			}
+
+			dsaIdList.removeAll(dsaIDs);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error("Exception occurred during email verification ", e);
+			throw new SomethingWentWrongException("Something went wrong  during email verification ");
+
+		}
+		return dsaIdList;
+	}
+
 }
