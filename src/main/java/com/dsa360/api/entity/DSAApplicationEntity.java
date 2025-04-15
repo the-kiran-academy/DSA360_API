@@ -9,14 +9,16 @@ import com.dsa360.api.constants.ApprovalStatus;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @Data
+@EqualsAndHashCode(callSuper = false)
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
 @Table(name = "dsa_application")
-public class DSAApplicationEntity {
+public class DSAApplicationEntity extends  BaseEntity{
 	@Id   // DSA-2025-VC652345
 	@Column(nullable = false, unique = true)
 	private String dsaApplicationId;;

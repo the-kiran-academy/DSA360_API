@@ -7,6 +7,7 @@ import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 /**
@@ -15,9 +16,10 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "regions")
 @Data
+@EqualsAndHashCode(callSuper = false)
 @NoArgsConstructor
 @AllArgsConstructor
-public class RegionsEntity {
+public class RegionsEntity extends  BaseEntity{
 
 	@Id
 	private String id;
