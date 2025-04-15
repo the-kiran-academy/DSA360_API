@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "customer_documents")
-public class DocumentEntity {
+public class DocumentEntity extends BaseEntity {
 
     @Id
     private String id;

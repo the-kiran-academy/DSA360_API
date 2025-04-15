@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "loan_condition")
-public class LoanConditioEntity {
+public class LoanConditioEntity extends BaseEntity {
 
 	@Id
 	private Long id;
