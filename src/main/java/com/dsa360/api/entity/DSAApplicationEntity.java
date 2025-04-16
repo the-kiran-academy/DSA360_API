@@ -6,17 +6,21 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import com.dsa360.api.constants.ApprovalStatus;
+import com.fasterxml.jackson.databind.deser.Deserializers.Base;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
 @Table(name = "dsa_application")
-public class DSAApplicationEntity {
+public class DSAApplicationEntity extends BaseEntity {
 	@Id // 17 digit timestamp
 	@Column(nullable = false, unique = true)
 	private String dsaApplicationId;;

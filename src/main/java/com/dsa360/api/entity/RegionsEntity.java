@@ -17,7 +17,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class RegionsEntity {
+public class RegionsEntity  extends BaseEntity{
 
 	@Id
 	private String id;
