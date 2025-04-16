@@ -1,5 +1,7 @@
 package com.dsa360.api.entity;
 
+import java.time.LocalDateTime;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -14,7 +16,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class DsaKycEntity {
+public class DsaKycEntity extends BaseEntity{
 
 	@Id
 	private String dsaKycId;
@@ -37,5 +39,6 @@ public class DsaKycEntity {
 
 	private String approvalStatus;
 	private int attempt=1;
+	
 
 }

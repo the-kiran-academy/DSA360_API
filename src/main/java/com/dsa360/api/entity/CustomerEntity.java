@@ -7,43 +7,40 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import org.hibernate.annotations.BatchSize;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @Entity
+@Table(name = "customers")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "customers")
-public class CustomerEntity {
+@EqualsAndHashCode(callSuper = true)
+public class CustomerEntity extends BaseEntity {
 
-	@Id
-	private String id;
+    @Id
+    private String id;
 
-	private String name;
-	private String email;
-	private String phoneNumber;
-	private String permanentAddress;
-	private String currentAddress;
+    private String name;
+    private String email;
+    private String phoneNumber;
+    private String permanentAddress;
+    private String currentAddress;
 
-	// Many Customers belong to one DSAAgent
-	@ManyToOne
-	@JoinColumn(name = "dsa_agent_id", nullable = false)
-	private DSAApplicationEntity dsaAgentId;
+    // Many Customers belong to one DSAAgent
+    @ManyToOne
+    @JoinColumn(name = "dsa_agent_id", nullable = false)
+    private DSAApplicationEntity dsaAgent;
 
-	@OneToMany(mappedBy = "customer",fetch = FetchType.LAZY)
-	private Set<LoanApplicationEntity> loanApplications;
+    @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY)
+    private Set<LoanApplicationEntity> loanApplications;
 
-	@OneToMany(mappedBy = "customer", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-	private Set<DocumentEntity> documents;
-
-
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<DocumentEntity> documents;
 }

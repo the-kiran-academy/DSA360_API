@@ -1,6 +1,7 @@
 package com.dsa360.api.entity;
 
 import java.sql.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -31,7 +32,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class SystemUserEntity {
+public class SystemUserEntity extends BaseEntity{
 
 	@Id
 	@Column(name = "user_name", unique = true, nullable = false)
@@ -45,6 +46,8 @@ public class SystemUserEntity {
 
 	@Column(name = "answer", nullable = false)
 	private String answer;
+	
+	
 
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	@JsonFormat(pattern = "yyyy-MM-dd")

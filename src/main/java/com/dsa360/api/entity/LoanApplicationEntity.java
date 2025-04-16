@@ -2,6 +2,7 @@ package com.dsa360.api.entity;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -19,7 +20,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Entity
 @Table(name = "loan_applications")
-public class LoanApplicationEntity {
+public class LoanApplicationEntity extends BaseEntity{
 
     @Id
     private String id; // Loan application ID as String
@@ -68,4 +69,6 @@ public class LoanApplicationEntity {
 
     @Column(name = "rejection_reason")
     private String rejectionReason; // Reason for rejection (if applicable)
+    
+   
 }

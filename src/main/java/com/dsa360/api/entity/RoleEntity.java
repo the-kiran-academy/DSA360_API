@@ -1,5 +1,7 @@
 package com.dsa360.api.entity;
 
+import java.time.LocalDateTime;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -17,9 +19,10 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class RoleEntity {
+public class RoleEntity extends BaseEntity {
 	@Id
 	private String id;
+
 
 	@Column(name = "name", nullable = false, unique = true)
 	private String name;

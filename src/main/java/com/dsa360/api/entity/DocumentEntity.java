@@ -8,14 +8,16 @@ import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @Entity
+//@EqualsAndHashCode(callSuper = false)
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "customer_documents")
-public class DocumentEntity {
+public class DocumentEntity extends BaseEntity {
 
     @Id
     private String id;
@@ -23,6 +25,7 @@ public class DocumentEntity {
     private String documentName;
     private String documentType; // e.g., "ID Proof", "Income Proof"
     private String status; // e.g., "Uploaded", "Verified", "Rejected"
+    
 
     // Many Documents belong to one Customer
     @ManyToOne

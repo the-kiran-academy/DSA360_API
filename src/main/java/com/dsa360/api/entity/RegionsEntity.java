@@ -1,5 +1,7 @@
 package com.dsa360.api.entity;
 
+import java.time.LocalDateTime;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -17,7 +19,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class RegionsEntity {
+public class RegionsEntity extends BaseEntity{
 
 	@Id
 	private String id;
@@ -27,6 +29,8 @@ public class RegionsEntity {
 
 	@Column(name = "region_code", nullable = false, unique = true)
 	private String regionCode;
+	
+	
 
 	public RegionsEntity(String id) {
 		this.id = id;

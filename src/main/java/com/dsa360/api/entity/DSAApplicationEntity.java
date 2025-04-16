@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Entity
 @Table(name = "dsa_application")
-public class DSAApplicationEntity {
+public class DSAApplicationEntity extends BaseEntity{
 	@Id // 17 digit timestamp
 	@Column(nullable = false, unique = true)
 	private String dsaApplicationId;;
@@ -85,5 +85,7 @@ public class DSAApplicationEntity {
 	
 	@Column(nullable = false)
 	private String approvalStatus = ApprovalStatus.PENDING.getValue();
+	
+	
 
 }

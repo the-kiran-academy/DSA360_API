@@ -1,5 +1,7 @@
 package com.dsa360.api.entity;
 
+import java.time.LocalDateTime;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -14,7 +16,7 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "loan_condition")
-public class LoanConditioEntity {
+public class LoanConditioEntity extends BaseEntity{
 
 	@Id
 	private Long id;
@@ -24,4 +26,6 @@ public class LoanConditioEntity {
 	private double interestRate;
 	private String minCreditScore;
 	private double processingFee;
+
 }
+
