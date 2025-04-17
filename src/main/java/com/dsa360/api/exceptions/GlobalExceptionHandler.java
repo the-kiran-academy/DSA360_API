@@ -48,7 +48,6 @@ public class GlobalExceptionHandler {
 	}
 
 	
-
 	@ResponseStatus(code = HttpStatus.INTERNAL_SERVER_ERROR)
 	@ExceptionHandler(ConstraintViolationException.class)
 	public HashMap<String, Object> constraintViolationException(ConstraintViolationException ex) {

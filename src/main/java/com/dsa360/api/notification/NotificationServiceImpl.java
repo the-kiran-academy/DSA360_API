@@ -63,7 +63,7 @@ public class NotificationServiceImpl implements NotificationService {
 			context.setVariable(General.CONTACT_INFO.getValue(), contactInfo);
 
 			String text = templateEngine.process("dsa-registration", context);
-
+			
 			helper.setFrom(sender, "DSA 360 Solution");
 			helper.setTo(to);
 			helper.setSubject("Welcome to DSA 360 Solution: DSA Registration Confirmed!");
