@@ -30,6 +30,11 @@ public class FileStorageUtility {
 		this.kycRootLocation = Paths.get(kycUploadDir).toAbsolutePath().normalize();
 		this.customerRootLocation = Paths.get(customerUploadDir).toAbsolutePath().normalize();
 	}
+	
+	//added getter to get the path
+	public Path getKycRootLocation() {
+	    return this.kycRootLocation;
+	}
 
 	public List<Path> storeKYCFiles(String dsaApplicationId, MultipartFile... files) {
 		Path targetDir = this.kycRootLocation.resolve(dsaApplicationId);
