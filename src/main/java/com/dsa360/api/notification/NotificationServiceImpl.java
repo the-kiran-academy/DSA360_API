@@ -1,6 +1,10 @@
 package com.dsa360.api.notification;
 
+import java.io.File;
 import java.io.UnsupportedEncodingException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,6 +27,8 @@ import com.dsa360.api.dto.DSAApplicationDTO;
 import com.dsa360.api.entity.RegionsEntity;
 import com.dsa360.api.entity.RoleEntity;
 import com.dsa360.api.exceptions.SomethingWentWrongException;
+import com.dsa360.api.utility.FileStorageUtility;
+import org.springframework.core.io.FileSystemResource;
 
 /**
  * @author RAM
@@ -78,39 +84,74 @@ public class NotificationServiceImpl implements NotificationService {
 		}
 
 	}
+	
+	@Autowired
+	private FileStorageUtility fileStorageUtility;
 
 	@Override
 	public void dsaKycConfirmationMail(String to, String kycId, String dsaId, String dsaName, String contact,
-			String address, List<String> docs) {
-		try {
-			MimeMessage message = mailSender.createMimeMessage();
-			MimeMessageHelper helper = new MimeMessageHelper(message, true);
+	        String address, List<String> docs) {
+	    try {
+	        MimeMessage message = mailSender.createMimeMessage();
+	        MimeMessageHelper helper = new MimeMessageHelper(message, true);
 
-			Context context = new Context();
-			context.setVariable(General.DSA_NAME.getValue(), dsaName);
-			context.setVariable(General.DSA_ID.getValue(), dsaId);
-			context.setVariable("kycId", kycId);
-			context.setVariable("registeredName", dsaName);
-			context.setVariable("email", to);
-			context.setVariable("contactNumber", contact);
-			context.setVariable("address", address);
-			context.setVariable("docs", docs);
+	        // Context setup for Thymeleaf template
+	        Context context = new Context();
+	        context.setVariable(General.DSA_NAME.getValue(), dsaName);
+	        context.setVariable(General.DSA_ID.getValue(), dsaId);
+	        context.setVariable("kycId", kycId);
+	        context.setVariable("registeredName", dsaName);
+	        context.setVariable("email", to);
+	        context.setVariable("contactNumber", contact);
+	        context.setVariable("address", address);
 
-			String html = templateEngine.process("kyc_submission", context);
+	        // Prepare document image CIDs and add them inline
+//	        List<String> docImageCids = new ArrayList<>();
+//	        for (int i = 0; i < docs.size(); i++) {
+//	            String cid = "docImg" + i;
+//	            docImageCids.add(cid);
+//
+//	            Path filePath = fileStorageUtility.getKycRootLocation().resolve(dsaId).resolve(docs.get(i));
+//	            File file = filePath.toFile();
+//
+//	            if (file.exists()) {
+//	                //Highlighted: Inline image added (CID-based)
+//	                helper.addInline(cid, new FileSystemResource(file)); 
+//	            } else {
+//	                System.err.println("File not found: " + file.getAbsolutePath());
+//	            }
+//	        }
+	        
+	        for (String doc : docs) {
+	            Path filePath = fileStorageUtility.getKycRootLocation().resolve(dsaId).resolve(doc);
+	            File file = filePath.toFile();
+	            if (file.exists()) {
+	                helper.addAttachment(file.getName(), new FileSystemResource(file));
+	            } else {
+	                System.err.println("File not found: " + file.getAbsolutePath());
+	            }
+	        }
 
-			helper.setFrom(sender, "DSA 360 Solution");
-			helper.setTo(to);
-			helper.setSubject("KYC Submission Confirmed - " + dsaId);
-			helper.setText(html, true);
+	        // Add CID list to context for embedding in HTML
+	        //context.setVariable("docImageCids", docImageCids);
 
-			mailSender.send(message);
-		} catch (MailSendException | MailAuthenticationException | MessagingException
-				| UnsupportedEncodingException e) {
+	        // Process the Thymeleaf HTML template
+	        String html = templateEngine.process("kyc_submission", context);
 
-			throw new SomethingWentWrongException("Failed to send the email", e);
+	        // Send as HTML
+	        helper.setFrom(sender, "DSA 360 Solution");
+	        helper.setTo(to);
+	        helper.setSubject("KYC Submission Confirmed - " + dsaId);
+	        helper.setText(html, true); // must be true for HTML
+        	        
 
-		}
+	        
 
+	        mailSender.send(message);
+	    } catch (MailSendException | MailAuthenticationException | MessagingException
+	            | UnsupportedEncodingException e) {
+	        throw new SomethingWentWrongException("Failed to send the email", e);
+	    }
 	}
 
 	@Override
