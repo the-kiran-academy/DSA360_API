@@ -161,7 +161,7 @@ public class DSADaoImpl implements DSADao {
 			FileStorageUtility.revokeAllFiles(storedFilePaths);
 			e.printStackTrace();
 			logger.error("Exception occurred during save KYC details in DB ", e);
-			throw new SomethingWentWrongException("Exception occurred during save KYC detailsin DB");
+			throw new SomethingWentWrongException("Exception occurred during save KYC details in DB");
 		}
 
 	}

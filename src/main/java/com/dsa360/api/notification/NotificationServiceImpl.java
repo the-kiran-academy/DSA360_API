@@ -1,6 +1,7 @@
 package com.dsa360.api.notification;
 
 import java.io.UnsupportedEncodingException;
+import java.nio.file.Path;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -9,6 +10,7 @@ import javax.mail.internet.MimeMessage;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.mail.MailAuthenticationException;
 import org.springframework.mail.MailSendException;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -20,6 +22,7 @@ import org.thymeleaf.context.Context;
 import com.dsa360.api.constants.General;
 import com.dsa360.api.constants.ReviewType;
 import com.dsa360.api.dto.DSAApplicationDTO;
+import com.dsa360.api.dto.DsaKycDto;
 import com.dsa360.api.entity.RegionsEntity;
 import com.dsa360.api.entity.RoleEntity;
 import com.dsa360.api.exceptions.SomethingWentWrongException;
@@ -45,7 +48,7 @@ public class NotificationServiceImpl implements NotificationService {
 
 	@Value("${server.hostname}")
 	private String host;
-	
+
 //	@Value("${ng.server}")
 //	private String ngServer;
 
@@ -63,11 +66,11 @@ public class NotificationServiceImpl implements NotificationService {
 			context.setVariable(General.CONTACT_INFO.getValue(), contactInfo);
 
 			String text = templateEngine.process("dsa-registration", context);
-			
+
 			helper.setFrom(sender, "DSA 360 Solution");
 			helper.setTo(to);
 			helper.setSubject("Welcome to DSA 360 Solution: DSA Registration Confirmed!");
-			helper.setText(text,true);
+			helper.setText(text, true);
 
 			mailSender.send(message);
 		} catch (MailSendException | MailAuthenticationException | MessagingException
@@ -81,7 +84,7 @@ public class NotificationServiceImpl implements NotificationService {
 
 	@Override
 	public void dsaKycConfirmationMail(String to, String kycId, String dsaId, String dsaName, String contact,
-			String address, List<String> docs) {
+			String address, List<String> docs, List<Path> storedFilePaths) {
 		try {
 			MimeMessage message = mailSender.createMimeMessage();
 			MimeMessageHelper helper = new MimeMessageHelper(message, true);
@@ -95,13 +98,18 @@ public class NotificationServiceImpl implements NotificationService {
 			context.setVariable("contactNumber", contact);
 			context.setVariable("address", address);
 			context.setVariable("docs", docs);
-
+			context.setVariable("kyc", storedFilePaths);
+			
 			String html = templateEngine.process("kyc_submission", context);
 
 			helper.setFrom(sender, "DSA 360 Solution");
 			helper.setTo(to);
 			helper.setSubject("KYC Submission Confirmed - " + dsaId);
 			helper.setText(html, true);
+			 for (Path path : storedFilePaths) {
+		            FileSystemResource file = new FileSystemResource(path.toFile());
+		            helper.addAttachment(path.getFileName().toString(), file);
+		        }
 
 			mailSender.send(message);
 		} catch (MailSendException | MailAuthenticationException | MessagingException
@@ -114,7 +122,7 @@ public class NotificationServiceImpl implements NotificationService {
 	}
 
 	@Override
-	public void dsaReviewMail(String to, String dsaName, String reviewStatus, String type,String dsaId) {
+	public void dsaReviewMail(String to, String dsaName, String reviewStatus, String type, String dsaId) {
 		String html = null;
 		try {
 			MimeMessage message = mailSender.createMimeMessage();
@@ -125,12 +133,12 @@ public class NotificationServiceImpl implements NotificationService {
 			context.setVariable("reviewStatus", reviewStatus);
 			context.setVariable("dsaId", dsaId);
 			if (ReviewType.APPLICATION.getValue().equals(type)) {
-				
+
 				html = templateEngine.process("applicatiion_review", context);
 				helper.setSubject("DSA Application : " + reviewStatus);
 
 			} else if (ReviewType.KYC.getValue().equals(type)) {
-				
+
 				html = templateEngine.process("kyc_review", context);
 				helper.setSubject("DSA KYC : " + reviewStatus);
 
@@ -200,7 +208,7 @@ public class NotificationServiceImpl implements NotificationService {
 			context.setVariable("dsaName", dsaName);
 			context.setVariable("dsaId", dsaId);
 			context.setVariable("email", emailTo);
-            String url = "http://" + host + ":" + port + "/public/verify-email/" + dsaId + "?token=" + token;
+			String url = "http://" + host + ":" + port + "/public/verify-email/" + dsaId + "?token=" + token;
 			context.setVariable("url", url);
 
 			String html = templateEngine.process("email-verification", context);

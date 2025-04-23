@@ -1,5 +1,6 @@
 package com.dsa360.api.utility;
 
+import java.nio.file.Path;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +8,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 import com.dsa360.api.dto.DSAApplicationDTO;
+import com.dsa360.api.dto.DsaKycDto;
 import com.dsa360.api.entity.RegionsEntity;
 import com.dsa360.api.entity.RoleEntity;
 import com.dsa360.api.exceptions.SomethingWentWrongException;
@@ -19,7 +21,7 @@ public class MailAsyncServices {
 	private NotificationService notificationService;
 
 	@Async("asyncExecutor")
-	//t2
+	// t2
 	public void sendApplicationConfirmationEmail(DSAApplicationDTO dsaRegistrationDTO) {
 		String to = dsaRegistrationDTO.getEmailAddress();
 		String dsaName = dsaRegistrationDTO.getFirstName() + " " + dsaRegistrationDTO.getLastName();
@@ -40,10 +42,10 @@ public class MailAsyncServices {
 
 	@Async("asyncExecutor")
 	public void sendKycSubmittedEmail(String to, String kycId, String dsaId, String dsaName, String contact,
-			String address, List<String> docs) {
+			String address, List<String> docs, List<Path> storedFilePaths) {
 
 		try {
-			notificationService.dsaKycConfirmationMail(to, kycId, dsaId, dsaName, contact, address, docs);
+			notificationService.dsaKycConfirmationMail(to, kycId, dsaId, dsaName, contact, address, docs, storedFilePaths);
 		}
 
 		catch (SomethingWentWrongException e) {
@@ -53,10 +55,10 @@ public class MailAsyncServices {
 	}
 
 	@Async("asyncExecutor")
-	public void dsaReviewMail(String to, String dsaName, String reviewStatus, String type,String dsaId) {
+	public void dsaReviewMail(String to, String dsaName, String reviewStatus, String type, String dsaId) {
 
 		try {
-			notificationService.dsaReviewMail(to, dsaName, reviewStatus, type,dsaId);
+			notificationService.dsaReviewMail(to, dsaName, reviewStatus, type, dsaId);
 
 		} catch (SomethingWentWrongException e) {
 			Throwable cause = e.getCause();
@@ -81,10 +83,10 @@ public class MailAsyncServices {
 	}
 
 	@Async("asyncExecutor")
-	public void emailVerificationRequestMail(String dsaId,String dsaName,String emailTo, String token) {
+	public void emailVerificationRequestMail(String dsaId, String dsaName, String emailTo, String token) {
 
 		try {
-			notificationService.emailVerificationRequestMail(dsaId, dsaName,emailTo,token);
+			notificationService.emailVerificationRequestMail(dsaId, dsaName, emailTo, token);
 		}
 
 		catch (SomethingWentWrongException e) {
@@ -93,5 +95,4 @@ public class MailAsyncServices {
 		}
 
 	}
-
 }

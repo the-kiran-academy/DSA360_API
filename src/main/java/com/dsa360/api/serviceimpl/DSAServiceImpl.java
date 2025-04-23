@@ -95,7 +95,7 @@ public class DSAServiceImpl implements DSAService {
 				kycId = DynamicID.generateUniqueId("KYC", dsaApplication.getFirstName(), dsaApplication.getLastName());
 				kyc_DTO.setDsaKycId(kycId);
 			} else {
-				kycId=dsaKyc.getDsaKycId();
+				kycId = dsaKyc.getDsaKycId();
 				kyc_DTO.setDsaKycId(kycId);
 				kyc_DTO.setAttempt(dsaKyc.getAttempt() + 1);
 			}
@@ -123,7 +123,7 @@ public class DSAServiceImpl implements DSAService {
 		mailAsyncServices.sendKycSubmittedEmail(dsaApplication.getEmailAddress(), kycId,
 				dsaApplication.getDsaApplicationId(),
 				dsaApplication.getFirstName() + " " + dsaApplication.getLastName(), dsaApplication.getContactNumber(),
-				dsaApplication.getStreetAddress(), docs);
+				dsaApplication.getStreetAddress(), docs, storedFilePaths);
 
 		return "KYC Submitted";
 	}
