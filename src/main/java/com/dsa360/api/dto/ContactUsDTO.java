@@ -20,7 +20,7 @@ public class ContactUsDTO {
 
     @NotBlank(message = "Mobile number cannot be blank")
     @Pattern(regexp = "\\d{10}", message = "Mobile number must be 10 digits")
-    private String mobile_number;
+    private String mobileNumber;
 
     @NotBlank(message = "Message cannot be blank")
     @Size(max = 500, message = "Message cannot exceed 500 characters")
@@ -29,11 +29,11 @@ public class ContactUsDTO {
     public ContactUsDTO() {
     }
 
-    public ContactUsDTO(String id, String name, String email, String mobile_number, String message) {
+    public ContactUsDTO(String id, String name, String email, String mobileNumber, String message) {
         this.id = id;
         this.name = name;
         this.email = email;
-        this.mobile_number = mobile_number;
+        this.mobileNumber = mobileNumber;
         this.message = message;
     }
 
@@ -61,12 +61,12 @@ public class ContactUsDTO {
         this.email = email;
     }
 
-    public String getMobile_number() {
-        return mobile_number;
+    public String getmobileNumber() {
+        return mobileNumber;
     }
 
-    public void setMobile_number(String mobile_number) {
-        this.mobile_number = mobile_number;
+    public void setmobileNumber(String mobileNumber) {
+        this.mobileNumber = mobileNumber;
     }
 
     public String getMessage() {

@@ -117,15 +117,15 @@ public class DSADaoImpl implements DSADao {
 				}
 
 			} else if (ReviewType.KYC.getValue().equals(type)) {
-				DsaKycEntity dsa_KYC_Entity = session.get(DsaKycEntity.class, id);
+				DsaKycEntity dsaKycEntity = session.get(DsaKycEntity.class, id);
 
-				if (dsa_KYC_Entity != null) {
+				if (dsaKycEntity != null) {
 					transaction = session.beginTransaction();
-					dsa_KYC_Entity.setApprovalStatus(approvalStatus);
-					session.update(dsa_KYC_Entity);
+					dsaKycEntity.setApprovalStatus(approvalStatus);
+					session.update(dsaKycEntity);
 					transaction.commit();
 
-					return getDSAById(dsa_KYC_Entity.getDsaApplicationId().getDsaApplicationId());
+					return getDSAById(dsaKycEntity.getDsaApplicationId().getDsaApplicationId());
 				} else {
 					throw new ResourceNotFoundException(dataNotFound);
 				}
@@ -145,12 +145,12 @@ public class DSADaoImpl implements DSADao {
 	}
 
 	@Override
-	public boolean systemUserKyc(DsaKycEntity dsa_KYC_Entity, List<Path> storedFilePaths) {
+	public boolean systemUserKyc(DsaKycEntity dsaKycEntity, List<Path> storedFilePaths) {
 		Transaction transaction = null;
 		try (Session session = factory.openSession()) {
 			transaction = session.beginTransaction();
 
-			session.saveOrUpdate(dsa_KYC_Entity);
+			session.saveOrUpdate(dsaKycEntity);
 			transaction.commit();
 			return true;
 		}

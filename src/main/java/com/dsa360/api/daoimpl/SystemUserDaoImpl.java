@@ -54,15 +54,15 @@ public class SystemUserDaoImpl implements SystemUserDao {
 	}
 
 	@Override
-	public SystemUserEntity getSystemUserByUsername(String username) {
+	public SystemUserEntity getSystemUserByUserName(String userName) {
 
 		try (Session session = factory.openSession()) {
-			return session.get(SystemUserEntity.class, username);
+			return session.get(SystemUserEntity.class, userName);
 
 		} catch (Exception e) {
 			e.printStackTrace();
-			log.error("Exception occurred during get system user with username = " + username, e);
-			throw new SomethingWentWrongException("Something went wrong during retrive user = " + username);
+			log.error("Exception occurred during get system user with username = " + userName, e);
+			throw new SomethingWentWrongException("Something went wrong during retrive user = " + userName);
 		}
 
 	}

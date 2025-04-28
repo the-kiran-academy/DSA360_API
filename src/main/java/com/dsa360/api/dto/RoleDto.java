@@ -22,5 +22,18 @@ public class RoleDto {
 	@Size(min = 3, max = 30, message = "Role name should be between 3 and 30 characters")
 	@Pattern(regexp = "^[A-Z_]+$", message = "Role name should contain only uppercase letters and underscores (e.g., ADMIN, USER_ROLE)")
 	private String name;
-
+	public String getId() {
+		return id;
+	}
+	public void setId(String id) {
+		this.id = id;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	
+	
 }

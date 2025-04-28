@@ -68,10 +68,10 @@ public class SystemUserServiceImpl implements SystemUserService {
 	}
 
 	@Override
-	public SystemUserEntity getSystemUserByUsername(String username) {
-		SystemUserEntity userEntity = dao.getSystemUserByUsername(username);
+	public SystemUserEntity getSystemUserByUsername(String userName) {
+		SystemUserEntity userEntity = dao.getSystemUserByUserName(userName);
 		if (userEntity == null) {
-			throw new ResourceNotFoundException("User not found with username = " + username);
+			throw new ResourceNotFoundException("User not found with username = " + userName);
 		}
 		return userEntity;
 	}

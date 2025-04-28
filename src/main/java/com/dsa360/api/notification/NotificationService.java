@@ -20,7 +20,7 @@ public interface NotificationService {
 	public void dsaKycConfirmationMail(String to, String kycId, String dsaId, String dsaName, String contact,
 			String address, List<String> docs);
 
-	public void userProfileCreatedConfirmationMail(DSAApplicationDTO dsaById, String username, String password,
+	public void userProfileCreatedConfirmationMail(DSAApplicationDTO dsaById, String userName, String password,
 			List<RoleEntity> roleEntity, List<RegionsEntity> regionsEntity);
 
 	public void emailVerificationRequestMail(String dsaId, String dsaName, String emailTo, String token);

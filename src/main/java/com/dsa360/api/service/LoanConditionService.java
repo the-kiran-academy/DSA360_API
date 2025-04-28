@@ -10,7 +10,7 @@ public interface LoanConditionService {
 
     LoanConditionDto getLoanConditionById(String id);
     
-    LoanConditionDto getLoanConditionByBank_Loantype(String bankName,String loanType);
+    LoanConditionDto getLoanConditionByBankLoanType(String bankName,String loanType);
 
     List<LoanConditionDto> getAllLoanConditions();
 

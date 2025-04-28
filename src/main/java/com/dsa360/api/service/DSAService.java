@@ -23,7 +23,7 @@ public interface DSAService {
 
 	public abstract String notifyReview(String registrationId, String approvalStatus, String type);// subadmin
 
-	public abstract String systemUserKyc(DsaKycDto kyc_DTO); //public
+	public abstract String systemUserKyc(DsaKycDto kycDto); //public
 	
 	public abstract DsaKycEntity getDsaKycByDsaId(String dsaRegistrationId);// subadmin
 	

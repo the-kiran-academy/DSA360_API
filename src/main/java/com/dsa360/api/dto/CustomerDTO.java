@@ -43,4 +43,60 @@ public class CustomerDTO {
 	private String dsaAgentId;
 	private List<DocumentDTO> documents;
 	private List<LoanApplicationDTO> loanApplications;
+	public String getId() {
+		return id;
+	}
+	public void setId(String id) {
+		this.id = id;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public String getEmail() {
+		return email;
+	}
+	public void setEmail(String email) {
+		this.email = email;
+	}
+	public String getPhoneNumber() {
+		return phoneNumber;
+	}
+	public void setPhoneNumber(String phoneNumber) {
+		this.phoneNumber = phoneNumber;
+	}
+	public String getPermanentAddress() {
+		return permanentAddress;
+	}
+	public void setPermanentAddress(String permanentAddress) {
+		this.permanentAddress = permanentAddress;
+	}
+	public String getCurrentAddress() {
+		return currentAddress;
+	}
+	public void setCurrentAddress(String currentAddress) {
+		this.currentAddress = currentAddress;
+	}
+	public String getDsaAgentId() {
+		return dsaAgentId;
+	}
+	public void setDsaAgentId(String dsaAgentId) {
+		this.dsaAgentId = dsaAgentId;
+	}
+	public List<DocumentDTO> getDocuments() {
+		return documents;
+	}
+	public void setDocuments(List<DocumentDTO> documents) {
+		this.documents = documents;
+	}
+	public List<LoanApplicationDTO> getLoanApplications() {
+		return loanApplications;
+	}
+	public void setLoanApplications(List<LoanApplicationDTO> loanApplications) {
+		this.loanApplications = loanApplications;
+	}
+	
+	
 }

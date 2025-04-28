@@ -190,7 +190,7 @@ public class NotificationServiceImpl implements NotificationService {
 	}
 
 	@Override
-	public void userProfileCreatedConfirmationMail(DSAApplicationDTO dsaById, String username, String password,
+	public void userProfileCreatedConfirmationMail(DSAApplicationDTO dsaById, String userName, String password,
 			List<RoleEntity> allRoleByIds, List<RegionsEntity> allRegionsByIds) {
 
 		try {
@@ -208,7 +208,7 @@ public class NotificationServiceImpl implements NotificationService {
 
 			context.setVariable("dsaName", fullName);
 			context.setVariable("dsaId", dsaById.getDsaApplicationId());
-			context.setVariable("username", username);
+			context.setVariable("username", userName);
 			context.setVariable("password", password);
 			context.setVariable("roles", roles);
 			context.setVariable("regions", regions);

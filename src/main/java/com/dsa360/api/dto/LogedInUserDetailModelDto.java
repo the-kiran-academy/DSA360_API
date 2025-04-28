@@ -8,7 +8,7 @@ import java.util.List;
  */
 public class LogedInUserDetailModelDto {
 
-	private String username;
+	private String userName;
 	private List<String> roles;
 	private String status;
 	private String token;
@@ -17,33 +17,33 @@ public class LogedInUserDetailModelDto {
 		// Default constructor
 	}
 
-	public LogedInUserDetailModelDto(String username, List<String> roles, String status) {
+	public LogedInUserDetailModelDto(String userName, List<String> roles, String status) {
 		super();
-		this.username = username;
+		this.userName = userName;
 		this.roles = roles;
 		this.status = status;
 	}
 
-	public LogedInUserDetailModelDto(String username, List<String> roles, String status, String token) {
+	public LogedInUserDetailModelDto(String userName, List<String> roles, String status, String token) {
 		super();
-		this.username = username;
+		this.userName = userName;
 		this.roles = roles;
 		this.status = status;
 		this.token = token;
 	}
 
-	public LogedInUserDetailModelDto(String username, List<String> roles) {
+	public LogedInUserDetailModelDto(String userName, List<String> roles) {
 		super();
-		this.username = username;
+		this.userName = userName;
 		this.roles = roles;
 	}
 
-	public String getUsername() {
-		return username;
+	public String getuserName() {
+		return userName;
 	}
 
-	public void setUsername(String username) {
-		this.username = username;
+	public void setuserName(String userName) {
+		this.userName = userName;
 	}
 
 	public List<String> getRoles() {

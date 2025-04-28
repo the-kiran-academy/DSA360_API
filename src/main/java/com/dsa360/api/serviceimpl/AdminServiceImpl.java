@@ -76,7 +76,7 @@ public class AdminServiceImpl implements AdminService {
 
 			// mail confirmation
 
-			String username = userDto.getUsername();
+			String username = userDto.getuserName();
 
 			mailAsyncServices.userProfileCreatedConfirmationMail(dsaById, username, password, allRoleByIds,
 					allRegionsByIds);

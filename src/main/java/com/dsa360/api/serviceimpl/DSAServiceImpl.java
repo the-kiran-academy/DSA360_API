@@ -85,30 +85,30 @@ public class DSAServiceImpl implements DSAService {
 	}
 
 	@Override
-	public String systemUserKyc(DsaKycDto kyc_DTO) {
+	public String systemUserKyc(DsaKycDto kycDto) {
 
-		DSAApplicationDTO dsaApplication = getDSAById(kyc_DTO.getDsaApplicationId());
+		DSAApplicationDTO dsaApplication = getDSAById(kycDto.getDsaApplicationId());
 		String kycId = null;
 		if (dsaApplication != null) {
-			DsaKycEntity dsaKyc = getDsaKycByDsaId(kyc_DTO.getDsaApplicationId());
+			DsaKycEntity dsaKyc = getDsaKycByDsaId(kycDto.getDsaApplicationId());
 			if (dsaKyc == null) {
 				kycId = DynamicID.generateUniqueId("KYC", dsaApplication.getFirstName(), dsaApplication.getLastName());
-				kyc_DTO.setDsaKycId(kycId);
+				kycDto.setDsaKycId(kycId);
 			} else {
 				kycId=dsaKyc.getDsaKycId();
-				kyc_DTO.setDsaKycId(kycId);
-				kyc_DTO.setAttempt(dsaKyc.getAttempt() + 1);
+				kycDto.setDsaKycId(kycId);
+				kycDto.setAttempt(dsaKyc.getAttempt() + 1);
 			}
 		} else {
-			throw new ResourceNotFoundException("Invalid DSA Application Id = " + kyc_DTO.getDsaApplicationId());
+			throw new ResourceNotFoundException("Invalid DSA Application Id = " + kycDto.getDsaApplicationId());
 		}
 
-		List<Path> storedFilePaths = fileStorageUtility.storeKYCFiles(kyc_DTO.getDsaApplicationId(),
-				kyc_DTO.getPassportFile(), kyc_DTO.getDrivingLicenceFile(), kyc_DTO.getAadharCardFile(),
-				kyc_DTO.getPanCardFile(), kyc_DTO.getPhotographFile(), kyc_DTO.getAddressProofFile(),
-				kyc_DTO.getBankPassbookFile());
+		List<Path> storedFilePaths = fileStorageUtility.storeKYCFiles(kycDto.getDsaApplicationId(),
+				kycDto.getPassportFile(), kycDto.getDrivingLicenceFile(), kycDto.getAadharCardFile(),
+				kycDto.getPanCardFile(), kycDto.getPhotographFile(), kycDto.getAddressProofFile(),
+				kycDto.getBankPassbookFile());
 
-		DsaKycEntity entity = (DsaKycEntity) converter.dtoToEntity(kyc_DTO);
+		DsaKycEntity entity = (DsaKycEntity) converter.dtoToEntity(kycDto);
 
 		dao.systemUserKyc(entity, storedFilePaths);
 
