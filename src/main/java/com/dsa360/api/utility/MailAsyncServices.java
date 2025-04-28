@@ -23,7 +23,7 @@ public class MailAsyncServices {
 	public void sendApplicationConfirmationEmail(DSAApplicationDTO dsaRegistrationDTO) {
 		String to = dsaRegistrationDTO.getEmailAddress();
 		String dsaName = dsaRegistrationDTO.getFirstName() + " " + dsaRegistrationDTO.getLastName();
-		String dsaId = String.valueOf(dsaRegistrationDTO.getDsaApplicationId());
+		var dsaId = String.valueOf(dsaRegistrationDTO.getDsaApplicationId());
 		String registeredName = dsaRegistrationDTO.getFirstName() + " " + dsaRegistrationDTO.getMiddleName() + " "
 				+ dsaRegistrationDTO.getLastName();
 		String contactInfo = dsaRegistrationDTO.getContactNumber();

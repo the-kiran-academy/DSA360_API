@@ -42,7 +42,7 @@ public class CustomerServiceImpl implements CustomerService {
 		String customerId = DynamicID.getGeneratedId();
 		customerDTO.setId(customerId);
 
-		CustomerEntity customerEntity = (CustomerEntity) converter.dtoToEntity(customerDTO);
+		var customerEntity = (CustomerEntity) converter.dtoToEntity(customerDTO);
 
 		customerDao.createCustomer(customerEntity);
 
@@ -59,7 +59,7 @@ public class CustomerServiceImpl implements CustomerService {
 	public String customerLoanApplication(LoanApplicationDTO loanApplicationDTO) {
 		String loanId = DynamicID.getGeneratedId();
 		loanApplicationDTO.setId(loanId);
-		LoanApplicationEntity loanApplicationEntity = mapper.map(loanApplicationDTO, LoanApplicationEntity.class);
+		var loanApplicationEntity = mapper.map(loanApplicationDTO, LoanApplicationEntity.class);
 
 		customerDao.customerLoanApplication(loanApplicationEntity);
 
@@ -72,7 +72,7 @@ public class CustomerServiceImpl implements CustomerService {
 		documentDTO.setId(documentId);
 		boolean isStoared = fileStorageUtility.storeCustomerFile(customerId, documentDTO.getFile());
 		if (isStoared) {
-			DocumentEntity documentEntity = (DocumentEntity) converter.dtoToEntity(documentDTO);
+			var documentEntity = (DocumentEntity) converter.dtoToEntity(documentDTO);
 			customerDao.uploadDocument(customerId, documentEntity);
 		}
 
@@ -87,7 +87,7 @@ public class CustomerServiceImpl implements CustomerService {
 	@Override
 	@Transactional(readOnly = true)
 	public CustomerEntity getCustomerById(String id) {
-		CustomerEntity customerEntity = customerDao.getCustomerById(id);
+		var customerEntity = customerDao.getCustomerById(id);
 		Hibernate.initialize(customerEntity.getLoanApplications());
 		return customerEntity;
 	}
@@ -124,7 +124,7 @@ public class CustomerServiceImpl implements CustomerService {
 	public String contactUs(ContactUsDTO contactUsDTO) {
 		String id = DynamicID.getGeneratedId();
 		contactUsDTO.setId(id);
-		ContactUsEntity contactUsEntity = mapper.map(contactUsDTO, ContactUsEntity.class);
+		var contactUsEntity = mapper.map(contactUsDTO, ContactUsEntity.class);
 		return customerDao.contactUs(contactUsEntity);
 	}
 

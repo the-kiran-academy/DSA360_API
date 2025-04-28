@@ -35,6 +35,8 @@ import com.dsa360.api.utility.MailAsyncServices;
 @Service
 @Transactional(readOnly = true)
 public class AdminServiceImpl implements AdminService {
+	
+	private static final String NOTEXITS = " is Not Exists";
 
 	@Autowired
 	private AdminDao dao;
@@ -119,7 +121,7 @@ public class AdminServiceImpl implements AdminService {
 		if (rollEntity != null) {
 			return mapper.map(rollEntity, RoleDto.class);
 		} else {
-			throw new ResourceAlreadyExistsException(rollId + " is Not Exists");
+			throw new ResourceAlreadyExistsException(rollId + NOTEXITS);
 		}
 
 	}
@@ -154,7 +156,7 @@ public class AdminServiceImpl implements AdminService {
 		if (rollEntity != null) {
 			return mapper.map(rollEntity, RoleDto.class);
 		} else {
-			throw new ResourceAlreadyExistsException(roleName + " is Not Exists");
+			throw new ResourceAlreadyExistsException(roleName + NOTEXITS);
 		}
 	}
 
@@ -169,11 +171,11 @@ public class AdminServiceImpl implements AdminService {
 
 	@Override
 	public RegionsDto getRegionById(String regionId) {
-		RegionsEntity regionsEntity = dao.getRegionById(regionId);
+		var regionsEntity = dao.getRegionById(regionId);
 		if (regionsEntity != null) {
 			return mapper.map(regionsEntity, RegionsDto.class);
 		} else {
-			throw new ResourceAlreadyExistsException(regionId + " is Not Exists");
+			throw new ResourceAlreadyExistsException(regionId + NOTEXITS);
 		}
 	}
 
@@ -207,18 +209,18 @@ public class AdminServiceImpl implements AdminService {
 
 	@Override
 	public RegionsDto getRegionByName(String regionName) {
-		RegionsEntity regionsEntity = dao.getRegionByName(regionName);
+		var regionsEntity = dao.getRegionByName(regionName);
 		if (regionsEntity != null) {
 			return mapper.map(regionsEntity, RegionsDto.class);
 		} else {
-			throw new ResourceAlreadyExistsException(regionName + " is Not Exists");
+			throw new ResourceAlreadyExistsException(regionName + NOTEXITS);
 		}
 	}
 
 	@Override
 	public void updateRegion(RegionsDto regionsDto) {
 
-		RegionsEntity regionsEntity = mapper.map(regionsDto, RegionsEntity.class);
+		var regionsEntity = mapper.map(regionsDto, RegionsEntity.class);
 
 		dao.updateRegion(regionsEntity);
 	}

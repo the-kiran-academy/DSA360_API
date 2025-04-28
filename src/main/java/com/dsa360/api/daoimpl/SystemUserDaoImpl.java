@@ -35,7 +35,7 @@ public class SystemUserDaoImpl implements SystemUserDao {
 
 		CustomUserDetail user = null;
 		SystemUserEntity usr = null;
-		try (Session session = factory.openSession()) {
+		try (var session = factory.openSession()) {
 			session.setDefaultReadOnly(false);
 			usr = session.get(SystemUserEntity.class, userId);
 			if (usr != null) {
@@ -56,7 +56,7 @@ public class SystemUserDaoImpl implements SystemUserDao {
 	@Override
 	public SystemUserEntity getSystemUserByUsername(String username) {
 
-		try (Session session = factory.openSession()) {
+		try (var session = factory.openSession()) {
 			return session.get(SystemUserEntity.class, username);
 
 		} catch (Exception e) {
@@ -70,7 +70,7 @@ public class SystemUserDaoImpl implements SystemUserDao {
 	@SuppressWarnings({ "deprecation", "unchecked" })
 	@Override
 	public List<SystemUserEntity> getAllSystemUser() {
-		try (Session session = factory.openSession()) {
+		try (var session = factory.openSession()) {
 			return session.createCriteria(SystemUserEntity.class).list();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -83,7 +83,7 @@ public class SystemUserDaoImpl implements SystemUserDao {
 	@Override
 	public void updateSystemUser(SystemUserEntity userEntity) {
 		Transaction transaction = null; 
-		try(Session session = factory.openSession()) {
+		try(var session = factory.openSession()) {
 			transaction=session.beginTransaction();
 			session.update(userEntity);
 			transaction.commit();

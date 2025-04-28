@@ -38,10 +38,10 @@ public class NumberToWords {
 
 	public static String capitalizeWord(String str) {
 		String words[] = str.split("\\s");
-		StringBuilder capitalizeWord = new StringBuilder() ;
+		var capitalizeWord = new StringBuilder() ;
 		for (String w : words) {
-			String first = w.substring(0, 1);
-			String afterfirst = w.substring(1);
+			var first = w.substring(0, 1);
+			var afterfirst = w.substring(1);
 			capitalizeWord.append(first.toUpperCase() + afterfirst + " ") ;
 		}
 		return capitalizeWord+ " Rupees Only";
@@ -53,21 +53,21 @@ public class NumberToWords {
 			return "zero";
 		}
 
-		String snumber = Long.toString(number);
+		var snumber = Long.toString(number);
 
 		// pad with "0"
-		String mask = "000000000000";
-		DecimalFormat df = new DecimalFormat(mask);
+		var mask = "000000000000";
+		var df = new DecimalFormat(mask);
 		snumber = df.format(number);
 
 		// XXXnnnnnnnnn
-		int billions = Integer.parseInt(snumber.substring(0, 3));
+		var billions = Integer.parseInt(snumber.substring(0, 3));
 		// nnnXXXnnnnnn
-		int millions = Integer.parseInt(snumber.substring(3, 6));
+		var millions = Integer.parseInt(snumber.substring(3, 6));
 		// nnnnnnXXXnnn
-		int hundredThousands = Integer.parseInt(snumber.substring(6, 9));
+		var	hundredThousands = Integer.parseInt(snumber.substring(6, 9));
 		// nnnnnnnnnXXX
-		int thousands = Integer.parseInt(snumber.substring(9, 12));
+		var thousands = Integer.parseInt(snumber.substring(9, 12));
 
 		String tradBillions;
 		switch (billions) {

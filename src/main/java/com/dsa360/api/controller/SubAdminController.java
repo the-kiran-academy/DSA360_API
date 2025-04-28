@@ -80,7 +80,7 @@ public class SubAdminController {
 	public ResponseEntity<CustomResponse> emailVerificationRequest(@PathVariable String dsaId) {
 
 		dsaService.emailVerificationRequest(dsaId);
-		CustomResponse customResponse = new CustomResponse("Done", 200);
+		var customResponse = new CustomResponse("Done", 200);
 
 		return new ResponseEntity<>(customResponse, HttpStatus.OK);
 

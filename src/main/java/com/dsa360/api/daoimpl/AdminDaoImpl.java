@@ -26,6 +26,7 @@ import com.dsa360.api.service.SystemUserService;
 public class AdminDaoImpl implements AdminDao {
 
 	private static final Logger logger = LoggerFactory.getLogger(AdminDaoImpl.class);
+	private static final String DATANOTFOUND = "Data not found to delete with id = ";
 
 	@Autowired
 	private SessionFactory factory;
@@ -37,7 +38,7 @@ public class AdminDaoImpl implements AdminDao {
 	public void createSystemUserProfile(SystemUserEntity userEntity) {
 
 		Transaction transaction = null;
-		try (Session session = factory.openSession()) {
+		try (var session = factory.openSession()) {
 			CustomUserDetail user = userService.loadUserByUserId(userEntity.getUsername());
 			if (user == null) {
 				transaction = session.beginTransaction();
@@ -63,7 +64,7 @@ public class AdminDaoImpl implements AdminDao {
 	@Override
 	public void deleteSystemUser(String username) {
 		Transaction transaction = null;
-		try (Session session = factory.openSession()) {
+		try (var session = factory.openSession()) {
 			transaction = session.beginTransaction();
 			SystemUserEntity user = session.get(SystemUserEntity.class, username);
 			if (user != null) {
@@ -77,7 +78,7 @@ public class AdminDaoImpl implements AdminDao {
 		} catch (ResourceNotFoundException e) {
 			e.printStackTrace();
 			logger.error("User Profile not found to delete with id {}", username);
-			throw new ResourceNotFoundException("Data not found to delete with id = " + username);
+			throw new ResourceNotFoundException(DATANOTFOUND + username);
 		} catch (Exception e) {
 			if (transaction != null) {
 				transaction.rollback();
@@ -93,7 +94,7 @@ public class AdminDaoImpl implements AdminDao {
 	public void addRole(RoleEntity roleEntity) {
 
 		Transaction transaction = null;
-		try (Session session = factory.openSession()) {
+		try (var session = factory.openSession()) {
 			transaction = session.beginTransaction();
 
 			RoleEntity role = getRoleByName(roleEntity.getName());
@@ -119,7 +120,7 @@ public class AdminDaoImpl implements AdminDao {
 	@Override
 	public RoleEntity getRollById(String rollId) {
 		RoleEntity roleEntity = null;
-		try (Session session = factory.openSession()) {
+		try (var session = factory.openSession()) {
 			roleEntity = session.get(RoleEntity.class, rollId);
 
 		} catch (Exception e) {
@@ -132,7 +133,7 @@ public class AdminDaoImpl implements AdminDao {
 	@Override
 	public boolean deleteRole(String rollId) {
 		Transaction transaction = null;
-		try (Session session = factory.openSession()) {
+		try (var session = factory.openSession()) {
 			transaction = session.beginTransaction();
 			RoleEntity role = session.get(RoleEntity.class, rollId);
 			if (role != null) {
@@ -147,7 +148,7 @@ public class AdminDaoImpl implements AdminDao {
 		} catch (ResourceNotFoundException e) {
 			e.printStackTrace();
 			logger.error("Role not found to delete with id {}", rollId);
-			throw new ResourceNotFoundException("Data not found to delete with id = " + rollId);
+			throw new ResourceNotFoundException(DATANOTFOUND + rollId);
 		} catch (Exception e) {
 			if (transaction != null) {
 				transaction.rollback();
@@ -161,7 +162,7 @@ public class AdminDaoImpl implements AdminDao {
 	@Override
 	public RoleEntity updateRole(RoleEntity roleEntity) {
 		Transaction transaction = null;
-		try (Session session = factory.openSession()) {
+		try (var session = factory.openSession()) {
 			transaction = session.beginTransaction();
 			session.update(roleEntity);
 			transaction.commit();
@@ -182,7 +183,7 @@ public class AdminDaoImpl implements AdminDao {
 	@Override
 	public List<RoleEntity> getAllRole() {
 		List<RoleEntity> list;
-		try (Session session = factory.openSession()) {
+		try (var session = factory.openSession()) {
 			list = session.createCriteria(RoleEntity.class).list();
 
 		} catch (Exception e) {
@@ -197,7 +198,7 @@ public class AdminDaoImpl implements AdminDao {
 	@Override
 	public RoleEntity getRoleByName(String roleName) {
 		RoleEntity role = null;
-		try (Session session = factory.openSession()) {
+		try (var session = factory.openSession()) {
 			role = (RoleEntity) session.createCriteria(RoleEntity.class).add(Restrictions.eq("name", roleName))
 					.uniqueResult();
 
@@ -211,7 +212,7 @@ public class AdminDaoImpl implements AdminDao {
 	@Override
 	public List<RoleEntity> getAllRoleByIds(List<String> ids) {
 		List<RoleEntity> roles;
-		try (Session session = factory.openSession()) {
+		try (var session = factory.openSession()) {
 			roles = session.byMultipleIds(RoleEntity.class).multiLoad(ids);
 
 		} catch (Exception e) {
@@ -224,7 +225,7 @@ public class AdminDaoImpl implements AdminDao {
 	@Override
 	public void addRegion(RegionsEntity regionsEntity) {
 		Transaction transaction = null;
-		try (Session session = factory.openSession()) {
+		try (var session = factory.openSession()) {
 
 			RegionsEntity entity = getRegionByName(regionsEntity.getRegionName());
 			if (entity == null) {
@@ -250,7 +251,7 @@ public class AdminDaoImpl implements AdminDao {
 	@Override
 	public RegionsEntity getRegionById(String regionId) {
 		RegionsEntity regionsEntity = null;
-		try (Session session = factory.openSession()) {
+		try (var session = factory.openSession()) {
 			regionsEntity = session.get(RegionsEntity.class, regionId);
 
 		} catch (Exception e) {
@@ -264,7 +265,7 @@ public class AdminDaoImpl implements AdminDao {
 	@Override
 	public List<RegionsEntity> getAllRegionsByIds(List<String> ids) {
 		List<RegionsEntity> regions;
-		try (Session session = factory.openSession()) {
+		try (var session = factory.openSession()) {
 			regions = session.byMultipleIds(RegionsEntity.class).multiLoad(ids);
 
 		} catch (Exception e) {
@@ -278,7 +279,7 @@ public class AdminDaoImpl implements AdminDao {
 	@Override
 	public RegionsEntity getRegionByName(String regionName) {
 		RegionsEntity regionsEntity = null;
-		try (Session session = factory.openSession()) {
+		try (var session = factory.openSession()) {
 			regionsEntity = (RegionsEntity) session.createCriteria(RegionsEntity.class)
 					.add(Restrictions.eq("regionCode", regionName)).uniqueResult();
 
@@ -293,7 +294,7 @@ public class AdminDaoImpl implements AdminDao {
 	@Override
 	public List<RegionsEntity> getAllRegions() {
 		List<RegionsEntity> list;
-		try (Session session = factory.openSession()) {
+		try (var session = factory.openSession()) {
 			list = session.createCriteria(RegionsEntity.class).list();
 
 		} catch (Exception e) {
@@ -308,7 +309,7 @@ public class AdminDaoImpl implements AdminDao {
 
 		try {
 			Transaction transaction = null;
-			try (Session session = factory.openSession()) {
+			try (var session = factory.openSession()) {
 				transaction = session.beginTransaction();
 				RegionsEntity region = session.get(RegionsEntity.class, regionId);
 				if (region != null) {
@@ -321,7 +322,7 @@ public class AdminDaoImpl implements AdminDao {
 			} catch (ResourceNotFoundException e) {
 				e.printStackTrace();
 				logger.error("Region not found to delete with id {}", regionId);
-				throw new ResourceNotFoundException("Data not found to delete with id = " + regionId);
+				throw new ResourceNotFoundException(DATANOTFOUND + regionId);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -334,7 +335,7 @@ public class AdminDaoImpl implements AdminDao {
 	@Override
 	public void updateRegion(RegionsEntity regionsEntity) {
 		Transaction transaction = null;
-		try (Session session = factory.openSession()) {
+		try (var session = factory.openSession()) {
 			transaction = session.beginTransaction();
 			session.update(regionsEntity);
 			transaction.commit();
@@ -352,8 +353,8 @@ public class AdminDaoImpl implements AdminDao {
 	@SuppressWarnings("deprecation")
 	@Override
 	public List<Object[]> getCountOfSystemUser() {
-		try (Session session = factory.openSession()) {
-			String hql = "SELECT r.name, COUNT(su.username) FROM SystemUserEntity su JOIN su.roles r GROUP BY r.name";
+		try (var session = factory.openSession()) {
+			var hql = "SELECT r.name, COUNT(su.username) FROM SystemUserEntity su JOIN su.roles r GROUP BY r.name";
 			Query<Object[]> query = session.createQuery(hql, Object[].class);
 			return query.list();
 		} catch (Exception e) {

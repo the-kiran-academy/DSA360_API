@@ -24,8 +24,8 @@ public class DsaKycDaoImpl implements DsaKycDao {
 	@Override
 	public List<DsaKycEntity> getAllKycs() {
 		List<DsaKycEntity> list = null;
-		try (Session session = factory.openSession()) {
-			Criteria criteria = session.createCriteria(DsaKycEntity.class);
+		try (var session = factory.openSession()) {
+			var criteria = session.createCriteria(DsaKycEntity.class);
 			list = criteria.list();
 
 		} catch (Exception e) {

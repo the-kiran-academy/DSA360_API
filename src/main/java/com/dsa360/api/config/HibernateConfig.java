@@ -17,7 +17,8 @@ public class HibernateConfig {
 
 	@Bean
 	LocalSessionFactoryBean sessionFactory(DataSource dataSource) {
-		LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
+		var sessionFactory = new LocalSessionFactoryBean();
+		//LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
 		sessionFactory.setDataSource(dataSource);	
 		sessionFactory.setPackagesToScan("com.dsa360.api");
 		sessionFactory.setHibernateProperties(hibernateProperties());
@@ -26,13 +27,14 @@ public class HibernateConfig {
 
 	@Bean
 	HibernateTransactionManager transactionManager(SessionFactory sessionFactory) {
-		HibernateTransactionManager txManager = new HibernateTransactionManager();
+		var txManager = new HibernateTransactionManager();
+		//HibernateTransactionManager txManager = new HibernateTransactionManager();
 		txManager.setSessionFactory(sessionFactory);
 		return txManager;
 	}
 
 	private Properties hibernateProperties() {
-		Properties properties = new Properties();
+		var properties = new Properties();
 		properties.put("hibernate.dialect", "org.hibernate.dialect.MySQL8Dialect");
 		properties.put("hibernate.show_sql", "true");
 		properties.put("hibernate.format_sql", "true");

@@ -48,7 +48,7 @@ public class SystemUserServiceImpl implements SystemUserService {
 
 	@Override
 	public CustomUserDetail loadUserByUserId(String userId) {
-		CustomUserDetail customUserDetail = dao.loadUserByUserId(userId);
+		var customUserDetail = dao.loadUserByUserId(userId);
 
 		if (customUserDetail != null) {
 

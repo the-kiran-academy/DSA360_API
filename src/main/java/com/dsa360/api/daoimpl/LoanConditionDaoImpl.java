@@ -28,7 +28,7 @@ public class LoanConditionDaoImpl implements LoanConditionDao {
 
 	@Override
 	public LoanConditioEntity createLoanCondition(LoanConditioEntity loanConditioEntity) {
-		try (Session session = factory.openSession()) {
+		try (var session = factory.openSession()) {
 			session.save(loanConditioEntity);
 			session.beginTransaction().commit();
 			return loanConditioEntity;
@@ -66,9 +66,9 @@ public class LoanConditionDaoImpl implements LoanConditionDao {
 
 	@Override
 	public LoanConditioEntity getLoanConditionByBank_Loantype(String bankName, String loanType) {
-		try (Session session = factory.openSession()) {
+		try (var session = factory.openSession()) {
 
-			Criteria criteria = session.createCriteria(LoanConditioEntity.class);
+			var criteria = session.createCriteria(LoanConditioEntity.class);
 			SimpleExpression bankNameExpression = Restrictions.eq("bankName", bankName);
 			SimpleExpression loanTypeExpression = Restrictions.eq("loanType", loanType);
 

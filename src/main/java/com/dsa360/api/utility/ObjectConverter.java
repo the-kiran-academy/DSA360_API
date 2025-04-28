@@ -16,10 +16,10 @@ public class ObjectConverter {
 	public Object dtoToEntity(Object sourceObject) {
 
 		if (sourceObject instanceof DsaKycDto) {
-			DsaKycEntity kycEntity = new DsaKycEntity();
+			var kycEntity = new DsaKycEntity();
 			DsaKycDto dto = (DsaKycDto) sourceObject;
 
-			DSAApplicationEntity dsaRegistrationEntity = new DSAApplicationEntity();
+			var dsaRegistrationEntity = new DSAApplicationEntity();
 
 			dsaRegistrationEntity.setDsaApplicationId(dto.getDsaApplicationId());
 
@@ -45,8 +45,8 @@ public class ObjectConverter {
 		}
 
 		if (sourceObject instanceof CustomerDTO) {
-			CustomerEntity customerEntity = new CustomerEntity();
-			CustomerDTO customerDTO = (CustomerDTO) sourceObject;
+			var customerEntity = new CustomerEntity();
+			var customerDTO = (CustomerDTO) sourceObject;
 
 			customerEntity.setId(customerDTO.getId());
 			customerEntity.setName(customerDTO.getName());
@@ -55,7 +55,7 @@ public class ObjectConverter {
 			customerEntity.setPermanentAddress(customerDTO.getPermanentAddress());
 			customerEntity.setCurrentAddress(customerEntity.getCurrentAddress());
 
-			DSAApplicationEntity dsaAgent = new DSAApplicationEntity();
+			var dsaAgent = new DSAApplicationEntity();
 			dsaAgent.setDsaApplicationId(customerDTO.getDsaAgentId());
 			customerEntity.setDsaAgentId(dsaAgent);
 
@@ -64,15 +64,15 @@ public class ObjectConverter {
 		}
 
 		if (sourceObject instanceof DocumentDTO) {
-			DocumentEntity documentEntity = new DocumentEntity();
-			DocumentDTO documentDTO = (DocumentDTO) sourceObject;
+			var documentEntity = new DocumentEntity();
+			var documentDTO = (DocumentDTO) sourceObject;
 
 			documentEntity.setId(documentDTO.getId());
 			documentEntity.setDocumentName(documentDTO.getDocumentName());
 			documentEntity.setDocumentType(documentDTO.getDocumentType().getDisplayName());
 			documentEntity.setStatus(documentDTO.getStatus());
 
-			CustomerEntity customerEntity = new CustomerEntity();
+			var customerEntity = new CustomerEntity();
 			customerEntity.setId(documentDTO.getCustomerId());
 			documentEntity.setCustomer(customerEntity);
 			return documentEntity;
@@ -85,8 +85,8 @@ public class ObjectConverter {
 	
 	public Object entityToDto(Object sourceObject) {
 		if(sourceObject instanceof CustomerEntity) {
-			CustomerEntity  customerEntity=(CustomerEntity) sourceObject;
-			CustomerDTO customerDTO=new CustomerDTO();
+			var  customerEntity=(CustomerEntity) sourceObject;
+			var customerDTO=new CustomerDTO();
 			return customerDTO;
 		}
 		return null;

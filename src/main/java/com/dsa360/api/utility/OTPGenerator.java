@@ -12,10 +12,10 @@ public class OTPGenerator {
 
 	public static int generateOtp() throws NoSuchAlgorithmException {
 		Random random = SecureRandom.getInstanceStrong();
-		String numbers = "123456789";
-		char[] otp = new char[6];
+		var numbers = "123456789";
+		var otp = new char[6];
 
-		for (int i = 0; i < 6; i++) {
+		for (var i = 0; i < 6; i++) {
 
 			otp[i] = numbers.charAt(random.nextInt(numbers.length()));
 		}

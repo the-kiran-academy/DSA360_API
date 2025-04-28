@@ -40,7 +40,7 @@ public class JwtUtil implements Serializable {
 	}
 
 	public <T> T getClaimFromToken(String token, Function<Claims, T> claimsResolver) {
-		final Claims claims = getAllClaimsFromToken(token);
+		final var claims = getAllClaimsFromToken(token);
 		return claimsResolver.apply(claims);
 	}
 
@@ -49,7 +49,7 @@ public class JwtUtil implements Serializable {
 	}
 
 	private Boolean isTokenExpired(String token) {
-		final Date expiration = getExpirationDateFromToken(token);
+		final var expiration = getExpirationDateFromToken(token);
 		return expiration.before(new Date());
 	}
 
@@ -75,11 +75,11 @@ public class JwtUtil implements Serializable {
 	public UsernamePasswordAuthenticationToken getAuthentication(final String token, final Authentication existingAuth,
 			final UserDetails userDetails) {
 
-		final JwtParser jwtParser = Jwts.parser().setSigningKey(JwtConstant.SIGNING_KEY.getValue());
+		final var jwtParser = Jwts.parser().setSigningKey(JwtConstant.SIGNING_KEY.getValue());
 
 		final Jws<Claims> claimsJws = jwtParser.parseClaimsJws(token);
 
-		final Claims claims = claimsJws.getBody();
+		final var claims = claimsJws.getBody();
 
 		final Collection<? extends GrantedAuthority> authorities = Arrays
 				.stream(claims.get(JwtConstant.AUTHORITIES_KEY.getValue()).toString().split(","))
