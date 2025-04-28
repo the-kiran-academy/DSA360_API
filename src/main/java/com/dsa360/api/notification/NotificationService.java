@@ -1,7 +1,6 @@
 package com.dsa360.api.notification;
 
 import java.util.List;
-
 import com.dsa360.api.dto.DSAApplicationDTO;
 import com.dsa360.api.entity.RegionsEntity;
 import com.dsa360.api.entity.RoleEntity;

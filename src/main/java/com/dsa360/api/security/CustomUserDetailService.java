@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
-
 import com.dsa360.api.constants.UserStatus;
 import com.dsa360.api.exceptions.ResourceNotFoundException;
 import com.dsa360.api.exceptions.UserDeactivatedException;

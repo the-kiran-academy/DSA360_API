@@ -1,10 +1,9 @@
 package com.dsa360.api.annotatios;
-import org.springframework.web.multipart.MultipartFile;
-
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
 import java.util.Arrays;
 import java.util.List;
+import javax.validation.ConstraintValidator;
+import javax.validation.ConstraintValidatorContext;
+import org.springframework.web.multipart.MultipartFile;
 
 public class MultipartFileValidator implements ConstraintValidator<ValidFile, MultipartFile> {
 

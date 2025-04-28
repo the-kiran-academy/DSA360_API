@@ -1,7 +1,6 @@
 package com.dsa360.api.daoimpl;
 
 import java.util.List;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
@@ -10,7 +9,6 @@ import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
-
 import com.dsa360.api.dao.SystemUserDao;
 import com.dsa360.api.entity.SystemUserEntity;
 import com.dsa360.api.exceptions.SomethingWentWrongException;

@@ -1,7 +1,6 @@
 package com.dsa360.api.dao;
 
 import java.util.List;
-
 import com.dsa360.api.entity.LoanConditioEntity;
 
 public interface LoanConditionDao {

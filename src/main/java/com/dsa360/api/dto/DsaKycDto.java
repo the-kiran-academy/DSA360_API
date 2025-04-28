@@ -3,11 +3,8 @@ package com.dsa360.api.dto;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
-
 import org.springframework.web.multipart.MultipartFile;
-
 import com.dsa360.api.constants.ApprovalStatus;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

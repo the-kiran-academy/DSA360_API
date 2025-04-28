@@ -4,12 +4,9 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
-
 import org.springframework.web.multipart.MultipartFile;
-
 import com.dsa360.api.constants.DocumentStatus;
 import com.dsa360.api.constants.DocumentType;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

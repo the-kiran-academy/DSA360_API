@@ -1,7 +1,6 @@
 package com.dsa360.api.utility;
 
 import org.springframework.stereotype.Component;
-
 import com.dsa360.api.dto.CustomerDTO;
 import com.dsa360.api.dto.DocumentDTO;
 import com.dsa360.api.dto.DsaKycDto;

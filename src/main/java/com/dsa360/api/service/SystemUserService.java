@@ -1,7 +1,6 @@
 package com.dsa360.api.service;
 
 import java.util.List;
-
 import com.dsa360.api.dto.SystemUserDto;
 import com.dsa360.api.entity.SystemUserEntity;
 import com.dsa360.api.security.CustomUserDetail;

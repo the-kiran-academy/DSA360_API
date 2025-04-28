@@ -3,16 +3,13 @@ package com.dsa360.api.notification;
 import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.mail.MailAuthenticationException;
 import org.springframework.mail.MailSendException;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -20,7 +17,6 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
-
 import com.dsa360.api.constants.General;
 import com.dsa360.api.constants.ReviewType;
 import com.dsa360.api.dto.DSAApplicationDTO;
@@ -28,7 +24,6 @@ import com.dsa360.api.entity.RegionsEntity;
 import com.dsa360.api.entity.RoleEntity;
 import com.dsa360.api.exceptions.SomethingWentWrongException;
 import com.dsa360.api.utility.FileStorageUtility;
-import org.springframework.core.io.FileSystemResource;
 
 /**
  * @author RAM

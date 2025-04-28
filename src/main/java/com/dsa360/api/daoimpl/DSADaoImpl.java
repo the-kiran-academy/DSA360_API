@@ -2,9 +2,7 @@ package com.dsa360.api.daoimpl;
 
 import java.nio.file.Path;
 import java.util.List;
-import javax.persistence.OptimisticLockException;
 import javax.persistence.PersistenceException;
-
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -15,7 +13,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-
 import com.dsa360.api.constants.ReviewType;
 import com.dsa360.api.dao.DSADao;
 import com.dsa360.api.entity.DSAApplicationEntity;

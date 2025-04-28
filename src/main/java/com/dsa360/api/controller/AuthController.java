@@ -3,9 +3,7 @@ package com.dsa360.api.controller;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
-
 import javax.servlet.http.HttpServletResponse;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +19,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.dsa360.api.aspect.TrackExecutionTime;
 import com.dsa360.api.dto.LogedInUserDetailModelDto;
 import com.dsa360.api.security.CustomUserDetail;

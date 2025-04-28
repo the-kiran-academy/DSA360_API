@@ -1,11 +1,9 @@
 package com.dsa360.api.utility;
 
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
-
 import com.dsa360.api.dto.DSAApplicationDTO;
 import com.dsa360.api.entity.RegionsEntity;
 import com.dsa360.api.entity.RoleEntity;

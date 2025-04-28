@@ -2,7 +2,6 @@ package com.dsa360.api.dao;
 
 import java.nio.file.Path;
 import java.util.List;
-
 import com.dsa360.api.entity.DSAApplicationEntity;
 import com.dsa360.api.entity.DsaKycEntity;
 
