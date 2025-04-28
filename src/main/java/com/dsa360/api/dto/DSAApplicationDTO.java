@@ -88,5 +88,139 @@ public class DSAApplicationDTO {
 	
 	private String approvalStatus = ApprovalStatus.PENDING.getValue();
 	private boolean emailVerified;
+	public String getDsaApplicationId() {
+		return dsaApplicationId;
+	}
+	public void setDsaApplicationId(String dsaApplicationId) {
+		this.dsaApplicationId = dsaApplicationId;
+	}
+	public String getFirstName() {
+		return firstName;
+	}
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+	public String getMiddleName() {
+		return middleName;
+	}
+	public void setMiddleName(String middleName) {
+		this.middleName = middleName;
+	}
+	public String getLastName() {
+		return lastName;
+	}
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+	public String getGender() {
+		return gender;
+	}
+	public void setGender(String gender) {
+		this.gender = gender;
+	}
+	public String getDateOfBirth() {
+		return dateOfBirth;
+	}
+	public void setDateOfBirth(String dateOfBirth) {
+		this.dateOfBirth = dateOfBirth;
+	}
+	public String getNationality() {
+		return nationality;
+	}
+	public void setNationality(String nationality) {
+		this.nationality = nationality;
+	}
+	public String getContactNumber() {
+		return contactNumber;
+	}
+	public void setContactNumber(String contactNumber) {
+		this.contactNumber = contactNumber;
+	}
+	public String getEmailAddress() {
+		return emailAddress;
+	}
+	public void setEmailAddress(String emailAddress) {
+		this.emailAddress = emailAddress;
+	}
+	public String getStreetAddress() {
+		return streetAddress;
+	}
+	public void setStreetAddress(String streetAddress) {
+		this.streetAddress = streetAddress;
+	}
+	public String getCity() {
+		return city;
+	}
+	public void setCity(String city) {
+		this.city = city;
+	}
+	public String getState() {
+		return state;
+	}
+	public void setState(String state) {
+		this.state = state;
+	}
+	public String getPostalCode() {
+		return postalCode;
+	}
+	public void setPostalCode(String postalCode) {
+		this.postalCode = postalCode;
+	}
+	public String getCountry() {
+		return country;
+	}
+	public void setCountry(String country) {
+		this.country = country;
+	}
+	public String getPreferredLanguage() {
+		return preferredLanguage;
+	}
+	public void setPreferredLanguage(String preferredLanguage) {
+		this.preferredLanguage = preferredLanguage;
+	}
+	public String getEducationalQualifications() {
+		return educationalQualifications;
+	}
+	public void setEducationalQualifications(String educationalQualifications) {
+		this.educationalQualifications = educationalQualifications;
+	}
+	public String getExperience() {
+		return experience;
+	}
+	public void setExperience(String experience) {
+		this.experience = experience;
+	}
+	public String getIsAssociatedWithOtherDSA() {
+		return isAssociatedWithOtherDSA;
+	}
+	public void setIsAssociatedWithOtherDSA(String isAssociatedWithOtherDSA) {
+		this.isAssociatedWithOtherDSA = isAssociatedWithOtherDSA;
+	}
+	public String getAssociatedInstitutionName() {
+		return associatedInstitutionName;
+	}
+	public void setAssociatedInstitutionName(String associatedInstitutionName) {
+		this.associatedInstitutionName = associatedInstitutionName;
+	}
+	public String getReferralSource() {
+		return referralSource;
+	}
+	public void setReferralSource(String referralSource) {
+		this.referralSource = referralSource;
+	}
+	public String getApprovalStatus() {
+		return approvalStatus;
+	}
+	public void setApprovalStatus(String approvalStatus) {
+		this.approvalStatus = approvalStatus;
+	}
+	public boolean isEmailVerified() {
+		return emailVerified;
+	}
+	public void setEmailVerified(boolean emailVerified) {
+		this.emailVerified = emailVerified;
+	}
+	
+	
 
 }

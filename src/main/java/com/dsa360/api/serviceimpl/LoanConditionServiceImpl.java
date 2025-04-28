@@ -1,5 +1,6 @@
 package com.dsa360.api.serviceimpl;
 
+import java.util.Collections;
 import java.util.List;
 
 import org.modelmapper.ModelMapper;
@@ -30,7 +31,7 @@ public class LoanConditionServiceImpl implements LoanConditionService {
 
 	@Override
 	public LoanConditionDto createLoanCondition(LoanConditionDto loanConditionDto) {
-		LoanConditionDto loan = getLoanConditionByBank_Loantype(loanConditionDto.getBankName(), loanConditionDto.getLoanType());
+		LoanConditionDto loan = getLoanConditionByBankLoanType(loanConditionDto.getBankName(), loanConditionDto.getLoanType());
 		if(loan==null) {
 			String id = DynamicID.getGeneratedId();
 			loanConditionDto.setId(id);
@@ -52,7 +53,7 @@ public class LoanConditionServiceImpl implements LoanConditionService {
 	@Override
 	public List<LoanConditionDto> getAllLoanConditions() {
 
-		return null;
+		return Collections.emptyList();
 	}
 
 	@Override
@@ -67,9 +68,9 @@ public class LoanConditionServiceImpl implements LoanConditionService {
 	}
 
 	@Override
-	public LoanConditionDto getLoanConditionByBank_Loantype(String bankName, String loanType) {
+	public LoanConditionDto getLoanConditionByBankLoanType(String bankName, String loanType) {
 
-		LoanConditioEntity entity = dao.getLoanConditionByBank_Loantype(bankName, loanType);
+		LoanConditioEntity entity = dao.getLoanConditionByBankLoanType(bankName, loanType);
 		if (entity == null) {
 			return mapper.map(dao.createLoanCondition(entity), LoanConditionDto.class);
 			
@@ -82,7 +83,7 @@ public class LoanConditionServiceImpl implements LoanConditionService {
 	@Override
 	public List<String> getAllBanksNames() {
 		
-		return null;
+		return Collections.emptyList();
 	}
 
 	@Override

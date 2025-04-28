@@ -1,5 +1,6 @@
 package com.dsa360.api.daoimpl;
 
+import java.util.Collections;
 import java.util.List;
 
 import org.hibernate.Criteria;
@@ -50,7 +51,7 @@ public class LoanConditionDaoImpl implements LoanConditionDao {
 	@Override
 	public List<LoanConditioEntity> getAllLoanConditions() {
 
-		return null;
+		 return Collections.emptyList(); 
 	}
 
 	@Override
@@ -65,7 +66,7 @@ public class LoanConditionDaoImpl implements LoanConditionDao {
 	}
 
 	@Override
-	public LoanConditioEntity getLoanConditionByBank_Loantype(String bankName, String loanType) {
+	public LoanConditioEntity getLoanConditionByBankLoanType(String bankName, String loanType) {
 		try (Session session = factory.openSession()) {
 
 			Criteria criteria = session.createCriteria(LoanConditioEntity.class);
@@ -89,7 +90,7 @@ public class LoanConditionDaoImpl implements LoanConditionDao {
 
 	@Override
 	public List<String> getAllBanksNames() {
-		return null;
+		 return Collections.emptyList();
 	}
 
 	@Override

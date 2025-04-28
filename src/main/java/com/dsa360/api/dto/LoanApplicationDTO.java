@@ -55,4 +55,126 @@ public class LoanApplicationDTO {
     private Integer creditScore; // Applicant's credit score
 
     private String rejectionReason; // Reason for rejection (if applicable)
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public String getCustomerId() {
+		return customerId;
+	}
+
+	public void setCustomerId(String customerId) {
+		this.customerId = customerId;
+	}
+
+	public BigDecimal getLoanAmount() {
+		return loanAmount;
+	}
+
+	public void setLoanAmount(BigDecimal loanAmount) {
+		this.loanAmount = loanAmount;
+	}
+
+	public Integer getLoanTenure() {
+		return loanTenure;
+	}
+
+	public void setLoanTenure(Integer loanTenure) {
+		this.loanTenure = loanTenure;
+	}
+
+	public String getLoanPurpose() {
+		return loanPurpose;
+	}
+
+	public void setLoanPurpose(String loanPurpose) {
+		this.loanPurpose = loanPurpose;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	public BigDecimal getInterestRate() {
+		return interestRate;
+	}
+
+	public void setInterestRate(BigDecimal interestRate) {
+		this.interestRate = interestRate;
+	}
+
+	public BigDecimal getEmi() {
+		return emi;
+	}
+
+	public void setEmi(BigDecimal emi) {
+		this.emi = emi;
+	}
+
+	public LocalDate getApplicationDate() {
+		return applicationDate;
+	}
+
+	public void setApplicationDate(LocalDate applicationDate) {
+		this.applicationDate = applicationDate;
+	}
+
+	public String getPaymentFrequency() {
+		return paymentFrequency;
+	}
+
+	public void setPaymentFrequency(String paymentFrequency) {
+		this.paymentFrequency = paymentFrequency;
+	}
+
+	public String getIncomeDetails() {
+		return incomeDetails;
+	}
+
+	public void setIncomeDetails(String incomeDetails) {
+		this.incomeDetails = incomeDetails;
+	}
+
+	public String getEmploymentStatus() {
+		return employmentStatus;
+	}
+
+	public void setEmploymentStatus(String employmentStatus) {
+		this.employmentStatus = employmentStatus;
+	}
+
+	public String getLoanPurposeDescription() {
+		return loanPurposeDescription;
+	}
+
+	public void setLoanPurposeDescription(String loanPurposeDescription) {
+		this.loanPurposeDescription = loanPurposeDescription;
+	}
+
+	public Integer getCreditScore() {
+		return creditScore;
+	}
+
+	public void setCreditScore(Integer creditScore) {
+		this.creditScore = creditScore;
+	}
+
+	public String getRejectionReason() {
+		return rejectionReason;
+	}
+
+	public void setRejectionReason(String rejectionReason) {
+		this.rejectionReason = rejectionReason;
+	}
+    
+    
 }

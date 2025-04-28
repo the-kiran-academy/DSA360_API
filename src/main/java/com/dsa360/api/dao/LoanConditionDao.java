@@ -10,7 +10,7 @@ public interface LoanConditionDao {
 
 	LoanConditioEntity getLoanConditionById(String id);
 
-	LoanConditioEntity getLoanConditionByBank_Loantype(String bankName, String loanType);
+	LoanConditioEntity getLoanConditionByBankLoanType(String bankName, String loanType);
 
 	List<LoanConditioEntity> getAllLoanConditions();
 

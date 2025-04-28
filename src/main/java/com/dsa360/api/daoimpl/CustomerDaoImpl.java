@@ -1,5 +1,6 @@
 package com.dsa360.api.daoimpl;
 
+import java.util.Collections;
 import java.util.List;
 
 import org.hibernate.Session;
@@ -76,7 +77,7 @@ public class CustomerDaoImpl implements CustomerDao {
 	@Override
 	public List<CustomerEntity> getAllCustomers() {
 
-		return null;
+		return Collections.emptyList();
 	}
 
 	@Override
@@ -109,8 +110,7 @@ public class CustomerDaoImpl implements CustomerDao {
 
 	@Override
 	public List<DocumentDTO> getDocumentsByCustomerId(String customerId) {
-
-		return null;
+	    return Collections.emptyList();
 	}
 
 	@Override

@@ -37,7 +37,7 @@ public class SystemUserEntity extends  BaseEntity{
 
 	@Id
 	@Column(name = "user_name", unique = true, nullable = false)
-	private String username;
+	private String userName;
 
 	@Column(name = "password", nullable = false)
 	private String password;
@@ -74,5 +74,87 @@ public class SystemUserEntity extends  BaseEntity{
 	@OneToOne()
 	@JoinColumn(name = "dsa_id")
 	private DSAApplicationEntity dsaApplicationId;
+
+	public String getuserName() {
+		return userName;
+	}
+
+	public void setuserName(String userName) {
+		this.userName = userName;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public String getQuestion() {
+		return question;
+	}
+
+	public void setQuestion(String question) {
+		this.question = question;
+	}
+
+	public String getAnswer() {
+		return answer;
+	}
+
+	public void setAnswer(String answer) {
+		this.answer = answer;
+	}
+
+	public Date getCreatedDate() {
+		return createdDate;
+	}
+
+	public void setCreatedDate(Date createdDate) {
+		this.createdDate = createdDate;
+	}
+
+	public List<RoleEntity> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(List<RoleEntity> roles) {
+		this.roles = roles;
+	}
+
+	public List<RegionsEntity> getRegions() {
+		return regions;
+	}
+
+	public void setRegions(List<RegionsEntity> regions) {
+		this.regions = regions;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	public String getStatusReason() {
+		return statusReason;
+	}
+
+	public void setStatusReason(String statusReason) {
+		this.statusReason = statusReason;
+	}
+
+	public DSAApplicationEntity getDsaApplicationId() {
+		return dsaApplicationId;
+	}
+
+	public void setDsaApplicationId(DSAApplicationEntity dsaApplicationId) {
+		this.dsaApplicationId = dsaApplicationId;
+	}
+	
+	
 
 }

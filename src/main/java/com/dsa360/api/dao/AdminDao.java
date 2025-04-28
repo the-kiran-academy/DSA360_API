@@ -10,7 +10,7 @@ public interface AdminDao {
 
 	public abstract void createSystemUserProfile(SystemUserEntity userEntity);
 
-	public abstract void deleteSystemUser(String username);
+	public abstract void deleteSystemUser(String userName);
 
 	// role
 

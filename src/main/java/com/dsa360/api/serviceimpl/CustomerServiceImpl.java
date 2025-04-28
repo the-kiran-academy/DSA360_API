@@ -1,5 +1,6 @@
 package com.dsa360.api.serviceimpl;
 
+import java.util.Collections;
 import java.util.List;
 
 import org.hibernate.Hibernate;
@@ -81,7 +82,7 @@ public class CustomerServiceImpl implements CustomerService {
 	@Override
 	public List<CustomerDTO> getAllCustomers() {
 
-		return null;
+		return Collections.emptyList();
 	}
 
 	@Override
@@ -106,7 +107,7 @@ public class CustomerServiceImpl implements CustomerService {
 	@Override
 	public List<DocumentDTO> getDocumentsByCustomerId(String customerId) {
 
-		return null;
+		return Collections.emptyList();
 	}
 
 	@Override

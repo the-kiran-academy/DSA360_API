@@ -45,5 +45,91 @@ public class DsaKycDto {
 	private MultipartFile photographFile;
 	private MultipartFile addressProofFile;
 	private MultipartFile bankPassbookFile;
+	public String getDsaKycId() {
+		return dsaKycId;
+	}
+	public void setDsaKycId(String dsaKycId) {
+		this.dsaKycId = dsaKycId;
+	}
+	public String getDsaApplicationId() {
+		return dsaApplicationId;
+	}
+	public void setDsaApplicationId(String dsaApplicationId) {
+		this.dsaApplicationId = dsaApplicationId;
+	}
+	public String getBankName() {
+		return bankName;
+	}
+	public void setBankName(String bankName) {
+		this.bankName = bankName;
+	}
+	public String getAccountNumber() {
+		return accountNumber;
+	}
+	public void setAccountNumber(String accountNumber) {
+		this.accountNumber = accountNumber;
+	}
+	public String getIfscCode() {
+		return ifscCode;
+	}
+	public void setIfscCode(String ifscCode) {
+		this.ifscCode = ifscCode;
+	}
+	public String getApprovalStatus() {
+		return approvalStatus;
+	}
+	public void setApprovalStatus(String approvalStatus) {
+		this.approvalStatus = approvalStatus;
+	}
+	public int getAttempt() {
+		return attempt;
+	}
+	public void setAttempt(int attempt) {
+		this.attempt = attempt;
+	}
+	public MultipartFile getPassportFile() {
+		return passportFile;
+	}
+	public void setPassportFile(MultipartFile passportFile) {
+		this.passportFile = passportFile;
+	}
+	public MultipartFile getDrivingLicenceFile() {
+		return drivingLicenceFile;
+	}
+	public void setDrivingLicenceFile(MultipartFile drivingLicenceFile) {
+		this.drivingLicenceFile = drivingLicenceFile;
+	}
+	public MultipartFile getAadharCardFile() {
+		return aadharCardFile;
+	}
+	public void setAadharCardFile(MultipartFile aadharCardFile) {
+		this.aadharCardFile = aadharCardFile;
+	}
+	public MultipartFile getPanCardFile() {
+		return panCardFile;
+	}
+	public void setPanCardFile(MultipartFile panCardFile) {
+		this.panCardFile = panCardFile;
+	}
+	public MultipartFile getPhotographFile() {
+		return photographFile;
+	}
+	public void setPhotographFile(MultipartFile photographFile) {
+		this.photographFile = photographFile;
+	}
+	public MultipartFile getAddressProofFile() {
+		return addressProofFile;
+	}
+	public void setAddressProofFile(MultipartFile addressProofFile) {
+		this.addressProofFile = addressProofFile;
+	}
+	public MultipartFile getBankPassbookFile() {
+		return bankPassbookFile;
+	}
+	public void setBankPassbookFile(MultipartFile bankPassbookFile) {
+		this.bankPassbookFile = bankPassbookFile;
+	}
+	
+	
 
 }

@@ -7,8 +7,8 @@ server:
 
 file:
   upload:
-    kyc: C:/Workspace/final industrialproject/NG_DSA360/src/assets/images/kyc-docs
-    customer: C:/Workspace/final industrialproject/NG_DSA360/src/assets/images/customer	
+    kyc: D:/Workspace/final industrialproject/NG_DSA360/src/assets/images/kyc-docs
+    customer: D:/Workspace/final industrialproject/NG_DSA360/src/assets/images/customer	
 
 logging:
   file:
@@ -21,7 +21,7 @@ spring:
   datasource:
     url: jdbc:mysql://localhost:3306/dsa360?createDatabaseIfNotExist=true
     username: root
-    password: admin
+    password: Shubh@29
     driver-class-name: com.mysql.cj.jdbc.Driver
     hikari:
       auto-commit: true

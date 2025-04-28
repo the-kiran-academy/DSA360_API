@@ -38,7 +38,7 @@ public class AdminDaoImpl implements AdminDao {
 
 		Transaction transaction = null;
 		try (Session session = factory.openSession()) {
-			CustomUserDetail user = userService.loadUserByUserId(userEntity.getUsername());
+			CustomUserDetail user = userService.loadUserByUserId(userEntity.getuserName());
 			if (user == null) {
 				transaction = session.beginTransaction();
 				session.save(userEntity);
@@ -50,12 +50,12 @@ public class AdminDaoImpl implements AdminDao {
 
 		} catch (ResourceAlreadyExistsException e) {
 			throw new ResourceAlreadyExistsException(
-					"Profile is already created for this user {}" + userEntity.getUsername());
+					"Profile is already created for this user {}" + userEntity.getuserName());
 		} catch (Exception e) {
 			e.printStackTrace();
-			logger.error("Exception occurred during generate profile for {} ", userEntity.getUsername());
+			logger.error("Exception occurred during generate profile for {} ", userEntity.getuserName());
 			throw new SomethingWentWrongException(
-					"Exception occurred during get DSA with id = " + userEntity.getUsername());
+					"Exception occurred during get DSA with id = " + userEntity.getuserName());
 		}
 
 	}

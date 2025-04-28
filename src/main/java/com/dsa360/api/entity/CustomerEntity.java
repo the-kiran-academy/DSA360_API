@@ -44,5 +44,79 @@ public class CustomerEntity extends  BaseEntity {
 	@OneToMany(mappedBy = "customer", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
 	private Set<DocumentEntity> documents;
 
+	public String getId() {
+		return id;
+	}
 
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getPhoneNumber() {
+		return phoneNumber;
+	}
+
+	public void setPhoneNumber(String phoneNumber) {
+		this.phoneNumber = phoneNumber;
+	}
+
+	public String getPermanentAddress() {
+		return permanentAddress;
+	}
+
+	public void setPermanentAddress(String permanentAddress) {
+		this.permanentAddress = permanentAddress;
+	}
+
+	public String getCurrentAddress() {
+		return currentAddress;
+	}
+
+	public void setCurrentAddress(String currentAddress) {
+		this.currentAddress = currentAddress;
+	}
+
+	public DSAApplicationEntity getDsaAgentId() {
+		return dsaAgentId;
+	}
+
+	public void setDsaAgentId(DSAApplicationEntity dsaAgentId) {
+		this.dsaAgentId = dsaAgentId;
+	}
+
+	public Set<LoanApplicationEntity> getLoanApplications() {
+		return loanApplications;
+	}
+
+	public void setLoanApplications(Set<LoanApplicationEntity> loanApplications) {
+		this.loanApplications = loanApplications;
+	}
+
+	public Set<DocumentEntity> getDocuments() {
+		return documents;
+	}
+
+	public void setDocuments(Set<DocumentEntity> documents) {
+		this.documents = documents;
+	}
+
+
+	
+	
 }
