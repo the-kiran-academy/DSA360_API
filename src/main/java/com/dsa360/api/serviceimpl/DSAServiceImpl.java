@@ -29,6 +29,7 @@ import com.dsa360.api.utility.ObjectConverter;
 @Service
 @Transactional(readOnly = true)
 public class DSAServiceImpl implements DSAService {
+	private static final String KYCPATH = "assets/images/kyc-docs/";
 
 	@Autowired
 	private DSADao dao;
@@ -51,7 +52,7 @@ public class DSAServiceImpl implements DSAService {
 		dsaApplicationDTO.setDsaApplicationId(
 				DynamicID.generateUniqueId("DSA", dsaApplicationDTO.getFirstName(), dsaApplicationDTO.getLastName()));
 
-		DSAApplicationEntity dsaApplicationEntity = mapper.map(dsaApplicationDTO, DSAApplicationEntity.class);
+		var dsaApplicationEntity = mapper.map(dsaApplicationDTO, DSAApplicationEntity.class);
 
 		DSAApplicationEntity registerDSA = dao.dsaApplication(dsaApplicationEntity);
 
@@ -143,13 +144,13 @@ public class DSAServiceImpl implements DSAService {
 	public DsaKycEntity getDsaKycByDsaId(String dsaApplicationId) {
 		DsaKycEntity dsaKyc = dao.getDsaKycByDsaId(dsaApplicationId);
 		if (dsaKyc != null) {
-			dsaKyc.setPassport("assets/images/kyc-docs/" + dsaApplicationId + "/" + dsaKyc.getPassport());
-			dsaKyc.setDrivingLicence("assets/images/kyc-docs/" + dsaApplicationId + "/" + dsaKyc.getDrivingLicence());
-			dsaKyc.setAadharCard("assets/images/kyc-docs/" + dsaApplicationId + "/" + dsaKyc.getAadharCard());
-			dsaKyc.setPanCard("assets/images/kyc-docs/" + dsaApplicationId + "/" + dsaKyc.getPanCard());
-			dsaKyc.setAddressProof("assets/images/kyc-docs/" + dsaApplicationId + "/" + dsaKyc.getAddressProof());
-			dsaKyc.setBankPassbook("assets/images/kyc-docs/" + dsaApplicationId + "/" + dsaKyc.getBankPassbook());
-			dsaKyc.setPhotograph("assets/images/kyc-docs/" + dsaApplicationId + "/" + dsaKyc.getPhotograph());
+			dsaKyc.setPassport(KYCPATH + dsaApplicationId + "/" + dsaKyc.getPassport());
+			dsaKyc.setDrivingLicence(KYCPATH + dsaApplicationId + "/" + dsaKyc.getDrivingLicence());
+			dsaKyc.setAadharCard(KYCPATH + dsaApplicationId + "/" + dsaKyc.getAadharCard());
+			dsaKyc.setPanCard(KYCPATH + dsaApplicationId + "/" + dsaKyc.getPanCard());
+			dsaKyc.setAddressProof(KYCPATH + dsaApplicationId + "/" + dsaKyc.getAddressProof());
+			dsaKyc.setBankPassbook(KYCPATH + dsaApplicationId + "/" + dsaKyc.getBankPassbook());
+			dsaKyc.setPhotograph(KYCPATH + dsaApplicationId + "/" + dsaKyc.getPhotograph());
 
 			return dsaKyc;
 		} else {
@@ -160,7 +161,7 @@ public class DSAServiceImpl implements DSAService {
 	@Override
 	public void emailVerificationRequest(String dsaId) {
 
-		String token = java.util.UUID.randomUUID().toString();
+		var token = java.util.UUID.randomUUID().toString();
 		DSAApplicationEntity dsaEntity = dao.emailVerificationRequest(dsaId, token);
 
 		String dsaName = dsaEntity.getFirstName() + " " + dsaEntity.getLastName();

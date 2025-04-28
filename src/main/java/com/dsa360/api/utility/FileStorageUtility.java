@@ -61,7 +61,7 @@ public class FileStorageUtility {
 					throw new SomethingWentWrongException("Invalid path sequence in file name: " + fileName);
 				}
 
-				Path targetPath = targetDir.resolve(fileName).normalize();
+				var targetPath = targetDir.resolve(fileName).normalize();
 				Files.copy(file.getInputStream(), targetPath, StandardCopyOption.REPLACE_EXISTING);
 				storedFilePaths.add(targetPath);
 			}
@@ -96,7 +96,7 @@ public class FileStorageUtility {
 	            throw new SomethingWentWrongException("Invalid path sequence in file name: " + fileName);
 	        }
 
-	        Path targetPath = targetDir.resolve(fileName).normalize();
+	        var targetPath = targetDir.resolve(fileName).normalize();
 	        Files.copy(file.getInputStream(), targetPath, StandardCopyOption.REPLACE_EXISTING);
 
 	        return true; // Return true if file is stored successfully

@@ -34,15 +34,17 @@ import com.dsa360.api.utility.FileStorageUtility;
 public class DSADaoImpl implements DSADao {
 
 	private static final Logger logger = LoggerFactory.getLogger(DSADaoImpl.class);
-
+	private static final String EMAILEXCPN = "Exception occurred during email verification ";
+	private static final String EMAILVERFAILED = "Something went wrong  during email verification ";
+	private static final String DSAAPPID = "dsaApplicationId";
 	@Autowired
 	private SessionFactory factory;
 
 	@Override
 	public DSAApplicationEntity getDSAById(String dsaID) {
-		String dataNotFound = "Data not found with id = ";
+		var dataNotFound = "Data not found with id = ";
 		DSAApplicationEntity dsaRegistrationEntity = null;
-		try (Session session = factory.openSession()) {
+		try (var session = factory.openSession()) {
 			dsaRegistrationEntity = session.get(DSAApplicationEntity.class, dsaID);
 
 			if (dsaRegistrationEntity != null) {
@@ -68,7 +70,7 @@ public class DSADaoImpl implements DSADao {
 	public DSAApplicationEntity dsaApplication(DSAApplicationEntity dsaRegistrationEntity) {
 		Transaction transaction = null;
 
-		try (Session session = factory.openSession()) {
+		try (var session = factory.openSession()) {
 
 			transaction = session.beginTransaction();
 			session.save(dsaRegistrationEntity);
@@ -101,8 +103,8 @@ public class DSADaoImpl implements DSADao {
 	@Override
 	public DSAApplicationEntity notifyReview(String id, String approvalStatus, String type) {
 		Transaction transaction = null;
-		final String dataNotFound = "Data Not Found";
-		try (Session session = factory.openSession()) {
+		final var dataNotFound = "Data Not Found";
+		try (var session = factory.openSession()) {
 
 			if (ReviewType.APPLICATION.getValue().equals(type)) {
 				DSAApplicationEntity dsaRegistrationEntity = session.get(DSAApplicationEntity.class, id);
@@ -147,7 +149,7 @@ public class DSADaoImpl implements DSADao {
 	@Override
 	public boolean systemUserKyc(DsaKycEntity dsa_KYC_Entity, List<Path> storedFilePaths) {
 		Transaction transaction = null;
-		try (Session session = factory.openSession()) {
+		try (var session = factory.openSession()) {
 			transaction = session.beginTransaction();
 
 			session.saveOrUpdate(dsa_KYC_Entity);
@@ -168,10 +170,10 @@ public class DSADaoImpl implements DSADao {
 
 	@Override
 	public DsaKycEntity getDsaKycByDsaId(String dsaApplicationId) {
-		try (Session session = factory.openSession()) {
+		try (var session = factory.openSession()) {
 
 			@SuppressWarnings("deprecation")
-			Criteria criteria = session.createCriteria(DsaKycEntity.class, dsaApplicationId);
+			var criteria = session.createCriteria(DsaKycEntity.class, dsaApplicationId);
 			criteria.add(Restrictions.eq("dsaApplicationId.dsaApplicationId", dsaApplicationId));
 			@SuppressWarnings("unchecked")
 			List<DsaKycEntity> list = criteria.list();
@@ -193,9 +195,9 @@ public class DSADaoImpl implements DSADao {
 	@Override
 	public List<DSAApplicationEntity> getAllDsaApplication() {
 		List<DSAApplicationEntity> list = null;
-		try (Session session = factory.openSession()) {
+		try (var session = factory.openSession()) {
 
-			Criteria criteria = session.createCriteria(DSAApplicationEntity.class);
+			var criteria = session.createCriteria(DSAApplicationEntity.class);
 			list = criteria.list();
 
 		} catch (Exception e) {
@@ -209,7 +211,7 @@ public class DSADaoImpl implements DSADao {
 	@Override
 	public DSAApplicationEntity emailVerificationRequest(String dsaId, String token) {
 		Transaction transaction = null;
-		try (Session session = factory.openSession()) {
+		try (var session = factory.openSession()) {
 			transaction = session.beginTransaction();
 
 			DSAApplicationEntity dsaEntity = session.get(DSAApplicationEntity.class, dsaId);
@@ -221,7 +223,7 @@ public class DSADaoImpl implements DSADao {
 			return dsaEntity;
 		} catch (Exception e) {
 			e.printStackTrace();
-			logger.error("Exception occurred during email verification request", e);
+			logger.error(EMAILEXCPN +"request", e);
 			throw new SomethingWentWrongException("Something went wrong  during email verification request");
 		}
 
@@ -230,7 +232,7 @@ public class DSADaoImpl implements DSADao {
 	@Override
 	public void verifyEmail(String dsaId, String token) {
 		Transaction transaction = null;
-		try (Session session = factory.openSession()) {
+		try (var session = factory.openSession()) {
 			transaction = session.beginTransaction();
 
 			DSAApplicationEntity dsaEntity = session.get(DSAApplicationEntity.class, dsaId);
@@ -241,8 +243,8 @@ public class DSADaoImpl implements DSADao {
 
 		} catch (Exception e) {
 			e.printStackTrace();
-			logger.error("Exception occurred during email verification ", e);
-			throw new SomethingWentWrongException("Something went wrong  during email verification ");
+			logger.error(EMAILEXCPN, e);
+			throw new SomethingWentWrongException(EMAILVERFAILED);
 		}
 
 	}
@@ -250,10 +252,10 @@ public class DSADaoImpl implements DSADao {
 	@Override
 	public List<String> getAllApprovedDsa() {
 		List<String> dsaIdList = null;
-		try (Session session = factory.openSession()) {
+		try (var session = factory.openSession()) {
 
-			Criteria criteria = session.createCriteria(DSAApplicationEntity.class);
-			criteria.setProjection(Projections.property("dsaApplicationId"));
+			var criteria = session.createCriteria(DSAApplicationEntity.class);
+			criteria.setProjection(Projections.property(DSAAPPID));
 			criteria.add(Restrictions.and(Restrictions.eq("approvalStatus", "Approved"),
 					Restrictions.eq("emailVerified", true)));
 
@@ -267,8 +269,8 @@ public class DSADaoImpl implements DSADao {
 
 		} catch (Exception e) {
 			e.printStackTrace();
-			logger.error("Exception occurred during email verification ", e);
-			throw new SomethingWentWrongException("Something went wrong  during email verification ");
+			logger.error(EMAILEXCPN, e);
+			throw new SomethingWentWrongException(EMAILVERFAILED);
 
 		}
 		return dsaIdList;
@@ -277,17 +279,17 @@ public class DSADaoImpl implements DSADao {
 	@Override
 	public List<String> getAllApprovedDsaWithNoSystemUser() {
 		List<String> dsaIdList = null;
-		try (Session session = factory.openSession()) {
+		try (var session = factory.openSession()) {
 
-			Criteria criteria = session.createCriteria(DSAApplicationEntity.class);
-			criteria.setProjection(Projections.property("dsaApplicationId"));
+			var criteria = session.createCriteria(DSAApplicationEntity.class);
+			criteria.setProjection(Projections.property(DSAAPPID));
 			criteria.add(Restrictions.and(Restrictions.eq("approvalStatus", "Approved"),
 					Restrictions.eq("emailVerified", true)));
 			dsaIdList = criteria.list();
 			// restriction for check is this system user
-			Criteria criteria2 = session.createCriteria(SystemUserEntity.class)
+			var criteria2 = session.createCriteria(SystemUserEntity.class)
 				    .setProjection(Projections.property("dsaApplicationId.dsaApplicationId")) // Extracting ID from the entity
-				    .add(Restrictions.isNotNull("dsaApplicationId"));
+				    .add(Restrictions.isNotNull(DSAAPPID));
 
 				List<String> dsaIDs = criteria2.list();
 			
@@ -301,8 +303,8 @@ public class DSADaoImpl implements DSADao {
 
 		} catch (Exception e) {
 			e.printStackTrace();
-			logger.error("Exception occurred during email verification ", e);
-			throw new SomethingWentWrongException("Something went wrong  during email verification ");
+			logger.error(EMAILEXCPN, e);
+			throw new SomethingWentWrongException(EMAILVERFAILED);
 
 		}
 		return dsaIdList;

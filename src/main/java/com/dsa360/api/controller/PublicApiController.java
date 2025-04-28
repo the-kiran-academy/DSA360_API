@@ -63,7 +63,7 @@ public class PublicApiController {
 			@RequestParam String dsaApplicationId, @RequestParam String bankName, @RequestParam String accountNumber,
 			@RequestParam String ifscCode) {
 
-		DsaKycDto dsa_KYC_DTO = new DsaKycDto();
+		var dsa_KYC_DTO = new DsaKycDto();
 
 		String message = null;
 
@@ -98,7 +98,7 @@ public class PublicApiController {
 					+ "window.location.href = 'http://localhost:4200/';" + "</script>" + "</head>" + "<body>"
 					+ "</body>" + "</html>";
 
-			HttpHeaders headers = new HttpHeaders();
+			var headers = new HttpHeaders();
 			headers.add(HttpHeaders.CONTENT_TYPE, "text/html; charset=UTF-8");
 			return new ResponseEntity<>(htmlContent, headers, HttpStatus.OK);
 		} catch (Exception e) {

@@ -27,7 +27,7 @@ public class CustomerDaoImpl implements CustomerDao {
 	@Override
 	public void createCustomer(CustomerEntity customerEntity) {
 
-		try (Session session = sessionFactory.openSession()) {
+		try (var session = sessionFactory.openSession()) {
 			session.save(customerEntity);
 			session.beginTransaction().commit();
 
@@ -48,7 +48,7 @@ public class CustomerDaoImpl implements CustomerDao {
 	@Override
 	public void customerLoanApplication(LoanApplicationEntity loanApplicationEntity) {
 
-		try (Session session = sessionFactory.openSession()) {
+		try (var session = sessionFactory.openSession()) {
 			session.save(loanApplicationEntity);
 			session.beginTransaction().commit();
 
@@ -62,7 +62,7 @@ public class CustomerDaoImpl implements CustomerDao {
 
 	@Override
 	public void uploadDocument(String customerId, DocumentEntity documentEntity) {
-		try (Session session = sessionFactory.openSession()) {
+		try (var session = sessionFactory.openSession()) {
 			session.save(documentEntity);
 			session.beginTransaction().commit();
 		} catch (Exception e) {
@@ -82,8 +82,8 @@ public class CustomerDaoImpl implements CustomerDao {
 	@Override
 
 	public CustomerEntity getCustomerById(String id) {
-		try (Session session = sessionFactory.openSession();) {
-			CustomerEntity customerEntity = session.get(CustomerEntity.class, id);
+		try (var session = sessionFactory.openSession();) {
+			var customerEntity = session.get(CustomerEntity.class, id);
 
 			return customerEntity;
 		} catch (
@@ -127,7 +127,7 @@ public class CustomerDaoImpl implements CustomerDao {
 
 	@Override
 	public String contactUs(ContactUsEntity contactUsEntity) {
-		try (Session session = sessionFactory.openSession()) {
+		try (var session = sessionFactory.openSession()) {
 			session.save(contactUsEntity);
 			session.beginTransaction().commit();
 			return "Data saved successfully";

@@ -36,7 +36,10 @@ import org.springframework.core.io.FileSystemResource;
  */
 @Service
 public class NotificationServiceImpl implements NotificationService {
-
+	private static final String PRODNAME = "DSA 360 Solution";
+	private static final String EMAILFAIL = "Failed to send the email";
+	private static final String DSAID = "dsaId";
+	private static final String DSANAME = "dsaName";
 	@Autowired
 	private JavaMailSender mailSender;
 
@@ -59,10 +62,10 @@ public class NotificationServiceImpl implements NotificationService {
 	public void dsaRegistrationConfirmationMail(String to, String dsaName, String dsaId, String registeredName,
 			String contactInfo) {
 		try {
-			MimeMessage message = mailSender.createMimeMessage();
-			MimeMessageHelper helper = new MimeMessageHelper(message, true);
+			var message = mailSender.createMimeMessage();
+			var helper = new MimeMessageHelper(message, true);
 
-			Context context = new Context();
+			var context = new Context();
 			context.setVariable(General.DSA_NAME.getValue(), dsaName);
 			context.setVariable(General.DSA_ID.getValue(), dsaId);
 			context.setVariable(General.REGISTERED_NAME.getValue(), registeredName);
@@ -70,7 +73,7 @@ public class NotificationServiceImpl implements NotificationService {
 
 			String text = templateEngine.process("dsa-registration", context);
 			
-			helper.setFrom(sender, "DSA 360 Solution");
+			helper.setFrom(sender, PRODNAME);
 			helper.setTo(to);
 			helper.setSubject("Welcome to DSA 360 Solution: DSA Registration Confirmed!");
 			helper.setText(text,true);
@@ -79,7 +82,7 @@ public class NotificationServiceImpl implements NotificationService {
 		} catch (MailSendException | MailAuthenticationException | MessagingException
 				| UnsupportedEncodingException e) {
 
-			throw new SomethingWentWrongException("Failed to send the email", e);
+			throw new SomethingWentWrongException(EMAILFAIL, e);
 
 		}
 
@@ -92,11 +95,11 @@ public class NotificationServiceImpl implements NotificationService {
 	public void dsaKycConfirmationMail(String to, String kycId, String dsaId, String dsaName, String contact,
 	        String address, List<String> docs) {
 	    try {
-	        MimeMessage message = mailSender.createMimeMessage();
-	        MimeMessageHelper helper = new MimeMessageHelper(message, true);
+	    	var message = mailSender.createMimeMessage();
+	    	var helper = new MimeMessageHelper(message, true);
 
 	        // Context setup for Thymeleaf template
-	        Context context = new Context();
+	    	var context = new Context();
 	        context.setVariable(General.DSA_NAME.getValue(), dsaName);
 	        context.setVariable(General.DSA_ID.getValue(), dsaId);
 	        context.setVariable("kycId", kycId);
@@ -123,8 +126,8 @@ public class NotificationServiceImpl implements NotificationService {
 //	        }
 	        
 	        for (String doc : docs) {
-	            Path filePath = fileStorageUtility.getKycRootLocation().resolve(dsaId).resolve(doc);
-	            File file = filePath.toFile();
+	        	var filePath = fileStorageUtility.getKycRootLocation().resolve(dsaId).resolve(doc);
+	        	var file = filePath.toFile();
 	            if (file.exists()) {
 	                helper.addAttachment(file.getName(), new FileSystemResource(file));
 	            } else {
@@ -139,7 +142,7 @@ public class NotificationServiceImpl implements NotificationService {
 	        String html = templateEngine.process("kyc_submission", context);
 
 	        // Send as HTML
-	        helper.setFrom(sender, "DSA 360 Solution");
+	        helper.setFrom(sender, PRODNAME);
 	        helper.setTo(to);
 	        helper.setSubject("KYC Submission Confirmed - " + dsaId);
 	        helper.setText(html, true); // must be true for HTML
@@ -150,7 +153,7 @@ public class NotificationServiceImpl implements NotificationService {
 	        mailSender.send(message);
 	    } catch (MailSendException | MailAuthenticationException | MessagingException
 	            | UnsupportedEncodingException e) {
-	        throw new SomethingWentWrongException("Failed to send the email", e);
+	        throw new SomethingWentWrongException(EMAILFAIL, e);
 	    }
 	}
 
@@ -158,13 +161,13 @@ public class NotificationServiceImpl implements NotificationService {
 	public void dsaReviewMail(String to, String dsaName, String reviewStatus, String type,String dsaId) {
 		String html = null;
 		try {
-			MimeMessage message = mailSender.createMimeMessage();
-			MimeMessageHelper helper = new MimeMessageHelper(message, true);
+			var message = mailSender.createMimeMessage();
+			var helper = new MimeMessageHelper(message, true);
 
-			Context context = new Context();
-			context.setVariable("dsaName", dsaName);
+			var context = new Context();
+			context.setVariable(DSANAME, dsaName);
 			context.setVariable("reviewStatus", reviewStatus);
-			context.setVariable("dsaId", dsaId);
+			context.setVariable(DSAID, dsaId);
 			if (ReviewType.APPLICATION.getValue().equals(type)) {
 				
 				html = templateEngine.process("applicatiion_review", context);
@@ -177,14 +180,14 @@ public class NotificationServiceImpl implements NotificationService {
 
 			}
 
-			helper.setFrom(sender, "DSA 360 Solution");
+			helper.setFrom(sender, PRODNAME);
 			helper.setTo(to);
 			helper.setText(html, true);
 
 			mailSender.send(message);
 		} catch (MailSendException | MailAuthenticationException | MessagingException
 				| UnsupportedEncodingException e) {
-			throw new SomethingWentWrongException("Failed to send the email", e);
+			throw new SomethingWentWrongException(EMAILFAIL, e);
 
 		}
 	}
@@ -194,10 +197,10 @@ public class NotificationServiceImpl implements NotificationService {
 			List<RoleEntity> allRoleByIds, List<RegionsEntity> allRegionsByIds) {
 
 		try {
-			MimeMessage message = mailSender.createMimeMessage();
-			MimeMessageHelper helper = new MimeMessageHelper(message, true);
+			var message = mailSender.createMimeMessage();
+			var helper = new MimeMessageHelper(message, true);
 
-			Context context = new Context();
+			var context = new Context();
 
 			String fullName = dsaById.getFirstName() + " " + dsaById.getLastName();
 			List<String> roles = allRoleByIds.stream().map(role -> role.getName().replace("ROLE_", ""))
@@ -206,8 +209,8 @@ public class NotificationServiceImpl implements NotificationService {
 			List<String> regions = allRegionsByIds.stream().map(RegionsEntity::getRegionName)
 					.collect(Collectors.toList());
 
-			context.setVariable("dsaName", fullName);
-			context.setVariable("dsaId", dsaById.getDsaApplicationId());
+			context.setVariable(DSANAME, fullName);
+			context.setVariable(DSAID, dsaById.getDsaApplicationId());
 			context.setVariable("username", username);
 			context.setVariable("password", password);
 			context.setVariable("roles", roles);
@@ -215,7 +218,7 @@ public class NotificationServiceImpl implements NotificationService {
 
 			String html = templateEngine.process("user-profile", context);
 
-			helper.setFrom(sender, "DSA 360 Solution");
+			helper.setFrom(sender, PRODNAME);
 			helper.setTo(dsaById.getEmailAddress());
 			helper.setSubject("Welcome to DSA 360 Solution: DSA Profile Created !");
 			helper.setText(html, true);
@@ -224,7 +227,7 @@ public class NotificationServiceImpl implements NotificationService {
 		} catch (MailSendException | MailAuthenticationException | MessagingException
 				| UnsupportedEncodingException e) {
 
-			throw new SomethingWentWrongException("Failed to send the email", e);
+			throw new SomethingWentWrongException(EMAILFAIL, e);
 
 		}
 
@@ -234,19 +237,19 @@ public class NotificationServiceImpl implements NotificationService {
 	public void emailVerificationRequestMail(String dsaId, String dsaName, String emailTo, String token) {
 
 		try {
-			MimeMessage message = mailSender.createMimeMessage();
-			MimeMessageHelper helper = new MimeMessageHelper(message, true);
+			var message = mailSender.createMimeMessage();
+			var helper = new MimeMessageHelper(message, true);
 
-			Context context = new Context();
-			context.setVariable("dsaName", dsaName);
-			context.setVariable("dsaId", dsaId);
+			var context = new Context();
+			context.setVariable(DSANAME, dsaName);
+			context.setVariable(DSAID, dsaId);
 			context.setVariable("email", emailTo);
             String url = "http://" + host + ":" + port + "/public/verify-email/" + dsaId + "?token=" + token;
 			context.setVariable("url", url);
 
 			String html = templateEngine.process("email-verification", context);
 
-			helper.setFrom(sender, "DSA 360 Solution");
+			helper.setFrom(sender, PRODNAME);
 			helper.setTo(emailTo);
 			helper.setSubject("DSA 360: Email Verification Request - " + dsaId);
 			helper.setText(html, true);
@@ -255,7 +258,7 @@ public class NotificationServiceImpl implements NotificationService {
 		} catch (MailSendException | MailAuthenticationException | MessagingException
 				| UnsupportedEncodingException e) {
 
-			throw new SomethingWentWrongException("Failed to send the email", e);
+			throw new SomethingWentWrongException(EMAILFAIL, e);
 
 		}
 	}
