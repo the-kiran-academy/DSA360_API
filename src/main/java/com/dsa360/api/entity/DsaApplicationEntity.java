@@ -18,7 +18,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Entity
 @Table(name = "dsa_application")
-public class DSAApplicationEntity extends  BaseEntity{
+public class DsaApplicationEntity extends  BaseEntity{
 	@Id   // DSA-2025-VC652345
 	@Column(nullable = false, unique = true)
 	private String dsaApplicationId;;

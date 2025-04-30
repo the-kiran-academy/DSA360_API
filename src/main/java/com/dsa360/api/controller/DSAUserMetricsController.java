@@ -16,67 +16,67 @@ import com.dsa360.api.service.DSAUserMetricsService;
 @RequestMapping("/admin/metrics")
 public class DSAUserMetricsController {
 
-    @Autowired
-    private DSAUserMetricsService dsaUserMetricsService;
-    
-    @GetMapping("/all")
-	
+	@Autowired
+	private DSAUserMetricsService dsaUserMetricsService;
 
-    @PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_SUB_ADMIN')")
-    public ResponseEntity<DSAMetricsCombinedResponse> getAllMetrics() {
-        long totalUsers = dsaUserMetricsService.getTotalDSAUsers();
-        long activeDSAs = dsaUserMetricsService.getActiveDSAs();
-        long daily = dsaUserMetricsService.getDailyNewRegistrations();
-        long weekly = dsaUserMetricsService.getWeeklyNewRegistrations();
-        long monthly = dsaUserMetricsService.getMonthlyNewRegistrations();
-        long pending = dsaUserMetricsService.getPendingRegistrations();
-        long inactive = dsaUserMetricsService.getInactiveDSAs();
+	@GetMapping("/all")
 
-        DSAMetricsResponseDto.NewRegistrations newRegs = new NewRegistrations(daily, weekly, monthly);
-        DSAMetricsResponseDto dto = new DSAMetricsResponseDto(totalUsers, activeDSAs, newRegs, pending, inactive);
+	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_SUB_ADMIN')")
+	public ResponseEntity<DSAMetricsCombinedResponse> getAllMetrics() {
+		long totalSystemUsers = dsaUserMetricsService.getTotalSystemUsers();
+		long activeSystemUsers = dsaUserMetricsService.getActiveSystemUsers();
+		long daily = dsaUserMetricsService.getDailyNewDsaRegistrations();
+		long weekly = dsaUserMetricsService.getWeeklyNewDsaRegistrations();
+		long monthly = dsaUserMetricsService.getMonthlyNewDsaRegistrations();
+		long pendingDsa = dsaUserMetricsService.getPendingDsaRegistrations();
+		long deactivated = dsaUserMetricsService.getDeactivedSystemUser();
 
-        return ResponseEntity.ok(new DSAMetricsCombinedResponse("success", dto));
-    }
+		DSAMetricsResponseDto.NewRegistrations newRegs = new NewRegistrations(daily, weekly, monthly);
+		DSAMetricsResponseDto dto = new DSAMetricsResponseDto(totalSystemUsers, activeSystemUsers, newRegs, pendingDsa,
+				deactivated);
 
-    @GetMapping("/total-users")
-    @PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_SUB_ADMIN')")
-    public ResponseEntity<Long> getTotalDSAUsers() {
-        return ResponseEntity.ok(dsaUserMetricsService.getTotalDSAUsers());
-    }
+		return ResponseEntity.ok(new DSAMetricsCombinedResponse("success", dto));
+	}
 
-    @GetMapping("/active-users")
-    @PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_SUB_ADMIN')")
-    public ResponseEntity<Long> getActiveDSAs() {
-        return ResponseEntity.ok(dsaUserMetricsService.getActiveDSAs());
-    }
+	@GetMapping("/total-users")
+	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_SUB_ADMIN')")
+	public ResponseEntity<Long> getTotalDSAUsers() {
+		return ResponseEntity.ok(dsaUserMetricsService.getTotalSystemUsers());
+	}
 
-    @GetMapping("/inactive-users")
-    @PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_SUB_ADMIN')")
-    public ResponseEntity<Long> getInactiveDSAs() {
-        return ResponseEntity.ok(dsaUserMetricsService.getInactiveDSAs());
-    }
+	@GetMapping("/active-users")
+	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_SUB_ADMIN')")
+	public ResponseEntity<Long> getActiveDSAs() {
+		return ResponseEntity.ok(dsaUserMetricsService.getActiveSystemUsers());
+	}
 
-    @GetMapping("/new-registrations/daily")
-    @PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_SUB_ADMIN')")
-    public ResponseEntity<Long> getDailyNewRegistrations() {
-        return ResponseEntity.ok(dsaUserMetricsService.getDailyNewRegistrations());
-    }
+	@GetMapping("/deactivated-users")
+	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_SUB_ADMIN')")
+	public ResponseEntity<Long> getDeactivedSystemUser() {
+		return ResponseEntity.ok(dsaUserMetricsService.getDeactivedSystemUser());
+	}
 
-    @GetMapping("/new-registrations/weekly")
-    @PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_SUB_ADMIN')")
-    public ResponseEntity<Long> getWeeklyNewRegistrations() {
-        return ResponseEntity.ok(dsaUserMetricsService.getWeeklyNewRegistrations());
-    }
+	@GetMapping("/new-registrations/daily")
+	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_SUB_ADMIN')")
+	public ResponseEntity<Long> getDailyNewRegistrations() {
+		return ResponseEntity.ok(dsaUserMetricsService.getDailyNewDsaRegistrations());
+	}
 
-    @GetMapping("/new-registrations/monthly")
-    @PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_SUB_ADMIN')")
-    public ResponseEntity<Long> getMonthlyNewRegistrations() {
-        return ResponseEntity.ok(dsaUserMetricsService.getMonthlyNewRegistrations());
-    }
+	@GetMapping("/new-registrations/weekly")
+	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_SUB_ADMIN')")
+	public ResponseEntity<Long> getWeeklyNewRegistrations() {
+		return ResponseEntity.ok(dsaUserMetricsService.getWeeklyNewDsaRegistrations());
+	}
 
-    @GetMapping("/pending-registrations")
-    @PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_SUB_ADMIN')")
-    public ResponseEntity<Long> getPendingRegistrations() {
-        return ResponseEntity.ok(dsaUserMetricsService.getPendingRegistrations());
-    }
+	@GetMapping("/new-registrations/monthly")
+	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_SUB_ADMIN')")
+	public ResponseEntity<Long> getMonthlyNewRegistrations() {
+		return ResponseEntity.ok(dsaUserMetricsService.getMonthlyNewDsaRegistrations());
+	}
+
+	@GetMapping("/pending-dsa-registrations")
+	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_SUB_ADMIN')")
+	public ResponseEntity<Long> getPendingDsaRegistrations() {
+		return ResponseEntity.ok(dsaUserMetricsService.getPendingDsaRegistrations());
+	}
 }

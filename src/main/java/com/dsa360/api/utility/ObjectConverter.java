@@ -6,7 +6,7 @@ import com.dsa360.api.dto.CustomerDTO;
 import com.dsa360.api.dto.DocumentDTO;
 import com.dsa360.api.dto.DsaKycDto;
 import com.dsa360.api.entity.CustomerEntity;
-import com.dsa360.api.entity.DSAApplicationEntity;
+import com.dsa360.api.entity.DsaApplicationEntity;
 import com.dsa360.api.entity.DocumentEntity;
 import com.dsa360.api.entity.DsaKycEntity;
 
@@ -19,7 +19,7 @@ public class ObjectConverter {
 			var kycEntity = new DsaKycEntity();
 			DsaKycDto dto = (DsaKycDto) sourceObject;
 
-			var dsaRegistrationEntity = new DSAApplicationEntity();
+			var dsaRegistrationEntity = new DsaApplicationEntity();
 
 			dsaRegistrationEntity.setDsaApplicationId(dto.getDsaApplicationId());
 
@@ -55,7 +55,7 @@ public class ObjectConverter {
 			customerEntity.setPermanentAddress(customerDTO.getPermanentAddress());
 			customerEntity.setCurrentAddress(customerEntity.getCurrentAddress());
 
-			var dsaAgent = new DSAApplicationEntity();
+			var dsaAgent = new DsaApplicationEntity();
 			dsaAgent.setDsaApplicationId(customerDTO.getDsaAgentId());
 			customerEntity.setDsaAgentId(dsaAgent);
 

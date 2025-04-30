@@ -17,7 +17,7 @@ import com.dsa360.api.dto.DSAApplicationDTO;
 import com.dsa360.api.dto.RegionsDto;
 import com.dsa360.api.dto.RoleDto;
 import com.dsa360.api.dto.SystemUserDto;
-import com.dsa360.api.entity.DSAApplicationEntity;
+import com.dsa360.api.entity.DsaApplicationEntity;
 import com.dsa360.api.entity.RegionsEntity;
 import com.dsa360.api.entity.RoleEntity;
 import com.dsa360.api.entity.SystemUserEntity;
@@ -55,13 +55,13 @@ public class AdminServiceImpl implements AdminService {
 
 	@Override
 	public SystemUserDto createSystemUserProfile(SystemUserDto userDto) {
-		DSAApplicationEntity dsaApplicationEntity = null;
+		DsaApplicationEntity dsaApplicationEntity = null;
 		DSAApplicationDTO dsaById = dsaService.getDSAById(userDto.getDsaApplicationId());
 		if (dsaById != null) {
 			userDto.setCreatedDate(LocalDate.now().toString());
 			String password = userDto.getPassword();
 			userDto.setPassword(encoder.encode(password));
-			dsaApplicationEntity = mapper.map(dsaById, DSAApplicationEntity.class);
+			dsaApplicationEntity = mapper.map(dsaById, DsaApplicationEntity.class);
 
 			SystemUserEntity entity = mapper.map(userDto, SystemUserEntity.class);
 			entity.setDsaApplicationId(dsaApplicationEntity);
