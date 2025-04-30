@@ -53,7 +53,6 @@ public class AdminDaoImpl implements AdminDao {
 			throw new ResourceAlreadyExistsException(
 					"Profile is already created for this user {}" + userEntity.getUsername());
 		} catch (Exception e) {
-			e.printStackTrace();
 			logger.error("Exception occurred during generate profile for {} ", userEntity.getUsername());
 			throw new SomethingWentWrongException(
 					"Exception occurred during get DSA with id = " + userEntity.getUsername());
