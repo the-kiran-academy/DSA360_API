@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.dsa360.api.aspect.TrackExecutionTime;
 import com.dsa360.api.dao.DSADao;
 import com.dsa360.api.dto.DSAApplicationDTO;
 import com.dsa360.api.dto.DsaKycDto;
@@ -66,6 +67,7 @@ public class DSAServiceImpl implements DSAService {
 	}
 
 	@Override
+	@TrackExecutionTime
 	public DSAApplicationDTO getDSAById(String dsaRegId) {
 
 		DSAApplicationEntity dsaEntity = dao.getDSAById(dsaRegId);

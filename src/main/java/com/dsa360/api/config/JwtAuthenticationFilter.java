@@ -12,7 +12,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
@@ -31,8 +30,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
 	@Autowired
 	private UserDetailsService userDetailsService;
-
-	private static final Logger logger = (Logger) LoggerFactory.getLogger(JwtAuthenticationFilter.class);
+	private static final Logger log = LoggerFactory.getLogger(JwtAuthenticationFilter.class);
 
 	@Autowired
 	private JwtUtil jwtTokenUtil;
@@ -84,7 +82,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 				UsernamePasswordAuthenticationToken authentication = jwtTokenUtil.getAuthentication(authToken,
 						SecurityContextHolder.getContext().getAuthentication(), userDetails);
 				authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(req));
-				logger.info("Authenticated user {}, setting security context", username);
+				log.info("Authenticated user {}, setting security context", username);
 				SecurityContextHolder.getContext().setAuthentication(authentication);
 			}
 		}
