@@ -73,6 +73,6 @@ public class SystemUserEntity extends  BaseEntity{
 
 	@OneToOne()
 	@JoinColumn(name = "dsa_id")
-	private DSAApplicationEntity dsaApplicationId;
+	private DsaApplicationEntity dsaApplicationId;
 
 }

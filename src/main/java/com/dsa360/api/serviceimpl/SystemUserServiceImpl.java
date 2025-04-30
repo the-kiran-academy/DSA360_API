@@ -13,7 +13,7 @@ import com.dsa360.api.dao.AdminDao;
 import com.dsa360.api.dao.DSADao;
 import com.dsa360.api.dao.SystemUserDao;
 import com.dsa360.api.dto.SystemUserDto;
-import com.dsa360.api.entity.DSAApplicationEntity;
+import com.dsa360.api.entity.DsaApplicationEntity;
 import com.dsa360.api.entity.RegionsEntity;
 import com.dsa360.api.entity.RoleEntity;
 import com.dsa360.api.entity.SystemUserEntity;
@@ -90,7 +90,7 @@ public class SystemUserServiceImpl implements SystemUserService {
 
 		List<RegionsEntity> allRegionsByIds = adminDao.getAllRegionsByIds(userDto.getRegions());
 		List<RoleEntity> allRoleByIds = adminDao.getAllRoleByIds(userDto.getRoles());
-		DSAApplicationEntity dsaById = dsaDao.getDSAById(userDto.getDsaApplicationId());
+		DsaApplicationEntity dsaById = dsaDao.getDSAById(userDto.getDsaApplicationId());
 
 		userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
 

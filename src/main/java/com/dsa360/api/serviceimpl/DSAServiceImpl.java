@@ -14,7 +14,7 @@ import com.dsa360.api.aspect.TrackExecutionTime;
 import com.dsa360.api.dao.DSADao;
 import com.dsa360.api.dto.DSAApplicationDTO;
 import com.dsa360.api.dto.DsaKycDto;
-import com.dsa360.api.entity.DSAApplicationEntity;
+import com.dsa360.api.entity.DsaApplicationEntity;
 import com.dsa360.api.entity.DsaKycEntity;
 import com.dsa360.api.exceptions.ResourceNotFoundException;
 import com.dsa360.api.service.DSAService;
@@ -53,9 +53,9 @@ public class DSAServiceImpl implements DSAService {
 		dsaApplicationDTO.setDsaApplicationId(
 				DynamicID.generateUniqueId("DSA", dsaApplicationDTO.getFirstName(), dsaApplicationDTO.getLastName()));
 
-		var dsaApplicationEntity = mapper.map(dsaApplicationDTO, DSAApplicationEntity.class);
+		var dsaApplicationEntity = mapper.map(dsaApplicationDTO, DsaApplicationEntity.class);
 
-		DSAApplicationEntity registerDSA = dao.dsaApplication(dsaApplicationEntity);
+		DsaApplicationEntity registerDSA = dao.dsaApplication(dsaApplicationEntity);
 
 		if (registerDSA != null) {
 			mailAsyncServices.sendApplicationConfirmationEmail(dsaApplicationDTO); // mail send
@@ -70,7 +70,7 @@ public class DSAServiceImpl implements DSAService {
 	@TrackExecutionTime
 	public DSAApplicationDTO getDSAById(String dsaRegId) {
 
-		DSAApplicationEntity dsaEntity = dao.getDSAById(dsaRegId);
+		DsaApplicationEntity dsaEntity = dao.getDSAById(dsaRegId);
 		DSAApplicationDTO dsaDto = mapper.map(dsaEntity, DSAApplicationDTO.class);
 
 		return dsaDto;
@@ -79,7 +79,7 @@ public class DSAServiceImpl implements DSAService {
 	@Override
 	public String notifyReview(String applicationId, String approvalStatus, String type) {
 
-		DSAApplicationEntity entity = dao.notifyReview(applicationId, approvalStatus, type);
+		DsaApplicationEntity entity = dao.notifyReview(applicationId, approvalStatus, type);
 
 		mailAsyncServices.dsaReviewMail(entity.getEmailAddress(), entity.getFirstName() + " " + entity.getLastName(),
 				approvalStatus, type, entity.getDsaApplicationId());
@@ -133,7 +133,7 @@ public class DSAServiceImpl implements DSAService {
 
 	@Override
 	public List<DSAApplicationDTO> getAllDsaApplication() {
-		List<DSAApplicationEntity> list = dao.getAllDsaApplication();
+		List<DsaApplicationEntity> list = dao.getAllDsaApplication();
 		if (!list.isEmpty()) {
 			return list.stream().map(entity -> mapper.map(entity, DSAApplicationDTO.class))
 					.collect(Collectors.toList());
@@ -164,7 +164,7 @@ public class DSAServiceImpl implements DSAService {
 	public void emailVerificationRequest(String dsaId) {
 
 		var token = java.util.UUID.randomUUID().toString();
-		DSAApplicationEntity dsaEntity = dao.emailVerificationRequest(dsaId, token);
+		DsaApplicationEntity dsaEntity = dao.emailVerificationRequest(dsaId, token);
 
 		String dsaName = dsaEntity.getFirstName() + " " + dsaEntity.getLastName();
 		String emailTo = dsaEntity.getEmailAddress();

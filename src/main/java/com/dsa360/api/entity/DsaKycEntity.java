@@ -23,7 +23,7 @@ public class DsaKycEntity extends  BaseEntity{
 
 	@OneToOne
 	@JoinColumn(name = "dsa_reg_id")
-	private DSAApplicationEntity dsaApplicationId;
+	private DsaApplicationEntity dsaApplicationId;
 
 	private String bankName;
 	private String accountNumber;

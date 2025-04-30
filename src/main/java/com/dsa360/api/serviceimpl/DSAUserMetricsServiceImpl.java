@@ -13,37 +13,37 @@ public class DSAUserMetricsServiceImpl implements DSAUserMetricsService {
     private DSAUserMetricsDao dsaUserMetricsDao;
 
     @Override
-    public long getTotalDSAUsers() {
-        return dsaUserMetricsDao.getTotalDSAUsers();
+    public long getTotalSystemUsers() {
+        return dsaUserMetricsDao.getTotalSystemUsers();
     }
 
     @Override
-    public long getActiveDSAs() {
-        return dsaUserMetricsDao.getActiveDSAs();
+    public long getActiveSystemUsers() {
+        return dsaUserMetricsDao.getActiveSystemUsers();
     }
 
     @Override
-    public long getDailyNewRegistrations() {
-        return dsaUserMetricsDao.getDailyNewRegistrations();
+    public long getDailyNewDsaRegistrations() {
+        return dsaUserMetricsDao.getDailyNewDsaRegistrations();
     }
 
     @Override
-    public long getWeeklyNewRegistrations() {
-        return dsaUserMetricsDao.getWeeklyNewRegistrations();
+    public long getWeeklyNewDsaRegistrations() {
+        return dsaUserMetricsDao.getWeeklyNewDsaRegistrations();
     }
 
     @Override
-    public long getMonthlyNewRegistrations() {
-        return dsaUserMetricsDao.getMonthlyNewRegistrations();
+    public long getMonthlyNewDsaRegistrations() {
+        return dsaUserMetricsDao.getMonthlyNewDsaRegistrations();
     }
 
     @Override
-    public long getPendingRegistrations() {
-        return dsaUserMetricsDao.getPendingRegistrations();
+    public long getPendingDsaRegistrations() {
+        return dsaUserMetricsDao.getPendingDsaRegistrations();
     }
 
     @Override
-    public long getInactiveDSAs() {
-        return dsaUserMetricsDao.getInactiveDSAs();
+    public long getDeactivedSystemUser() {
+        return dsaUserMetricsDao.getDeactivedSystemUser();
     }
 }

@@ -18,7 +18,7 @@ import org.springframework.stereotype.Repository;
 
 import com.dsa360.api.constants.ReviewType;
 import com.dsa360.api.dao.DSADao;
-import com.dsa360.api.entity.DSAApplicationEntity;
+import com.dsa360.api.entity.DsaApplicationEntity;
 import com.dsa360.api.entity.DsaKycEntity;
 import com.dsa360.api.entity.SystemUserEntity;
 import com.dsa360.api.exceptions.ResourceAlreadyExistsException;
@@ -41,11 +41,11 @@ public class DSADaoImpl implements DSADao {
 	private SessionFactory factory;
 
 	@Override
-	public DSAApplicationEntity getDSAById(String dsaID) {
+	public DsaApplicationEntity getDSAById(String dsaID) {
 		var dataNotFound = "Data not found with id = ";
-		DSAApplicationEntity dsaRegistrationEntity = null;
+		DsaApplicationEntity dsaRegistrationEntity = null;
 		try (var session = factory.openSession()) {
-			dsaRegistrationEntity = session.get(DSAApplicationEntity.class, dsaID);
+			dsaRegistrationEntity = session.get(DsaApplicationEntity.class, dsaID);
 
 			if (dsaRegistrationEntity != null) {
 				return dsaRegistrationEntity;
@@ -67,7 +67,7 @@ public class DSADaoImpl implements DSADao {
 	}
 
 	@Override
-	public DSAApplicationEntity dsaApplication(DSAApplicationEntity dsaRegistrationEntity) {
+	public DsaApplicationEntity dsaApplication(DsaApplicationEntity dsaRegistrationEntity) {
 		Transaction transaction = null;
 
 		try (var session = factory.openSession()) {
@@ -101,13 +101,13 @@ public class DSADaoImpl implements DSADao {
 	}
 
 	@Override
-	public DSAApplicationEntity notifyReview(String id, String approvalStatus, String type) {
+	public DsaApplicationEntity notifyReview(String id, String approvalStatus, String type) {
 		Transaction transaction = null;
 		final var dataNotFound = "Data Not Found";
 		try (var session = factory.openSession()) {
 
 			if (ReviewType.APPLICATION.getValue().equals(type)) {
-				DSAApplicationEntity dsaRegistrationEntity = session.get(DSAApplicationEntity.class, id);
+				DsaApplicationEntity dsaRegistrationEntity = session.get(DsaApplicationEntity.class, id);
 				if (dsaRegistrationEntity != null) {
 					transaction = session.beginTransaction();
 					dsaRegistrationEntity.setApprovalStatus(approvalStatus);
@@ -193,11 +193,11 @@ public class DSADaoImpl implements DSADao {
 
 	@SuppressWarnings({ "unchecked", "deprecation" })
 	@Override
-	public List<DSAApplicationEntity> getAllDsaApplication() {
-		List<DSAApplicationEntity> list = null;
+	public List<DsaApplicationEntity> getAllDsaApplication() {
+		List<DsaApplicationEntity> list = null;
 		try (var session = factory.openSession()) {
 
-			var criteria = session.createCriteria(DSAApplicationEntity.class);
+			var criteria = session.createCriteria(DsaApplicationEntity.class);
 			list = criteria.list();
 
 		} catch (Exception e) {
@@ -209,12 +209,12 @@ public class DSADaoImpl implements DSADao {
 	}
 
 	@Override
-	public DSAApplicationEntity emailVerificationRequest(String dsaId, String token) {
+	public DsaApplicationEntity emailVerificationRequest(String dsaId, String token) {
 		Transaction transaction = null;
 		try (var session = factory.openSession()) {
 			transaction = session.beginTransaction();
 
-			DSAApplicationEntity dsaEntity = session.get(DSAApplicationEntity.class, dsaId);
+			DsaApplicationEntity dsaEntity = session.get(DsaApplicationEntity.class, dsaId);
 			dsaEntity.setEmailVerificationToken(token);
 			dsaEntity.setEmailVerified(false);
 
@@ -235,7 +235,7 @@ public class DSADaoImpl implements DSADao {
 		try (var session = factory.openSession()) {
 			transaction = session.beginTransaction();
 
-			DSAApplicationEntity dsaEntity = session.get(DSAApplicationEntity.class, dsaId);
+			DsaApplicationEntity dsaEntity = session.get(DsaApplicationEntity.class, dsaId);
 			if (dsaEntity.getEmailVerificationToken().equals(token)) {
 				dsaEntity.setEmailVerified(true);
 				transaction.commit();
@@ -254,7 +254,7 @@ public class DSADaoImpl implements DSADao {
 		List<String> dsaIdList = null;
 		try (var session = factory.openSession()) {
 
-			var criteria = session.createCriteria(DSAApplicationEntity.class);
+			var criteria = session.createCriteria(DsaApplicationEntity.class);
 			criteria.setProjection(Projections.property(DSAAPPID));
 			criteria.add(Restrictions.and(Restrictions.eq("approvalStatus", "Approved"),
 					Restrictions.eq("emailVerified", true)));
@@ -281,7 +281,7 @@ public class DSADaoImpl implements DSADao {
 		List<String> dsaIdList = null;
 		try (var session = factory.openSession()) {
 
-			var criteria = session.createCriteria(DSAApplicationEntity.class);
+			var criteria = session.createCriteria(DsaApplicationEntity.class);
 			criteria.setProjection(Projections.property(DSAAPPID));
 			criteria.add(Restrictions.and(Restrictions.eq("approvalStatus", "Approved"),
 					Restrictions.eq("emailVerified", true)));

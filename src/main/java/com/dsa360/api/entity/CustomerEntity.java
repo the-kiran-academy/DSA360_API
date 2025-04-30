@@ -36,7 +36,7 @@ public class CustomerEntity extends  BaseEntity {
 	// Many Customers belong to one DSAAgent
 	@ManyToOne
 	@JoinColumn(name = "dsa_agent_id", nullable = false)
-	private DSAApplicationEntity dsaAgentId;
+	private DsaApplicationEntity dsaAgentId;
 
 	@OneToMany(mappedBy = "customer",fetch = FetchType.LAZY)
 	private Set<LoanApplicationEntity> loanApplications;
