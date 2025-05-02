@@ -71,6 +71,7 @@ public class ObjectConverter {
 			documentEntity.setDocumentName(documentDTO.getDocumentName());
 			documentEntity.setDocumentType(documentDTO.getDocumentType().getDisplayName());
 			documentEntity.setStatus(documentDTO.getStatus());
+			documentEntity.setComment(documentDTO.getComment());
 
 			var customerEntity = new CustomerEntity();
 			customerEntity.setId(documentDTO.getCustomerId());

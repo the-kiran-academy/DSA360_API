@@ -52,15 +52,24 @@ public class AgentController {
 	
 	@PostMapping("/documents/upload/{customerId}")
 	public ResponseEntity<String> uploadDocument(@PathVariable String customerId,
-			@RequestParam DocumentType documentType,@RequestParam MultipartFile file) {
-		var documentDTO=new DocumentDTO();
-		documentDTO.setCustomerId(customerId);
-		documentDTO.setDocumentName(file.getOriginalFilename());
-		documentDTO.setDocumentType(documentType);
-		documentDTO.setFile(file);
-	
-		service.uploadDocument(customerId, documentDTO);
-		return ResponseEntity.ok("Document uploaded successfully for customer ID: " + customerId);
+			@RequestParam String documentTypeStr,@RequestParam String comment,@RequestParam MultipartFile file) {
+		
+		DocumentType documentType;
+	    try {
+	        documentType = DocumentType.fromDisplayName(documentTypeStr);
+	    } catch (IllegalArgumentException e) {
+	        return ResponseEntity.badRequest().body("Invalid document type: " + documentTypeStr);
+	    }
+
+	    DocumentDTO documentDTO = new DocumentDTO();
+	    documentDTO.setCustomerId(customerId);
+	    documentDTO.setDocumentName(file.getOriginalFilename());
+	    documentDTO.setDocumentType(documentType);
+	    documentDTO.setComment(comment);
+	    documentDTO.setFile(file);
+
+	    service.uploadDocument(customerId, documentDTO);
+	    return ResponseEntity.ok("Document uploaded successfully for customer ID: " + customerId);
 	}
 
 	@GetMapping

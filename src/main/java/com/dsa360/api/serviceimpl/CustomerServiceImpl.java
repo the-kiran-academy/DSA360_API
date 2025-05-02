@@ -1,5 +1,6 @@
 package com.dsa360.api.serviceimpl;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.hibernate.Hibernate;
@@ -50,21 +51,31 @@ public class CustomerServiceImpl implements CustomerService {
 	}
 
 	@Override
-	public String checkLoanEligibility(String customerId) {
-
-		return null;
+	@Transactional(readOnly = true)
+	public CustomerEntity getCustomerById(String id) {
+		var customerEntity = customerDao.getCustomerById(id);
+		return customerEntity;
 	}
-
+	
 	@Override
 	public String customerLoanApplication(LoanApplicationDTO loanApplicationDTO) {
 		String loanId = DynamicID.getGeneratedId();
 		loanApplicationDTO.setId(loanId);
+		loanApplicationDTO.setApplicationDate(LocalDate.now());
 		var loanApplicationEntity = mapper.map(loanApplicationDTO, LoanApplicationEntity.class);
 
 		customerDao.customerLoanApplication(loanApplicationEntity);
 
 		return loanId;
 	}
+
+	@Override
+	public String checkLoanEligibility(String customerId) {
+
+		return null;
+	}
+
+	
 
 	@Override
 	public void uploadDocument(String customerId, DocumentDTO documentDTO) {
@@ -82,14 +93,6 @@ public class CustomerServiceImpl implements CustomerService {
 	public List<CustomerDTO> getAllCustomers() {
 
 		return null;
-	}
-
-	@Override
-	@Transactional(readOnly = true)
-	public CustomerEntity getCustomerById(String id) {
-		var customerEntity = customerDao.getCustomerById(id);
-		Hibernate.initialize(customerEntity.getLoanApplications());
-		return customerEntity;
 	}
 
 	@Override

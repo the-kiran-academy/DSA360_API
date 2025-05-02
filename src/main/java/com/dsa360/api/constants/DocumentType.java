@@ -17,4 +17,14 @@ public enum DocumentType {
     public String getDisplayName() {
         return displayName;
     }
+
+    public static DocumentType fromDisplayName(String displayName) {
+        for (DocumentType type : DocumentType.values()) {
+            if (type.displayName.equalsIgnoreCase(displayName)) {
+                return type;
+            }
+        }
+        throw new IllegalArgumentException("Invalid document type: " + displayName);
+    }
 }
+

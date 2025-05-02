@@ -10,6 +10,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -28,6 +31,7 @@ public class LoanApplicationEntity extends  BaseEntity{
 
     @ManyToOne
 	@JoinColumn(name = "customer_id", nullable = false)
+    @JsonBackReference
 	private CustomerEntity customer;
 
     @Column(name = "loan_amount", nullable = false)
@@ -51,6 +55,7 @@ public class LoanApplicationEntity extends  BaseEntity{
     // Additional relevant fields
 
     @Column(name = "application_date", nullable = false)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate applicationDate; // Date of application submission
 
     @Column(name = "payment_frequency", nullable = false)
