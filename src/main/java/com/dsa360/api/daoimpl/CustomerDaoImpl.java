@@ -1,12 +1,14 @@
 package com.dsa360.api.daoimpl;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.dsa360.api.dao.CustomerDao;
@@ -21,29 +23,67 @@ import com.dsa360.api.exceptions.SomethingWentWrongException;
 public class CustomerDaoImpl implements CustomerDao {
 	private static final Logger logger = LoggerFactory.getLogger(CustomerDaoImpl.class);
 
-	@Autowired
 	private SessionFactory sessionFactory;
+
+	public CustomerDaoImpl(SessionFactory sessionFactory) {
+		this.sessionFactory = sessionFactory;
+	}
 
 	@Override
 	public void createCustomer(CustomerEntity customerEntity) {
 
-		try (var session = sessionFactory.openSession()) {
+		Transaction transaction = null;
+		try (Session session = sessionFactory.openSession()) {
+			transaction = session.beginTransaction();
 			session.save(customerEntity);
-			session.beginTransaction().commit();
 
-		} catch (Exception e) {
-			e.printStackTrace();
-			logger.error("Exception occurred during create customer for {} ", customerEntity.getId());
-			throw new SomethingWentWrongException(
-					"Exception occurred during create customer for " + customerEntity.getId());
+			transaction.commit();
+		} catch (Exception ex) {
+			if (transaction != null)
+				transaction.rollback();
+			throw ex;
 		}
 	}
 
 	@Override
-	public String checkLoanEligibility(String customerId) {
+	public CustomerEntity getCustomerById(String id) {
+	    try (Session session = sessionFactory.openSession()) {
+	        Transaction tx = session.beginTransaction();
 
-		return null;
+	        // Step 1: Load the CustomerEntity along with DSA Agent only
+	        String customerQuery = "FROM CustomerEntity c LEFT JOIN FETCH c.dsaAgentId WHERE c.id = :id";
+	        CustomerEntity customer = session.createQuery(customerQuery, CustomerEntity.class)
+	                                         .setParameter("id", id)
+	                                         .uniqueResult();
+
+	        if (customer != null) {
+	            // Step 2: Load loan applications separately
+	            String loanQuery = "SELECT l FROM LoanApplicationEntity l WHERE l.customer.id = :id";
+	            Set<LoanApplicationEntity> loanApplications = new HashSet<>(
+	                session.createQuery(loanQuery, LoanApplicationEntity.class)
+	                       .setParameter("id", id)
+	                       .getResultList()
+	            );
+	            customer.setLoanApplications(loanApplications);
+
+	            // Step 3: Load documents separately
+	            String docQuery = "SELECT d FROM DocumentEntity d WHERE d.customer.id = :id";
+	            Set<DocumentEntity> documents = new HashSet<>(
+	                session.createQuery(docQuery, DocumentEntity.class)
+	                       .setParameter("id", id)
+	                       .getResultList()
+	            );
+	            customer.setDocuments(documents);
+	        }
+
+	        tx.commit();
+	        return customer;
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        return null;
+	    }
 	}
+
 
 	@Override
 	public void customerLoanApplication(LoanApplicationEntity loanApplicationEntity) {
@@ -60,6 +100,14 @@ public class CustomerDaoImpl implements CustomerDao {
 		}
 	}
 
+
+	@Override
+	public String checkLoanEligibility(String customerId) {
+
+		return null;
+	}
+
+	
 	@Override
 	public void uploadDocument(String customerId, DocumentEntity documentEntity) {
 		try (var session = sessionFactory.openSession()) {
@@ -77,23 +125,6 @@ public class CustomerDaoImpl implements CustomerDao {
 	public List<CustomerEntity> getAllCustomers() {
 
 		return null;
-	}
-
-	@Override
-
-	public CustomerEntity getCustomerById(String id) {
-		try (var session = sessionFactory.openSession();) {
-			var customerEntity = session.get(CustomerEntity.class, id);
-
-			return customerEntity;
-		} catch (
-
-		Exception e) {
-			e.printStackTrace();
-			logger.error("Exception occurred during load customer data {}", id);
-			throw new SomethingWentWrongException("Exception occurred during load customer data " + id);
-		}
-
 	}
 
 	@Override
@@ -136,7 +167,7 @@ public class CustomerDaoImpl implements CustomerDao {
 			logger.error("Exception occurred during contact us {}", contactUsEntity.getId());
 			throw new SomethingWentWrongException("Exception occurred during contact us " + contactUsEntity.getId());
 		}
-		
+
 	}
 
 }

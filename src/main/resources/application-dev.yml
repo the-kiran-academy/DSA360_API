@@ -1,3 +1,4 @@
+
 server:
   port: 8091
   hostname: localhost
@@ -34,8 +35,7 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update		
-     
-      
+        
   mail:
     host: smtp.gmail.com
     password: tgeq rdlf ekap zncn
@@ -50,7 +50,7 @@ spring:
             required: true
           ssl:
             trust: smtp.gmail.com
-
+  
 management:
   endpoints:
     web:

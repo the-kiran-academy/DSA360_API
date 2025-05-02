@@ -7,6 +7,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -38,6 +40,8 @@ public class DocumentEntity extends  BaseEntity{
 
 	@ManyToOne
 	@JoinColumn(name = "customer_id", nullable = false)
+	@JsonBackReference
+	
 	private CustomerEntity customer;
 
 }

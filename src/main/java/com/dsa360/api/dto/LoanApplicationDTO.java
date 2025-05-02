@@ -37,8 +37,7 @@ public class LoanApplicationDTO {
 
     // Additional relevant fields
 
-    @NotNull(message = "Application date is required.")
-    @PastOrPresent(message = "Application date must be today or in the past.")
+    
     private LocalDate applicationDate; // Date of application submission
 
     @NotEmpty(message = "Payment frequency is required.")

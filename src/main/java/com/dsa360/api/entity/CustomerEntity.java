@@ -11,6 +11,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -18,7 +20,7 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Data
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode(callSuper = false, exclude = {"loanApplications", "documents"})
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "customers")
@@ -36,12 +38,15 @@ public class CustomerEntity extends  BaseEntity {
 	// Many Customers belong to one DSAAgent
 	@ManyToOne
 	@JoinColumn(name = "dsa_agent_id", nullable = false)
+	@JsonManagedReference
 	private DsaApplicationEntity dsaAgentId;
 
-	@OneToMany(mappedBy = "customer",fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "customer",fetch = FetchType.EAGER)
+	@JsonManagedReference
 	private Set<LoanApplicationEntity> loanApplications;
 
 	@OneToMany(mappedBy = "customer", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JsonManagedReference
 	private Set<DocumentEntity> documents;
 
 
