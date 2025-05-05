@@ -13,7 +13,7 @@
 	<artifactId>DSA360API_Solution</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>DSA360API</name>
-	<description>The Direct Selling Agent (DSA) Bank Loan System is
+	<description>The Direct Selling Agent (DSA)  Loan System is
 		designed to streamline the loan application process by providing a
 		RESTful API for managing loan applications submitted by DSAs on behalf
 		of customers. This project aims to simplify the interaction between
