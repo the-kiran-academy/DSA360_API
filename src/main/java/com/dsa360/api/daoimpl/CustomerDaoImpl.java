@@ -4,9 +4,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.hibernate.criterion.Restrictions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
@@ -47,43 +49,35 @@ public class CustomerDaoImpl implements CustomerDao {
 
 	@Override
 	public CustomerEntity getCustomerById(String id) {
-	    try (Session session = sessionFactory.openSession()) {
-	        Transaction tx = session.beginTransaction();
+		try (Session session = sessionFactory.openSession()) {
+			Transaction tx = session.beginTransaction();
 
-	        // Step 1: Load the CustomerEntity along with DSA Agent only
-	        String customerQuery = "FROM CustomerEntity c LEFT JOIN FETCH c.dsaAgentId WHERE c.id = :id";
-	        CustomerEntity customer = session.createQuery(customerQuery, CustomerEntity.class)
-	                                         .setParameter("id", id)
-	                                         .uniqueResult();
+			// Step 1: Load the CustomerEntity along with DSA Agent only
+			String customerQuery = "FROM CustomerEntity c LEFT JOIN FETCH c.dsaAgentId WHERE c.id = :id";
+			CustomerEntity customer = session.createQuery(customerQuery, CustomerEntity.class).setParameter("id", id)
+					.uniqueResult();
 
-	        if (customer != null) {
-	            // Step 2: Load loan applications separately
-	            String loanQuery = "SELECT l FROM LoanApplicationEntity l WHERE l.customer.id = :id";
-	            Set<LoanApplicationEntity> loanApplications = new HashSet<>(
-	                session.createQuery(loanQuery, LoanApplicationEntity.class)
-	                       .setParameter("id", id)
-	                       .getResultList()
-	            );
-	            customer.setLoanApplications(loanApplications);
+			if (customer != null) {
+				// Step 2: Load loan applications separately
+				String loanQuery = "SELECT l FROM LoanApplicationEntity l WHERE l.customer.id = :id";
+				Set<LoanApplicationEntity> loanApplications = new HashSet<>(session
+						.createQuery(loanQuery, LoanApplicationEntity.class).setParameter("id", id).getResultList());
+				customer.setLoanApplications(loanApplications);
 
-	            // Step 3: Load documents separately
-	            String docQuery = "SELECT d FROM DocumentEntity d WHERE d.customer.id = :id";
-	            Set<DocumentEntity> documents = new HashSet<>(
-	                session.createQuery(docQuery, DocumentEntity.class)
-	                       .setParameter("id", id)
-	                       .getResultList()
-	            );
-	            customer.setDocuments(documents);
-	        }
+				// Step 3: Load documents separately
+				String docQuery = "SELECT d FROM DocumentEntity d WHERE d.customer.id = :id";
+				Set<DocumentEntity> documents = new HashSet<>(
+						session.createQuery(docQuery, DocumentEntity.class).setParameter("id", id).getResultList());
+				customer.setDocuments(documents);
+			}
 
-	        tx.commit();
-	        return customer;
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	        return null;
-	    }
+			tx.commit();
+			return customer;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
-
 
 	@Override
 	public void customerLoanApplication(LoanApplicationEntity loanApplicationEntity) {
@@ -100,18 +94,10 @@ public class CustomerDaoImpl implements CustomerDao {
 		}
 	}
 
-
-	@Override
-	public String checkLoanEligibility(String customerId) {
-
-		return null;
-	}
-
-	
 	@Override
 	public void uploadDocument(String customerId, DocumentEntity documentEntity) {
 		try (var session = sessionFactory.openSession()) {
-			session.save(documentEntity);
+			session.saveOrUpdate(documentEntity);
 			session.beginTransaction().commit();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -122,10 +108,110 @@ public class CustomerDaoImpl implements CustomerDao {
 	}
 
 	@Override
-	public List<CustomerEntity> getAllCustomers() {
+	public DocumentEntity getDocumentByTypeAndCustomerId(String type, String customerId) {
+		try (var session = sessionFactory.openSession()) {
+
+			Criteria criteria = session.createCriteria(DocumentEntity.class);
+			criteria.add(Restrictions.eq("documentType", type));
+			criteria.createAlias("customer", "c");
+			criteria.add(Restrictions.eq("c.id", customerId));
+
+			if (!criteria.list().isEmpty()) {
+				return (DocumentEntity) criteria.list().get(0);
+			} else {
+				return null;
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new RuntimeException("Error fetching document by type and customerId", e);
+		}
+	}
+
+	@Override
+	public String checkLoanEligibility(String customerId) {
 
 		return null;
 	}
+
+	@Override
+	public List<CustomerEntity> getAllCustomers() {
+		try (Session session = sessionFactory.openSession()) {
+			Transaction tx = session.beginTransaction();
+
+			// Step 1: Load all customers with their DSA agent only
+			String customerQuery = "FROM CustomerEntity c LEFT JOIN FETCH c.dsaAgentId";
+			List<CustomerEntity> customers = session.createQuery(customerQuery, CustomerEntity.class).getResultList();
+
+			// Step 2: For each customer, load loan applications and documents separately
+			for (CustomerEntity customer : customers) {
+				String id = customer.getId();
+
+				// Load loan applications
+				String loanQuery = "FROM LoanApplicationEntity l WHERE l.customer.id = :id";
+				Set<LoanApplicationEntity> loanApplications = new HashSet<>(session
+						.createQuery(loanQuery, LoanApplicationEntity.class).setParameter("id", id).getResultList());
+				customer.setLoanApplications(loanApplications);
+
+				// Load documents
+				String docQuery = "FROM DocumentEntity d WHERE d.customer.id = :id";
+				Set<DocumentEntity> documents = new HashSet<>(
+						session.createQuery(docQuery, DocumentEntity.class).setParameter("id", id).getResultList());
+				customer.setDocuments(documents);
+			}
+
+			tx.commit();
+			return customers;
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new RuntimeException("Failed to fetch all customers", e);
+		}
+	}
+	
+	
+	@Override
+	public List<CustomerEntity> getCustomersByDsaAgentId(String dsaAgentId) {
+	    try (Session session = sessionFactory.openSession()) {
+	        Transaction tx = session.beginTransaction();
+
+	        // Step 1: Load customers for the given DSA Agent ID
+	        String customerQuery = "FROM CustomerEntity c LEFT JOIN FETCH c.dsaAgentId d WHERE d.id = :dsaId";
+	        List<CustomerEntity> customers = session
+	                .createQuery(customerQuery, CustomerEntity.class)
+	                .setParameter("dsaId", dsaAgentId)
+	                .getResultList();
+
+	        // Step 2: For each customer, load loan applications and documents
+	        for (CustomerEntity customer : customers) {
+	            String customerId = customer.getId();
+
+	            // Load loan applications
+	            String loanQuery = "FROM LoanApplicationEntity l WHERE l.customer.id = :id";
+	            Set<LoanApplicationEntity> loanApplications = new HashSet<>(
+	                    session.createQuery(loanQuery, LoanApplicationEntity.class)
+	                           .setParameter("id", customerId)
+	                           .getResultList()
+	            );
+	            customer.setLoanApplications(loanApplications);
+
+	            // Load documents
+	            String docQuery = "FROM DocumentEntity d WHERE d.customer.id = :id";
+	            Set<DocumentEntity> documents = new HashSet<>(
+	                    session.createQuery(docQuery, DocumentEntity.class)
+	                           .setParameter("id", customerId)
+	                           .getResultList()
+	            );
+	            customer.setDocuments(documents);
+	        }
+
+	        tx.commit();
+	        return customers;
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        throw new RuntimeException("Failed to fetch customers for DSA Agent ID: " + dsaAgentId, e);
+	    }
+	}
+
 
 	@Override
 	public CustomerEntity updateCustomer(CustomerEntity customerEntity) {

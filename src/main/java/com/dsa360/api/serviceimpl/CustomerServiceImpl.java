@@ -26,17 +26,22 @@ import com.dsa360.api.utility.ObjectConverter;
 
 public class CustomerServiceImpl implements CustomerService {
 
-	@Autowired
 	private CustomerDao customerDao;
 
-	@Autowired
 	private ObjectConverter converter;
 
-	@Autowired
 	private ModelMapper mapper;
 
-	@Autowired
 	private FileStorageUtility fileStorageUtility;
+
+	public CustomerServiceImpl(CustomerDao customerDao, ObjectConverter converter, ModelMapper mapper,
+			FileStorageUtility fileStorageUtility) {
+		super();
+		this.customerDao = customerDao;
+		this.converter = converter;
+		this.mapper = mapper;
+		this.fileStorageUtility = fileStorageUtility;
+	}
 
 	@Override
 	public String createCustomer(CustomerDTO customerDTO) {
@@ -56,7 +61,7 @@ public class CustomerServiceImpl implements CustomerService {
 		var customerEntity = customerDao.getCustomerById(id);
 		return customerEntity;
 	}
-	
+
 	@Override
 	public String customerLoanApplication(LoanApplicationDTO loanApplicationDTO) {
 		String loanId = DynamicID.getGeneratedId();
@@ -75,12 +80,20 @@ public class CustomerServiceImpl implements CustomerService {
 		return null;
 	}
 
-	
-
 	@Override
 	public void uploadDocument(String customerId, DocumentDTO documentDTO) {
-		String documentId = DynamicID.getGeneratedId();
-		documentDTO.setId(documentId);
+
+		DocumentEntity document = customerDao
+				.getDocumentByTypeAndCustomerId(documentDTO.getDocumentType().getDisplayName(), customerId);
+
+		if (document == null) {
+			String documentId = DynamicID.getGeneratedId();
+			documentDTO.setId(documentId);
+
+		} else {
+			documentDTO.setId(document.getId());
+		}
+
 		boolean isStoared = fileStorageUtility.storeCustomerFile(customerId, documentDTO.getFile());
 		if (isStoared) {
 			var documentEntity = (DocumentEntity) converter.dtoToEntity(documentDTO);
@@ -90,9 +103,14 @@ public class CustomerServiceImpl implements CustomerService {
 	}
 
 	@Override
-	public List<CustomerDTO> getAllCustomers() {
+	public List<CustomerEntity> getAllCustomers() {
+		List<CustomerEntity> allCustomers = customerDao.getAllCustomers();
+		return allCustomers;
+	}
 
-		return null;
+	@Override
+	public List<CustomerEntity> getCustomersByDsaAgentId(String dsaAgentId) {
+		return customerDao.getCustomersByDsaAgentId(dsaAgentId);
 	}
 
 	@Override

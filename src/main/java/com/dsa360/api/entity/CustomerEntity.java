@@ -41,7 +41,7 @@ public class CustomerEntity extends  BaseEntity {
 	@JsonManagedReference
 	private DsaApplicationEntity dsaAgentId;
 
-	@OneToMany(mappedBy = "customer",fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "customer",fetch = FetchType.LAZY)
 	@JsonManagedReference
 	private Set<LoanApplicationEntity> loanApplications;
 

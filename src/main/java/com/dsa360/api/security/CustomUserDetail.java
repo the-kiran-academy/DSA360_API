@@ -17,6 +17,7 @@ import com.dsa360.api.entity.RoleEntity;
 @SuppressWarnings("serial")
 public class CustomUserDetail implements UserDetails {
 
+	private String id;
 	private String username;
 	private String password;
 
@@ -27,12 +28,24 @@ public class CustomUserDetail implements UserDetails {
 
 	}
 
-	public CustomUserDetail(String userName, String password, List<RoleEntity> roles, String status) {
+	public CustomUserDetail(String id,String userName, String password, List<RoleEntity> roles, String status) {
 		super();
+		this.id=id;
 		this.username = userName;
 		this.password = password;
 		this.roles = roles;
 		this.status = status;
+	}
+	
+	
+	
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
 	}
 
 	public List<RoleEntity> getRoles() {
