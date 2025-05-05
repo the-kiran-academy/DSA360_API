@@ -58,17 +58,17 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 			} catch (IllegalArgumentException e) {
 				throw new SomethingWentWrongException("Facing Issue while getting username from token.");
 			} catch (ExpiredJwtException e) {
-				throw new TokenExpirationException("Your session has expired. Please log in again.");
+				throw new TokenExpirationException("Your session has been expired. Please log in again.");
 			} catch (SignatureException e) {
 				throw new SomethingWentWrongException("Invalid Signature . Please log in again.");
 			}
 
 			catch (Exception e) {
-				e.printStackTrace();
+				log.error(e.getMessage());
 			}
 
 		} else {
-			 logger.warn("Couldn't find bearer string, will ignore the header! Logged in with credentials.");
+			logger.warn("Couldn't find bearer string, will ignore the header! Logged in with credentials.");
 		}
 		if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 

@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.dsa360.api.constants.ErrorMessage;
+import com.dsa360.api.exceptions.ResourceAlreadyExistsException;
 import com.dsa360.api.exceptions.SomethingWentWrongException;
 
 @Service
@@ -76,35 +77,27 @@ public class FileStorageUtility {
 	
 	public boolean storeCustomerFile(String customerId, MultipartFile file) {
 	    Path targetDir = this.customerRootLocation.resolve(customerId);
+
 	    try {
-	        // Delete the directory if it exists to replace existing files
-	        if (Files.exists(targetDir)) {
-	            try (Stream<Path> paths = Files.walk(targetDir).sorted(Comparator.reverseOrder())) {
-	                paths.map(Path::toFile).forEach(File::delete);
-	            } catch (IOException e) {
-	                logger.error("Failed to delete existing files for customer {}: {}", customerId, e.getMessage());
-	                throw new SomethingWentWrongException("Failed to delete existing files.");
-	            }
-	        }
-
-	        // Create a new directory for the customer if it doesn't exist
+	        // Create customer directory if it doesn't exist
 	        Files.createDirectories(targetDir);
-
-	        // Store the file
 	        String fileName = file.getOriginalFilename();
 	        if (fileName != null && fileName.contains("..")) {
+	        
 	            throw new SomethingWentWrongException("Invalid path sequence in file name: " + fileName);
 	        }
 
-	        var targetPath = targetDir.resolve(fileName).normalize();
+	        Path targetPath = targetDir.resolve(fileName).normalize();
 	        Files.copy(file.getInputStream(), targetPath, StandardCopyOption.REPLACE_EXISTING);
+	        return true;
 
-	        return true; // Return true if file is stored successfully
 	    } catch (IOException e) {
 	        logger.error("Failed to store customer file for {}: {}", customerId, e.getMessage());
 	        throw new SomethingWentWrongException("Failed to store customer file.", e);
 	    }
 	}
+
+	
 
 	public static void revokeAllFiles(List<Path> files) {
 		

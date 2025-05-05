@@ -46,35 +46,44 @@ public class AgentController {
 	public ResponseEntity<String> customerLoanApplication(@Valid @RequestBody LoanApplicationDTO loanApplicationDTO) {
 		String loadApplicationId = service.customerLoanApplication(loanApplicationDTO);
 
-		return new ResponseEntity<>(loadApplicationId,HttpStatus.OK);
+		return new ResponseEntity<>(loadApplicationId, HttpStatus.OK);
 	}
 
-	
 	@PostMapping("/documents/upload/{customerId}")
-	public ResponseEntity<String> uploadDocument(@PathVariable String customerId,
-			@RequestParam String documentTypeStr,@RequestParam String comment,@RequestParam MultipartFile file) {
-		
+	public ResponseEntity<String> uploadDocument(@PathVariable String customerId, @RequestParam String documentTypeStr,
+			@RequestParam String comment, @RequestParam MultipartFile file) {
+
 		DocumentType documentType;
-	    try {
-	        documentType = DocumentType.fromDisplayName(documentTypeStr);
-	    } catch (IllegalArgumentException e) {
-	        return ResponseEntity.badRequest().body("Invalid document type: " + documentTypeStr);
-	    }
+		try {
+			documentType = DocumentType.fromDisplayName(documentTypeStr);
+		} catch (IllegalArgumentException e) {
+			return ResponseEntity.badRequest().body("Invalid document type: " + documentTypeStr);
+		}
 
-	    DocumentDTO documentDTO = new DocumentDTO();
-	    documentDTO.setCustomerId(customerId);
-	    documentDTO.setDocumentName(file.getOriginalFilename());
-	    documentDTO.setDocumentType(documentType);
-	    documentDTO.setComment(comment);
-	    documentDTO.setFile(file);
+		DocumentDTO documentDTO = new DocumentDTO();
+		documentDTO.setCustomerId(customerId);
+		documentDTO.setDocumentName(file.getOriginalFilename());
+		documentDTO.setDocumentType(documentType);
+		documentDTO.setComment(comment);
+		documentDTO.setFile(file);
 
-	    service.uploadDocument(customerId, documentDTO);
-	    return ResponseEntity.ok("Document uploaded successfully for customer ID: " + customerId);
+		service.uploadDocument(customerId, documentDTO);
+		return ResponseEntity.ok("Document uploaded successfully for customer ID: " + customerId);
 	}
 
-	@GetMapping
-	public ResponseEntity<List<CustomerDTO>> getAllCustomers() {
-		List<CustomerDTO> customers = service.getAllCustomers();
+	@GetMapping("/customers")
+	public ResponseEntity<List<CustomerEntity>> getAllCustomers() {
+		List<CustomerEntity> customers = service.getAllCustomers();
+		return ResponseEntity.ok(customers);
+	}
+
+	@GetMapping("/customers/dsa/{dsaAgentId}")
+	public ResponseEntity<List<CustomerEntity>> getCustomersByDsaAgent(@PathVariable String dsaAgentId) {
+		List<CustomerEntity> customers = service.getCustomersByDsaAgentId(dsaAgentId);
+
+		if (customers.isEmpty()) {
+			return ResponseEntity.noContent().build();
+		}
 		return ResponseEntity.ok(customers);
 	}
 
@@ -97,7 +106,6 @@ public class AgentController {
 		return ResponseEntity.noContent().build();
 	}
 
-	
 	@GetMapping("/{customerId}/documents")
 	public ResponseEntity<List<DocumentDTO>> getDocumentsByCustomerId(@PathVariable String customerId) {
 		List<DocumentDTO> documents = service.getDocumentsByCustomerId(customerId);

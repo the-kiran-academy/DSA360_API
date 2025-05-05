@@ -17,7 +17,11 @@ public interface CustomerDao {
 
 	public abstract void uploadDocument(String customerId, DocumentEntity documentEntity);
 
+	public abstract DocumentEntity getDocumentByTypeAndCustomerId(String type, String customerId);
+
 	public abstract List<CustomerEntity> getAllCustomers();
+
+	public abstract List<CustomerEntity> getCustomersByDsaAgentId(String dsaAgentId);
 
 	public abstract CustomerEntity getCustomerById(String id);
 

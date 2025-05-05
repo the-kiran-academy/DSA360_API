@@ -17,7 +17,10 @@ public interface CustomerService {
 
 	public abstract String customerLoanApplication(LoanApplicationDTO loanApplicationDTO);
 
-	public abstract List<CustomerDTO> getAllCustomers();
+	public abstract List<CustomerEntity> getAllCustomers();
+	
+	public abstract List<CustomerEntity> getCustomersByDsaAgentId(String dsaAgentId);
+
 
 	public abstract CustomerEntity getCustomerById(String id);
 

@@ -40,6 +40,7 @@ public class SystemUserDaoImpl implements SystemUserDao {
 			usr = session.get(SystemUserEntity.class, userId);
 			if (usr != null) {
 				user = new CustomUserDetail();
+				user.setId(usr.getDsaApplicationId().getDsaApplicationId());
 				user.setUsername(userId);
 				user.setPassword(usr.getPassword());
 				user.setRoles(usr.getRoles());

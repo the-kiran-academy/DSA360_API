@@ -54,8 +54,8 @@ public class AuthController {
 	// completed
 	@PostMapping("/login-user")
 	@TrackExecutionTime
-	public ResponseEntity<LogedInUserDetailModelDto> login(@RequestParam String username,
-			@RequestParam String password, HttpServletResponse response) throws AuthenticationException {
+	public ResponseEntity<LogedInUserDetailModelDto> login(@RequestParam String username, @RequestParam String password,
+			HttpServletResponse response) throws AuthenticationException {
 
 		log.info("Trying to login = {}", username);
 
@@ -76,7 +76,7 @@ public class AuthController {
 
 		response.setHeader("token", token);
 
-		var model = new LogedInUserDetailModelDto(userDetail.getUsername(), roles,
+		var model = new LogedInUserDetailModelDto(userDetail.getId(), userDetail.getUsername(), roles,
 				userDetail.getStatus(), token);
 
 		return new ResponseEntity<>(model, HttpStatus.OK);
