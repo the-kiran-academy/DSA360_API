@@ -34,8 +34,7 @@ public class SystemUserDto {
 	@NotBlank(message = "Answer is mandatory")
 	private String answer;
 
-	@JsonFormat(pattern = "yyyy-MM-dd")
-	private String createdDate;
+	
 
 	@NotNull(message = "Roles are mandatory")
 	private List<String> roles;

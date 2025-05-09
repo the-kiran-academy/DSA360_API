@@ -75,19 +75,31 @@ public class FileStorageUtility {
 		return storedFilePaths;
 	}
 	
-	public boolean storeCustomerFile(String customerId, MultipartFile file) {
+	public boolean storeCustomerFile(String customerId, MultipartFile file, String newFileName) {
 	    Path targetDir = this.customerRootLocation.resolve(customerId);
 
 	    try {
-	        // Create customer directory if it doesn't exist
 	        Files.createDirectories(targetDir);
-	        String fileName = file.getOriginalFilename();
-	        if (fileName != null && fileName.contains("..")) {
-	        
-	            throw new SomethingWentWrongException("Invalid path sequence in file name: " + fileName);
+
+	        if (newFileName != null && newFileName.contains("..")) {
+	            throw new SomethingWentWrongException("Invalid path sequence in file name: " + newFileName);
 	        }
 
-	        Path targetPath = targetDir.resolve(fileName).normalize();
+	        // Delete any existing file containing the document type
+	        int underscoreIndex = newFileName.lastIndexOf('_');
+	        int dotIndex = newFileName.lastIndexOf('.');
+	        if (underscoreIndex != -1 && dotIndex != -1 && underscoreIndex < dotIndex) {
+	            String documentType = newFileName.substring(underscoreIndex + 1, dotIndex);
+	            File folder = targetDir.toFile();
+	            File[] matchingFiles = folder.listFiles((dir, name) -> name.contains(documentType));
+	            if (matchingFiles != null) {
+	                for (File f : matchingFiles) {
+	                    f.delete();
+	                }
+	            }
+	        }
+
+	        Path targetPath = targetDir.resolve(newFileName).normalize();
 	        Files.copy(file.getInputStream(), targetPath, StandardCopyOption.REPLACE_EXISTING);
 	        return true;
 
@@ -96,6 +108,8 @@ public class FileStorageUtility {
 	        throw new SomethingWentWrongException("Failed to store customer file.", e);
 	    }
 	}
+
+
 
 	
 

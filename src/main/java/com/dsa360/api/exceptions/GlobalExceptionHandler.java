@@ -47,7 +47,6 @@ public class GlobalExceptionHandler {
 		return map;
 	}
 
-	
 	@ResponseStatus(code = HttpStatus.INTERNAL_SERVER_ERROR)
 	@ExceptionHandler(ConstraintViolationException.class)
 	public HashMap<String, Object> constraintViolationException(ConstraintViolationException ex) {
@@ -57,13 +56,11 @@ public class GlobalExceptionHandler {
 		String formattedTime = sdf.format(new Date());
 		map.put("Time", formattedTime);
 		Set<ConstraintViolation<?>> constraintViolations = ex.getConstraintViolations();
-		
+
 		for (ConstraintViolation<?> constraintViolation : constraintViolations) {
-			map.put("Message", constraintViolation.getConstraintDescriptor()+ " "+ constraintViolation.getMessage());
-			
+			map.put("Message", constraintViolation.getConstraintDescriptor() + " " + constraintViolation.getMessage());
+
 		}
-		
-		
 
 		return map;
 	}
@@ -75,8 +72,7 @@ public class GlobalExceptionHandler {
 
 		var sdf = new SimpleDateFormat(General.DATE_FORMAT.getValue());
 		String formattedTime = sdf.format(new Date());
-		var exceptionRespone = new ExceptionRespone("Invalid User Password", request.getRequestURI(),
-				formattedTime);
+		var exceptionRespone = new ExceptionRespone("Invalid User Password", request.getRequestURI(), formattedTime);
 		return new ResponseEntity<>(exceptionRespone, HttpStatus.UNAUTHORIZED);
 
 	}
@@ -88,8 +84,7 @@ public class GlobalExceptionHandler {
 
 		var sdf = new SimpleDateFormat(General.DATE_FORMAT.getValue());
 		String formattedTime = sdf.format(new Date());
-		var exceptionRespone = new ExceptionRespone(ex.getMessage(), request.getRequestURI(),
-				formattedTime);
+		var exceptionRespone = new ExceptionRespone(ex.getMessage(), request.getRequestURI(), formattedTime);
 		return new ResponseEntity<>(exceptionRespone, HttpStatus.UNAUTHORIZED);
 	}
 
@@ -100,8 +95,7 @@ public class GlobalExceptionHandler {
 
 		var sdf = new SimpleDateFormat(General.DATE_FORMAT.getValue());
 		String formattedTime = sdf.format(new Date());
-		var exceptionRespone = new ExceptionRespone(ex.getMessage(), request.getRequestURI(),
-				formattedTime);
+		var exceptionRespone = new ExceptionRespone(ex.getMessage(), request.getRequestURI(), formattedTime);
 		return new ResponseEntity<>(exceptionRespone, HttpStatus.CONFLICT);
 	}
 
@@ -112,8 +106,7 @@ public class GlobalExceptionHandler {
 
 		var sdf = new SimpleDateFormat(General.DATE_FORMAT.getValue());
 		String formattedTime = sdf.format(new Date());
-		var exceptionRespone = new ExceptionRespone(ex.getMessage(), request.getRequestURI(),
-				formattedTime);
+		var exceptionRespone = new ExceptionRespone(ex.getMessage(), request.getRequestURI(), formattedTime);
 		return new ResponseEntity<>(exceptionRespone, HttpStatus.NOT_FOUND);
 	}
 
@@ -124,8 +117,7 @@ public class GlobalExceptionHandler {
 
 		var sdf = new SimpleDateFormat(General.DATE_FORMAT.getValue());
 		String formattedTime = sdf.format(new Date());
-		var exceptionRespone = new ExceptionRespone(ex.getMessage(), request.getRequestURI(),
-				formattedTime);
+		var exceptionRespone = new ExceptionRespone(ex.getMessage(), request.getRequestURI(), formattedTime);
 		return new ResponseEntity<>(exceptionRespone, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 
@@ -136,8 +128,7 @@ public class GlobalExceptionHandler {
 
 		var sdf = new SimpleDateFormat(General.DATE_FORMAT.getValue());
 		String formattedTime = sdf.format(new Date());
-		var exceptionRespone = new ExceptionRespone(ex.getMessage(), request.getRequestURI(),
-				formattedTime);
+		var exceptionRespone = new ExceptionRespone(ex.getMessage(), request.getRequestURI(), formattedTime);
 		return new ResponseEntity<>(exceptionRespone, HttpStatus.FORBIDDEN);
 	}
 
@@ -148,35 +139,30 @@ public class GlobalExceptionHandler {
 
 		var sdf = new SimpleDateFormat(General.DATE_FORMAT.getValue());
 		String formattedTime = sdf.format(new Date());
-		var exceptionRespone = new ExceptionRespone(ex.getMessage(), request.getRequestURI(),
-				formattedTime);
+		var exceptionRespone = new ExceptionRespone(ex.getMessage(), request.getRequestURI(), formattedTime);
 		return new ResponseEntity<>(exceptionRespone, HttpStatus.LOCKED);
 	}
-	
+
 	@ExceptionHandler(TokenExpirationException.class)
 	@ResponseStatus(code = HttpStatus.UNAUTHORIZED)
 	public ResponseEntity<ExceptionRespone> tokenExpirationException(TokenExpirationException ex,
 			HttpServletRequest request) {
 		var sdf = new SimpleDateFormat(General.DATE_FORMAT.getValue());
 		String formattedTime = sdf.format(new Date());
-		var exceptionRespone = new ExceptionRespone(ex.getMessage(), request.getRequestURI(),
-				formattedTime);
+		var exceptionRespone = new ExceptionRespone(ex.getMessage(), request.getRequestURI(), formattedTime);
 		return new ResponseEntity<>(exceptionRespone, HttpStatus.UNAUTHORIZED);
 	}
-	
+
 	@ExceptionHandler(InternalServerError.class)
 	@ResponseStatus(code = HttpStatus.INTERNAL_SERVER_ERROR)
-	public ResponseEntity<ExceptionRespone> internalServerError(InternalServerError ex,
-			HttpServletRequest request) {
+	public ResponseEntity<ExceptionRespone> internalServerError(InternalServerError ex, HttpServletRequest request) {
 
 		var sdf = new SimpleDateFormat(General.DATE_FORMAT.getValue());
 		String formattedTime = sdf.format(new Date());
-		var exceptionRespone = new ExceptionRespone(ex.getMessage(), request.getRequestURI(),
-				formattedTime);
+		var exceptionRespone = new ExceptionRespone(ex.getMessage(), request.getRequestURI(), formattedTime);
 		return new ResponseEntity<>(exceptionRespone, HttpStatus.UNAUTHORIZED);
 	}
-	
-	
+
 	@ExceptionHandler(AccessDeniedException.class)
 	@ResponseStatus(code = HttpStatus.FORBIDDEN)
 	public ResponseEntity<ExceptionRespone> accessDeniedException(AccessDeniedException ex,
@@ -184,21 +170,20 @@ public class GlobalExceptionHandler {
 
 		var sdf = new SimpleDateFormat(General.DATE_FORMAT.getValue());
 		String formattedTime = sdf.format(new Date());
-		var exceptionRespone = new ExceptionRespone(ex.getMessage(), request.getRequestURI(),
-				formattedTime);
+		var exceptionRespone = new ExceptionRespone(ex.getMessage(), request.getRequestURI(), formattedTime);
 		return new ResponseEntity<>(exceptionRespone, HttpStatus.FORBIDDEN);
 	}
-	
+
 	@ExceptionHandler(UnsupportedOperationException.class)
 	@ResponseStatus(code = HttpStatus.NOT_IMPLEMENTED)
-	public ResponseEntity<ExceptionRespone> unImplemented(UnsupportedOperationException ex,HttpServletRequest request){
-		
+	public ResponseEntity<ExceptionRespone> unImplemented(UnsupportedOperationException ex,
+			HttpServletRequest request) {
+
 		var sdf = new SimpleDateFormat(General.DATE_FORMAT.getValue());
 		String formattedTime = sdf.format(new Date());
-		var exceptionRespone = new ExceptionRespone("Method not implemented", request.getRequestURI(),
-				formattedTime);
+		var exceptionRespone = new ExceptionRespone("Method not implemented", request.getRequestURI(), formattedTime);
 		return new ResponseEntity<>(exceptionRespone, HttpStatus.NOT_IMPLEMENTED);
-		
+
 	}
 
 }

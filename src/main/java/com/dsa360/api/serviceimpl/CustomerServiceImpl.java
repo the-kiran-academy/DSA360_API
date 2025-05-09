@@ -8,6 +8,8 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
+
 import com.dsa360.api.dao.CustomerDao;
 import com.dsa360.api.dto.ContactUsDTO;
 import com.dsa360.api.dto.CustomerDTO;
@@ -82,25 +84,40 @@ public class CustomerServiceImpl implements CustomerService {
 
 	@Override
 	public void uploadDocument(String customerId, DocumentDTO documentDTO) {
+	    DocumentEntity document = customerDao
+	            .getDocumentByTypeAndCustomerId(documentDTO.getDocumentType().getDisplayName(), customerId);
 
-		DocumentEntity document = customerDao
-				.getDocumentByTypeAndCustomerId(documentDTO.getDocumentType().getDisplayName(), customerId);
+	    if (document == null) {
+	        String documentId = DynamicID.getGeneratedId();
+	        documentDTO.setId(documentId);
+	    } else {
+	        documentDTO.setId(document.getId());
+	    }
 
-		if (document == null) {
-			String documentId = DynamicID.getGeneratedId();
-			documentDTO.setId(documentId);
+	    // Construct file name: original name without extension + _DOCUMENT_TYPE + extension
+	    MultipartFile file = documentDTO.getFile();
+	    String originalFileName = file.getOriginalFilename();
 
-		} else {
-			documentDTO.setId(document.getId());
-		}
+	    String documentTypeSuffix = documentDTO.getDocumentType().name(); // e.g., PROOF_OF_IDENTITY
+	    String newFileName = originalFileName;
 
-		boolean isStoared = fileStorageUtility.storeCustomerFile(customerId, documentDTO.getFile());
-		if (isStoared) {
-			var documentEntity = (DocumentEntity) converter.dtoToEntity(documentDTO);
-			customerDao.uploadDocument(customerId, documentEntity);
-		}
+	    if (originalFileName != null && originalFileName.contains(".")) {
+	        int dotIndex = originalFileName.lastIndexOf(".");
+	        String nameWithoutExt = originalFileName.substring(0, dotIndex);
+	        String extension = originalFileName.substring(dotIndex);
+	        newFileName = nameWithoutExt + "_" + documentTypeSuffix + extension;
+	    }
 
+	    // Update documentName in DTO
+	    documentDTO.setDocumentName(newFileName);
+
+	    boolean isStored = fileStorageUtility.storeCustomerFile(customerId, file,newFileName);
+	    if (isStored) {
+	        var documentEntity = (DocumentEntity) converter.dtoToEntity(documentDTO);
+	        customerDao.uploadDocument(customerId, documentEntity);
+	    }
 	}
+
 
 	@Override
 	public List<CustomerEntity> getAllCustomers() {
