@@ -100,7 +100,6 @@ public class CustomerDaoImpl implements CustomerDao {
 			session.saveOrUpdate(documentEntity);
 			session.beginTransaction().commit();
 		} catch (Exception e) {
-			e.printStackTrace();
 			logger.error("Exception occurred during upload customer document {}", customerId);
 			throw new SomethingWentWrongException("Exception occurred during upload customer document " + customerId);
 		}

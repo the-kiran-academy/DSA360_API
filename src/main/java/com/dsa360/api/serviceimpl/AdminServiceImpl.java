@@ -58,7 +58,7 @@ public class AdminServiceImpl implements AdminService {
 		DsaApplicationEntity dsaApplicationEntity = null;
 		DSAApplicationDTO dsaById = dsaService.getDSAById(userDto.getDsaApplicationId());
 		if (dsaById != null) {
-			userDto.setCreatedDate(LocalDate.now().toString());
+			
 			String password = userDto.getPassword();
 			userDto.setPassword(encoder.encode(password));
 			dsaApplicationEntity = mapper.map(dsaById, DsaApplicationEntity.class);

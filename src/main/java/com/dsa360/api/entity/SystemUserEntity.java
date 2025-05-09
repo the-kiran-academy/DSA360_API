@@ -48,11 +48,6 @@ public class SystemUserEntity extends  BaseEntity{
 	@Column(name = "answer", nullable = false)
 	private String answer;
 
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	@JsonFormat(pattern = "yyyy-MM-dd")
-	@Column(name = "created_date", nullable = false)
-	private Date createdDate;
-
 	@ManyToMany(fetch = FetchType.EAGER)
 	@Fetch(FetchMode.SUBSELECT)
 	@JoinTable(name = "user_role", joinColumns = { @JoinColumn(name = "USER_ID") }, inverseJoinColumns = {
