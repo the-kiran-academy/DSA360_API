@@ -29,7 +29,6 @@ import com.dsa360.api.service.DSAService;
  */
 @RestController
 @RequestMapping("/public")
-@Validated
 public class PublicApiController {
 
 	@Autowired

@@ -124,5 +124,11 @@ public class AgentController {
 		service.deleteDocument(customerId, documentId);
 		return ResponseEntity.noContent().build();
 	}
+	
+	@PutMapping("/customer/update")
+	public ResponseEntity<CustomerDTO> updateCustomer(@Valid @RequestBody CustomerDTO customerDTO) {
+		CustomerDTO updatedCustomer = service.updateCustomer(customerDTO);
+		return ResponseEntity.ok(updatedCustomer);
+	}
 
 }

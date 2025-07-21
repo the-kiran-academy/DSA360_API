@@ -129,8 +129,9 @@ public class CustomerDaoImpl implements CustomerDao {
 
 	@Override
 	public String checkLoanEligibility(String customerId) {
-
+		
 		return null;
+
 	}
 
 	@Override
@@ -214,8 +215,18 @@ public class CustomerDaoImpl implements CustomerDao {
 
 	@Override
 	public CustomerEntity updateCustomer(CustomerEntity customerEntity) {
+		
+		try (var session = sessionFactory.openSession()) {
+			session.update(customerEntity);
+			session.beginTransaction().commit();
+			return customerEntity;
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error("Exception occurred during update customer {}", customerEntity.getId());
+			throw new SomethingWentWrongException(
+					"Exception occurred during update customer " + customerEntity.getId());
+		}
 
-		return null;
 	}
 
 	@Override
