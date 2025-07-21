@@ -59,12 +59,12 @@ public class AuthController {
 
 		log.info("Trying to login = {}", username);
 
-		final var authentication = authenticationManager
+		final var logedInUser = authenticationManager
 				.authenticate(new UsernamePasswordAuthenticationToken(username, password));
 
-		SecurityContextHolder.getContext().setAuthentication(authentication); // check
+		SecurityContextHolder.getContext().setAuthentication(logedInUser); // check
 
-		CustomUserDetail userDetail = (CustomUserDetail) authentication.getPrincipal();
+		CustomUserDetail userDetail = (CustomUserDetail) logedInUser.getPrincipal();
 		Collection<? extends GrantedAuthority> authorities = userDetail.getAuthorities();
 
 		List<String> roles = authorities.stream().map(authority -> authority.getAuthority().substring(5))
@@ -72,7 +72,7 @@ public class AuthController {
 
 		log.info("Logged In = {}", username);
 
-		final String token = jwtUtil.generateToken(authentication);
+		final String token = jwtUtil.generateToken(logedInUser);
 
 		response.setHeader("token", token);
 

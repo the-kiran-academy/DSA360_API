@@ -84,40 +84,40 @@ public class CustomerServiceImpl implements CustomerService {
 
 	@Override
 	public void uploadDocument(String customerId, DocumentDTO documentDTO) {
-	    DocumentEntity document = customerDao
-	            .getDocumentByTypeAndCustomerId(documentDTO.getDocumentType().getDisplayName(), customerId);
+		DocumentEntity document = customerDao
+				.getDocumentByTypeAndCustomerId(documentDTO.getDocumentType().getDisplayName(), customerId);
 
-	    if (document == null) {
-	        String documentId = DynamicID.getGeneratedId();
-	        documentDTO.setId(documentId);
-	    } else {
-	        documentDTO.setId(document.getId());
-	    }
+		if (document == null) {
+			String documentId = DynamicID.getGeneratedId();
+			documentDTO.setId(documentId);
+		} else {
+			documentDTO.setId(document.getId());
+		}
 
-	    // Construct file name: original name without extension + _DOCUMENT_TYPE + extension
-	    MultipartFile file = documentDTO.getFile();
-	    String originalFileName = file.getOriginalFilename();
+		// Construct file name: original name without extension + _DOCUMENT_TYPE +
+		// extension
+		MultipartFile file = documentDTO.getFile();
+		String originalFileName = file.getOriginalFilename();
 
-	    String documentTypeSuffix = documentDTO.getDocumentType().name(); // e.g., PROOF_OF_IDENTITY
-	    String newFileName = originalFileName;
+		String documentTypeSuffix = documentDTO.getDocumentType().name(); // e.g., PROOF_OF_IDENTITY
+		String newFileName = originalFileName;
 
-	    if (originalFileName != null && originalFileName.contains(".")) {
-	        int dotIndex = originalFileName.lastIndexOf(".");
-	        String nameWithoutExt = originalFileName.substring(0, dotIndex);
-	        String extension = originalFileName.substring(dotIndex);
-	        newFileName = nameWithoutExt + "_" + documentTypeSuffix + extension;
-	    }
+		if (originalFileName != null && originalFileName.contains(".")) {
+			int dotIndex = originalFileName.lastIndexOf(".");
+			String nameWithoutExt = originalFileName.substring(0, dotIndex);
+			String extension = originalFileName.substring(dotIndex);
+			newFileName = nameWithoutExt + "_" + documentTypeSuffix + extension;
+		}
 
-	    // Update documentName in DTO
-	    documentDTO.setDocumentName(newFileName);
+		// Update documentName in DTO
+		documentDTO.setDocumentName(newFileName);
 
-	    boolean isStored = fileStorageUtility.storeCustomerFile(customerId, file,newFileName);
-	    if (isStored) {
-	        var documentEntity = (DocumentEntity) converter.dtoToEntity(documentDTO);
-	        customerDao.uploadDocument(customerId, documentEntity);
-	    }
+		boolean isStored = fileStorageUtility.storeCustomerFile(customerId, file, newFileName);
+		if (isStored) {
+			var documentEntity = (DocumentEntity) converter.dtoToEntity(documentDTO);
+			customerDao.uploadDocument(customerId, documentEntity);
+		}
 	}
-
 
 	@Override
 	public List<CustomerEntity> getAllCustomers() {
@@ -132,8 +132,19 @@ public class CustomerServiceImpl implements CustomerService {
 
 	@Override
 	public CustomerDTO updateCustomer(CustomerDTO customerDTO) {
+		var customerEntity = customerDao.getCustomerById(customerDTO.getId());
+		if (customerEntity == null) {
+			return null;
+		} else {
+			CustomerEntity updateCustomer = customerDao.updateCustomer(customerEntity);
+			if (updateCustomer != null) {
 
-		return null;
+				return customerDTO;
+			} else {
+				return null;
+			}
+		}
+
 	}
 
 	@Override

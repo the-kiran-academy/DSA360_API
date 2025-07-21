@@ -1,6 +1,5 @@
 package com.dsa360.api.serviceimpl;
 
-import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,6 +11,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.dsa360.api.aspect.AuditableAction;
 import com.dsa360.api.dao.AdminDao;
 import com.dsa360.api.dto.DSAApplicationDTO;
 import com.dsa360.api.dto.RegionsDto;
@@ -161,6 +161,7 @@ public class AdminServiceImpl implements AdminService {
 	}
 
 	@Override
+	@AuditableAction(action = "CREATE_ROLL")
 	public void addRegion(RegionsDto regionsDto) {
 
 		regionsDto.setId(DynamicID.getGeneratedId());

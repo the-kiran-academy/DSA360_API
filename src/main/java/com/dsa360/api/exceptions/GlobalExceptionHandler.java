@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -85,6 +86,17 @@ public class GlobalExceptionHandler {
 		var sdf = new SimpleDateFormat(General.DATE_FORMAT.getValue());
 		String formattedTime = sdf.format(new Date());
 		var exceptionRespone = new ExceptionRespone(ex.getMessage(), request.getRequestURI(), formattedTime);
+		return new ResponseEntity<>(exceptionRespone, HttpStatus.UNAUTHORIZED);
+	}
+	
+	@ExceptionHandler(InternalAuthenticationServiceException.class)
+	@ResponseStatus(code = HttpStatus.UNAUTHORIZED)
+	public ResponseEntity<ExceptionRespone> invalidUsername(InternalAuthenticationServiceException ex,
+			HttpServletRequest request) {
+
+		var sdf = new SimpleDateFormat(General.DATE_FORMAT.getValue());
+		String formattedTime = sdf.format(new Date());
+		var exceptionRespone = new ExceptionRespone("Invalid Username", request.getRequestURI(), formattedTime);
 		return new ResponseEntity<>(exceptionRespone, HttpStatus.UNAUTHORIZED);
 	}
 
