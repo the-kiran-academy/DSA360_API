@@ -107,11 +107,13 @@ public class AdminDaoImpl implements AdminDao {
 				throw new ResourceAlreadyExistsException(roleEntity.getName() + " is Already Exists");
 			}
 
-		} catch (Exception e) {
-			if (transaction != null) {
-				transaction.rollback();
-			}
-			logger.error("Exception occurred during add role {}", e);
+		} 
+		catch (ResourceAlreadyExistsException e) {
+			logger.error("Role already exists with name {}", roleEntity.getName());
+			throw new ResourceAlreadyExistsException(roleEntity.getName() + " is Already Exists");
+		}
+		catch (Exception e) {
+			logger.error("Exception occurred during add role {}", e.getMessage());
 			throw new SomethingWentWrongException("Something went wrong add role");
 		}
 	}
