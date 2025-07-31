@@ -54,6 +54,7 @@ public class AdminServiceImpl implements AdminService {
 	MailAsyncServices mailAsyncServices;
 
 	@Override
+	@AuditableAction(action = "CREATE_SYSTEM_USER_PROFILE")
 	public SystemUserDto createSystemUserProfile(SystemUserDto userDto) {
 		DsaApplicationEntity dsaApplicationEntity = null;
 		DSAApplicationDTO dsaById = dsaService.getDSAById(userDto.getDsaApplicationId());
@@ -93,11 +94,13 @@ public class AdminServiceImpl implements AdminService {
 	}
 
 	@Override
+	@AuditableAction(action = "DELETE_SYSTEM_USER")
 	public void deleteSystemUser(String username) {
 		dao.deleteSystemUser(username);
 	}
 
 	@Override
+	@AuditableAction(action = "ADD_ROLE")
 	public void addRole(RoleDto roleDto) {
 		roleDto.setId(DynamicID.getGeneratedId());
 		RoleEntity entity = mapper.map(roleDto, RoleEntity.class);
@@ -105,12 +108,14 @@ public class AdminServiceImpl implements AdminService {
 	}
 
 	@Override
+	@AuditableAction(action = "DELETE_ROLL")
 	public boolean deleteRole(String rollId) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
+	@AuditableAction(action = "UPDATE_ROLL")
 	public void updateRole(RoleDto roleDto) {
 		// TODO Auto-generated method stub
 	}
@@ -121,9 +126,8 @@ public class AdminServiceImpl implements AdminService {
 		if (rollEntity != null) {
 			return mapper.map(rollEntity, RoleDto.class);
 		} else {
-			throw new ResourceAlreadyExistsException(rollId + NOTEXITS);
+			throw new ResourceNotFoundException(rollId + NOTEXITS);
 		}
-
 	}
 
 	@Override
@@ -161,7 +165,7 @@ public class AdminServiceImpl implements AdminService {
 	}
 
 	@Override
-	@AuditableAction(action = "CREATE_ROLL")
+	@AuditableAction(action = "CREATE_REGION")
 	public void addRegion(RegionsDto regionsDto) {
 
 		regionsDto.setId(DynamicID.getGeneratedId());
@@ -203,6 +207,7 @@ public class AdminServiceImpl implements AdminService {
 	}
 
 	@Override
+	@AuditableAction(action = "DELETE_REGION")
 	public void deleteRegion(String regionId) {
 		dao.deleteRegion(regionId);
 
@@ -219,6 +224,7 @@ public class AdminServiceImpl implements AdminService {
 	}
 
 	@Override
+	@AuditableAction(action = "UPDATE_REGION")
 	public void updateRegion(RegionsDto regionsDto) {
 
 		var regionsEntity = mapper.map(regionsDto, RegionsEntity.class);

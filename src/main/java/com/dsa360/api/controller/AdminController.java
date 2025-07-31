@@ -71,7 +71,7 @@ public class AdminController {
 
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@PostMapping("/add-role")
-	public ResponseEntity<RoleDto> addRole(@RequestBody RoleDto roleDto) {
+	public ResponseEntity<RoleDto> addRole(@RequestBody @Valid RoleDto roleDto) {
 		adminService.addRole(roleDto);
 		return new ResponseEntity<>(roleDto, HttpStatus.CREATED);
 

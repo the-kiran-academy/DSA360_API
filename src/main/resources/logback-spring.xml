@@ -1,6 +1,6 @@
 <configuration>
 
-<!-- Appender -->
+
 
     <!-- Appender for AuthController, SystemUserServiceImpl, and SystemUserDaoImpl -->
     <appender name="AuthSystemAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
@@ -12,6 +12,27 @@
             <pattern>%d{yyyy-MM-dd HH:mm:ss} %-5level %logger{36} - %msg%n</pattern>
         </encoder>
     </appender>
+    
+    <!-- Logger for AuthController, SystemUserServiceImpl, and SystemUserDaoImpl -->
+    <logger name="com.dsa360.api.controller.AuthController" level="DEBUG" additivity="false">
+        <appender-ref ref="AuthSystemAppender" />
+    </logger>
+
+    <logger name="com.dsa360.api.serviceimpl.SystemUserServiceImpl" level="DEBUG" additivity="false">
+        <appender-ref ref="AuthSystemAppender" />
+    </logger>
+
+    <logger name="com.dsa360.api.daoimpl.SystemUserDaoImpl" level="DEBUG" additivity="false">
+        <appender-ref ref="AuthSystemAppender" />
+    </logger>
+    
+    
+    
+       
+  <!-- Appender for PublicApiController, DSAServiceImpl, and DSADaoImpl -->
+    
+    
+    
 
     <!-- Appender for DSAController, DSAServiceImpl, and DSADaoImpl -->
     <appender name="DSAAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
@@ -24,19 +45,46 @@
         </encoder>
     </appender>
     
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <!-- Appender for AdminController, AdminServiceImpl, and AdminUserDaoImpl -->
+    <appender name="AdminAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>log/admin.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>log/admin.%d{yyyy-MM-dd}.log</fileNamePattern>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+    
    
     <!-- Logger -->
+    
+    <!-- Logger for AdminController,AdminServiceImpl, and AdminDaoImpl -->
+    <logger name="com.dsa360.api.controller.AdminController" level="DEBUG" additivity="false">
+        <appender-ref ref="AdminAppender" />
+    </logger>
+    <logger name="com.dsa360.api.serviceimpl.AdminServiceImpl" level="DEBUG" additivity="false">
+        <appender-ref ref="AdminAppender" />
+    </logger>
+    <logger name="com.dsa360.api.daoimpl.AdminDaoImpl" level="DEBUG" additivity="false">
+        <appender-ref ref="AdminAppender" />
+    </logger>
+    
+    
 
-    <!-- Logger for AuthController, SystemUserServiceImpl, and SystemUserDaoImpl -->
+    
+    
     <logger name="com.dsa360.api.controller.AuthController" level="DEBUG" additivity="false">
-        <appender-ref ref="AuthSystemAppender" />
-    </logger>
-
-    <logger name="com.dsa360.api.serviceimpl.SystemUserServiceImpl" level="DEBUG" additivity="false">
-        <appender-ref ref="AuthSystemAppender" />
-    </logger>
-
-    <logger name="com.dsa360.api.daoimpl.SystemUserDaoImpl" level="DEBUG" additivity="false">
         <appender-ref ref="AuthSystemAppender" />
     </logger>
 
